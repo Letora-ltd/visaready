@@ -174,6 +174,7 @@
   </div>
   <div style="margin-top:10px;">
     <button class="btn" id="val_btn">Run Validation</button>
+    <button class="btn" id="val_fix_btn" style="margin-left:8px;">Fix trivial issues</button>
     <span id="val_msg" class="small" style="margin-left:10px;"></span>
   </div>
   <div id="val_out" class="small" style="margin-top:10px;"></div>
@@ -512,6 +513,21 @@ document.getElementById('val_btn').onclick = async () => {
     const lines = data.issues.map(i => `• ${i.key} — ${i.issue}`);
     out.textContent = lines.join('\n');
   }catch(e){ console.error(e); msg.textContent='Validation failed'; }
+};
+</script>
+
+
+<script>
+document.getElementById('val_fix_btn').onclick = async () => {
+  const msg=document.getElementById('val_msg'); const out=document.getElementById('val_out');
+  msg.textContent=''; out.textContent='';
+  try{
+    if(!VAL_TOKEN) await val_login();
+    const res = await fetch(`${BACKEND}/admin/validate/fix`, { method:'POST', headers:{'Authorization':'Bearer '+VAL_TOKEN} });
+    if(!res.ok){ msg.textContent='Fix failed: '+(await res.text()); return; }
+    const data = await res.json();
+    msg.textContent = `Fixed: ${data.fixed}, Normalized: ${data.normalized}. Run validation again.`;
+  }catch(e){ console.error(e); msg.textContent='Fix failed'; }
 };
 </script>
 

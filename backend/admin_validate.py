@@ -49,3 +49,84 @@ def admin_validate(authorization: str | None = Header(default=None)):
         if "last_verified" not in v or not str(v.get("last_verified","")).strip():
             issues.append({"key": key, "issue": "Missing last_verified"})
     return {"ok": True, "count": len(issues), "issues": issues}
+
+@router.post("/admin/validate/fix")
+def admin_validate_fix(authorization: str | None = Header(default=None)):
+    _auth(authorization)
+    data = load_json("checklists.json")
+    fixed_count = 0
+    normalized = 0
+
+    def is_http(u: str) -> bool:
+        return isinstance(u, str) and u.lower().startswith(("http://","https://"))
+
+    for key, v in list(data.items()):
+        if not isinstance(v, dict):
+            continue
+
+        # ensure fields exist
+        v.setdefault("fees", (v.get("fees") or "").strip())
+        v.setdefault("processing", (v.get("processing") or "").strip())
+        v.setdefault("last_verified", (v.get("last_verified") or "").strip())
+
+        # last_verified
+        if not v["last_verified"]:
+            v["last_verified"] = "2025-10-01"
+            fixed_count += 1
+
+        # trim strings
+        for fld in ("fees", "processing"):
+            newv = (v.get(fld) or "").strip()
+            if newv != v.get(fld, ""):
+                v[fld] = newv
+                normalized += 1
+
+        # items cleanup
+        items = v.get("items") or []
+        new_items = []
+        for it in items:
+            it = it or {}
+            title = (it.get("title") or "").strip()
+            details = (it.get("details") or "").strip()
+            srcu = (it.get("source_url") or "").strip()
+
+            # drop totally empty lines
+            if not title and not details and not srcu:
+                fixed_count += 1
+                continue
+
+            # normalise url: drop if not http(s)
+            if srcu and not is_http(srcu):
+                srcu = ""
+                fixed_count += 1
+
+            new_it = {"title": title, "details": details}
+            if srcu:
+                new_it["source_url"] = srcu
+            # count trims
+            if (title != (it.get("title") or "")) or (details != (it.get("details") or "")):
+                normalized += 1
+
+            new_items.append(new_it)
+        v["items"] = new_items
+
+        # sources cleanup
+        srcs = v.get("sources") or []
+        new_srcs = []
+        for s in srcs:
+            s = s or {}
+            label = (s.get("label") or "").strip()
+            url = (s.get("url") or "").strip()
+            if url and not is_http(url):
+                # drop bad url; keep label if present
+                url = ""
+                fixed_count += 1
+            # keep row if something remains
+            if label or url:
+                new_srcs.append({"label": label, "url": url} if url else {"label": label})
+        v["sources"] = new_srcs
+
+        data[key] = v
+
+    save_json("checklists.json", data)
+    return {"ok": True, "fixed": fixed_count, "normalized": normalized}
