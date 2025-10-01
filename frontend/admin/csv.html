@@ -43,13 +43,17 @@
 </main>
 
 <script>
+  const BACKEND = 'http://127.0.0.1:8000';
+</script>
+
+<script>
 let token = null;
 
 async function ensureLogin() {
   const pwd = document.getElementById('pwd').value.trim();
   if (!pwd) { alert("Enter admin password"); throw new Error("no password"); }
   if (token) return token;
-  const res = await fetch('/admin/login', {
+  const res = await fetch(${BACKEND}/admin/login', {
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body: JSON.stringify({ password: pwd })
@@ -63,7 +67,7 @@ async function ensureLogin() {
 document.getElementById('exportBtn').addEventListener('click', async () => {
   try {
     await ensureLogin();
-    const res = await fetch('/admin/export/csv', {
+    const res = await fetch(${BACKEND}/admin/export/csv', {
       headers: { 'Authorization': 'Bearer ' + token }
     });
     if (!res.ok) { alert('Export failed'); return; }
@@ -88,7 +92,7 @@ document.getElementById('importBtn').addEventListener('click', async () => {
     const form = new FormData();
     form.append('file', f);
     form.append('mode', mode);
-    const res = await fetch('/admin/import/csv', {
+    const res = await fetch(${BACKEND}/admin/import/csv', {
       method:'POST',
       headers: { 'Authorization': 'Bearer ' + token },
       body: form
@@ -109,3 +113,4 @@ document.getElementById('importBtn').addEventListener('click', async () => {
 </script>
 </body>
 </html>
+
