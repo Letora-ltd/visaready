@@ -130,3 +130,11 @@ def admin_validate_fix(authorization: str | None = Header(default=None)):
 
     save_json("checklists.json", data)
     return {"ok": True, "fixed": fixed_count, "normalized": normalized}
+
+
+@router.post("/admin/validate/dryfix")
+def admin_validate_dryfix(authorization: str | None = Header(default=None)):
+    _auth(authorization)
+    data = load_json("checklists.json")
+    # no-op preview; replace with your detailed diff logic if already added
+    return {"ok": True, "fixed": 0, "normalized": 0, "changes": []}
