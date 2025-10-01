@@ -1,0 +1,8 @@
+{
+  "superadmin": {
+    "read_only": false,
+    "regions": [],
+    "visa_types": [],
+    "expires_at": ""
+  }
+}

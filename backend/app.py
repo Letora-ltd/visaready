@@ -193,3 +193,83 @@ try:
 except Exception:
     import admin_validate
 app.include_router(admin_validate.router)
+
+
+# ===== v48 RBAC & Audit (appended) =====
+try:
+    from . import admin_rbac
+except Exception:
+    import admin_rbac
+from fastapi import Request, Header, HTTPException
+import json as _json
+
+class CreateUserIn(BaseModel):
+    master_password: str
+    username: str
+    read_only: bool = False
+    regions: list[str] = []
+    visa_types: list[str] = []
+    expires_at: str | None = ""
+
+@app.post("/admin/users")
+def admin_create_user(payload: CreateUserIn):
+    return admin_rbac.create_user(payload.master_password, payload.username, payload.read_only, payload.regions, payload.visa_types, payload.expires_at or "")
+
+# Optional: username-based login (keeps original /admin/login working)
+class Login2In(BaseModel):
+    username: str
+    password: str
+
+@app.post("/admin/login2")
+def admin_login2(payload: Login2In):
+    token = admin_rbac.login(payload.username, payload.password, ttl_hours=24)
+    return {"token": token}
+
+@app.middleware("http")
+async def rbac_guard(request: Request, call_next):
+    path = request.url.path
+    method = request.method.upper()
+    guarded = (
+        (path == "/admin/checklists" and method == "PUT") or
+        (path == "/admin/duplicate" and method == "POST") or
+        (path == "/admin/duplicate/bulk" and method == "POST") or
+        (path == "/admin/validate/fix" and method == "POST") or
+        (path == "/admin/import/csv" and method == "POST")
+    )
+    claims = None
+    key = None
+    ok = True
+    if guarded:
+        try:
+            claims = admin_rbac.verify_authz(request.headers.get("authorization"))
+            admin_rbac.check_write(claims)
+            # Best effort: parse body to enforce region/visa if 'key' or dst_key present
+            body_bytes = await request.body()
+            try:
+                payload = _json.loads(body_bytes.decode() or "{}")
+            except Exception:
+                payload = {}
+            if path == "/admin/checklists":
+                key = payload.get("key")
+            elif path == "/admin/duplicate":
+                key = payload.get("dst_key")
+            if key:
+                admin_rbac.corridor_allowed(claims, key)
+            # Re-inject body for downstream (Starlette trick)
+            async def receive():
+                return {"type": "http.request", "body": body_bytes}
+            request._receive = receive
+        except HTTPException as e:
+            ok = False
+            admin_rbac.audit(request, (claims or {}).get("sub","-") if claims else "-", f"{method} {path}", key, False, request.headers.get("X-Reason"))
+            raise
+        except Exception:
+            ok = False
+            admin_rbac.audit(request, (claims or {}).get("sub","-") if claims else "-", f"{method} {path}", key, False, request.headers.get("X-Reason"))
+            raise
+    response = await call_next(request)
+    # Audit successful writes
+    if guarded and ok:
+        admin_rbac.audit(request, (claims or {}).get("sub","-") if claims else "-", f"{method} {path}", key, True, request.headers.get("X-Reason"))
+    return response
+# ===== end v48 =====
