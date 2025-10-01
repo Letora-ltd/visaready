@@ -19,7 +19,7 @@
         "details": "Medical coverage recommended."
       }
     ],
-    "fees": "\u00a321 (ESTA) \u2014 subject to change",
+    "fees": "£21 (ESTA) — subject to change",
     "processing": "Immediate for most; up to 72 hours",
     "sources": [
       {
@@ -27,7 +27,7 @@
         "url": "https://esta.cbp.dhs.gov/"
       },
       {
-        "label": "U.S. Embassy (UK) \u2014 Travel",
+        "label": "U.S. Embassy (UK) — Travel",
         "url": "https://uk.usembassy.gov/visas/"
       }
     ]
@@ -52,15 +52,15 @@
         "details": "Hotel bookings/invitation letter if applicable."
       }
     ],
-    "fees": "Approx \u00a3115 (subject to change)",
-    "processing": "Typically 3\u20136 weeks; priority options may exist",
+    "fees": "Approx £115 (subject to change)",
+    "processing": "Typically 3–6 weeks; priority options may exist",
     "sources": [
       {
         "label": "Apply for a UK visa",
         "url": "https://www.gov.uk/standard-visitor"
       },
       {
-        "label": "VFS Global \u2014 UK Visa (India)",
+        "label": "VFS Global — UK Visa (India)",
         "url": "https://visa.vfsglobal.com/ind/en/gbr/"
       }
     ]
@@ -98,18 +98,18 @@
       }
     ],
     "fees": "Varies by route (e-Visa vs sticker); check official site",
-    "processing": "Sticker visa typically 5\u201315 working days; e-Visa often immediate if eligible",
+    "processing": "Sticker visa typically 5–15 working days; e-Visa often immediate if eligible",
     "sources": [
       {
         "label": "Turkey e-Visa",
         "url": "https://www.evisa.gov.tr/en/"
       },
       {
-        "label": "VFS Global \u2014 Turkey Visa (India)",
+        "label": "VFS Global — Turkey Visa (India)",
         "url": "https://visa.vfsglobal.com/ind/en/tur/"
       },
       {
-        "label": "Ministry of Foreign Affairs, T\u00fcrkiye",
+        "label": "Ministry of Foreign Affairs, Türkiye",
         "url": "https://www.mfa.gov.tr/visa-information-for-foreigners.en.mfa"
       }
     ]
@@ -147,14 +147,14 @@
       }
     ],
     "fees": "Varies; check official site",
-    "processing": "Typically 10\u201315 working days",
+    "processing": "Typically 10–15 working days",
     "sources": [
       {
-        "label": "Germany \u2014 Embassy/Consulates in India",
+        "label": "Germany — Embassy/Consulates in India",
         "url": "https://india.diplo.de/in-en/service/05-VisaEinreise"
       },
       {
-        "label": "VFS Global \u2014 Germany (India)",
+        "label": "VFS Global — Germany (India)",
         "url": "https://visa.vfsglobal.com/ind/en/deu/"
       }
     ]
@@ -192,14 +192,14 @@
       }
     ],
     "fees": "Varies; check official site",
-    "processing": "Typically 10\u201315 working days",
+    "processing": "Typically 10–15 working days",
     "sources": [
       {
         "label": "France-Visas",
         "url": "https://france-visas.gouv.fr/"
       },
       {
-        "label": "VFS Global \u2014 France (India)",
+        "label": "VFS Global — France (India)",
         "url": "https://visa.vfsglobal.com/ind/en/fra/"
       }
     ]
@@ -237,14 +237,14 @@
       }
     ],
     "fees": "Varies; check official site",
-    "processing": "Typically 10\u201315 working days",
+    "processing": "Typically 10–15 working days",
     "sources": [
       {
-        "label": "Italy \u2014 Visa portal",
+        "label": "Italy — Visa portal",
         "url": "https://vistoperitalia.esteri.it/"
       },
       {
-        "label": "VFS Global \u2014 Italy (India)",
+        "label": "VFS Global — Italy (India)",
         "url": "https://visa.vfsglobal.com/ind/en/ita/"
       }
     ]
@@ -282,7 +282,7 @@
       }
     ],
     "fees": "Varies; check official site",
-    "processing": "Typically 10\u201315 working days",
+    "processing": "Typically 10–15 working days",
     "sources": [
       {
         "label": "BLS Spain Visa (India)",
@@ -327,7 +327,7 @@
       }
     ],
     "fees": "Varies; check official site",
-    "processing": "Typically 10\u201315 working days",
+    "processing": "Typically 10–15 working days",
     "sources": [
       {
         "label": "Indonesia e-VOA",
@@ -372,7 +372,7 @@
       }
     ],
     "fees": "Varies; check official site",
-    "processing": "Typically 10\u201315 working days",
+    "processing": "Typically 10–15 working days",
     "sources": [
       {
         "label": "Sri Lanka ETA",
@@ -417,7 +417,7 @@
       }
     ],
     "fees": "Varies; check official site",
-    "processing": "Typically 10\u201315 working days",
+    "processing": "Typically 10–15 working days",
     "sources": [
       {
         "label": "Nepal Immigration",
@@ -462,7 +462,7 @@
       }
     ],
     "fees": "Varies; check official site",
-    "processing": "Typically 10\u201315 working days",
+    "processing": "Typically 10–15 working days",
     "sources": [
       {
         "label": "Vietnam e-Visa",
@@ -507,7 +507,7 @@
       }
     ],
     "fees": "Varies; check official site",
-    "processing": "Typically 10\u201315 working days",
+    "processing": "Typically 10–15 working days",
     "sources": [
       {
         "label": "Bureau of Immigration Philippines",
@@ -552,7 +552,7 @@
       }
     ],
     "fees": "Varies; check official site",
-    "processing": "Typically 10\u201315 working days",
+    "processing": "Typically 10–15 working days",
     "sources": [
       {
         "label": "China Online Visa (COVA)",
@@ -597,14 +597,14 @@
       }
     ],
     "fees": "Varies; check official site",
-    "processing": "Typically 10\u201315 working days",
+    "processing": "Typically 10–15 working days",
     "sources": [
       {
-        "label": "Hong Kong Immigration \u2014 Visit",
+        "label": "Hong Kong Immigration — Visit",
         "url": "https://www.immd.gov.hk/eng/services/visas/visit-transit/visit-visa-entry-permit.html"
       },
       {
-        "label": "GovHK \u2014 Visa",
+        "label": "GovHK — Visa",
         "url": "https://www.gov.hk/en/nonresidents/visarequire/"
       }
     ]
@@ -642,10 +642,10 @@
       }
     ],
     "fees": "Varies; check official site",
-    "processing": "Typically 10\u201315 working days",
+    "processing": "Typically 10–15 working days",
     "sources": [
       {
-        "label": "Russia \u2014 Visa application",
+        "label": "Russia — Visa application",
         "url": "https://visa.kdmid.ru/"
       },
       {
@@ -687,14 +687,14 @@
       }
     ],
     "fees": "Varies; check official site",
-    "processing": "Typically 10\u201315 working days",
+    "processing": "Typically 10–15 working days",
     "sources": [
       {
-        "label": "South Africa \u2014 Home Affairs",
+        "label": "South Africa — Home Affairs",
         "url": "http://www.dha.gov.za/"
       },
       {
-        "label": "VFS Global \u2014 South Africa (India)",
+        "label": "VFS Global — South Africa (India)",
         "url": "https://visa.vfsglobal.com/ind/en/zaf/"
       }
     ]
@@ -732,14 +732,14 @@
       }
     ],
     "fees": "Varies; check official site",
-    "processing": "Typically 10\u201315 working days",
+    "processing": "Typically 10–15 working days",
     "sources": [
       {
-        "label": "Switzerland \u2014 SEM",
+        "label": "Switzerland — SEM",
         "url": "https://www.sem.admin.ch/sem/en/home.html"
       },
       {
-        "label": "VFS Global \u2014 Switzerland (India)",
+        "label": "VFS Global — Switzerland (India)",
         "url": "https://visa.vfsglobal.com/ind/en/che/"
       }
     ]
@@ -777,14 +777,14 @@
       }
     ],
     "fees": "Varies; check official site",
-    "processing": "Typically 10\u201315 working days",
+    "processing": "Typically 10–15 working days",
     "sources": [
       {
-        "label": "Netherlands \u2014 Government visas",
+        "label": "Netherlands — Government visas",
         "url": "https://www.netherlandsandyou.nl/travel-and-residence/visas"
       },
       {
-        "label": "VFS Global \u2014 Netherlands (India)",
+        "label": "VFS Global — Netherlands (India)",
         "url": "https://visa.vfsglobal.com/ind/en/nld/"
       }
     ]
@@ -798,7 +798,7 @@
       },
       {
         "title": "Indian visa route",
-        "details": "If eligible, use e\u2011Visa; otherwise regular visa via VFS/BLS or Indian Mission."
+        "details": "If eligible, use e‑Visa; otherwise regular visa via VFS/BLS or Indian Mission."
       },
       {
         "title": "Online application",
@@ -822,10 +822,10 @@
       }
     ],
     "fees": "Varies by nationality and visa type",
-    "processing": "Typically 3\u201310 working days",
+    "processing": "Typically 3–10 working days",
     "sources": [
       {
-        "label": "Indian e\u2011Visa (Official)",
+        "label": "Indian e‑Visa (Official)",
         "url": "https://indianvisaonline.gov.in/evisa/"
       },
       {
@@ -833,7 +833,7 @@
         "url": "https://boi.gov.in/"
       },
       {
-        "label": "VFS Global \u2014 India (Germany)",
+        "label": "VFS Global — India (Germany)",
         "url": "https://visa.vfsglobal.com/deu/en/ind/"
       }
     ]
@@ -847,7 +847,7 @@
       },
       {
         "title": "Indian visa route",
-        "details": "If eligible, use e\u2011Visa; otherwise regular visa via VFS/BLS or Indian Mission."
+        "details": "If eligible, use e‑Visa; otherwise regular visa via VFS/BLS or Indian Mission."
       },
       {
         "title": "Online application",
@@ -871,10 +871,10 @@
       }
     ],
     "fees": "Varies by nationality and visa type",
-    "processing": "Typically 3\u201310 working days",
+    "processing": "Typically 3–10 working days",
     "sources": [
       {
-        "label": "Indian e\u2011Visa (Official)",
+        "label": "Indian e‑Visa (Official)",
         "url": "https://indianvisaonline.gov.in/evisa/"
       },
       {
@@ -882,7 +882,7 @@
         "url": "https://boi.gov.in/"
       },
       {
-        "label": "VFS Global \u2014 India (France)",
+        "label": "VFS Global — India (France)",
         "url": "https://visa.vfsglobal.com/fra/en/ind/"
       }
     ]
@@ -896,7 +896,7 @@
       },
       {
         "title": "Indian visa route",
-        "details": "If eligible, use e\u2011Visa; otherwise regular visa via VFS/BLS or Indian Mission."
+        "details": "If eligible, use e‑Visa; otherwise regular visa via VFS/BLS or Indian Mission."
       },
       {
         "title": "Online application",
@@ -920,10 +920,10 @@
       }
     ],
     "fees": "Varies by nationality and visa type",
-    "processing": "Typically 3\u201310 working days",
+    "processing": "Typically 3–10 working days",
     "sources": [
       {
-        "label": "Indian e\u2011Visa (Official)",
+        "label": "Indian e‑Visa (Official)",
         "url": "https://indianvisaonline.gov.in/evisa/"
       },
       {
@@ -931,7 +931,7 @@
         "url": "https://boi.gov.in/"
       },
       {
-        "label": "VFS Global \u2014 India (Italy)",
+        "label": "VFS Global — India (Italy)",
         "url": "https://visa.vfsglobal.com/ita/en/ind/"
       }
     ]
@@ -945,7 +945,7 @@
       },
       {
         "title": "Indian visa route",
-        "details": "If eligible, use e\u2011Visa; otherwise regular visa via VFS/BLS or Indian Mission."
+        "details": "If eligible, use e‑Visa; otherwise regular visa via VFS/BLS or Indian Mission."
       },
       {
         "title": "Online application",
@@ -969,10 +969,10 @@
       }
     ],
     "fees": "Varies by nationality and visa type",
-    "processing": "Typically 3\u201310 working days",
+    "processing": "Typically 3–10 working days",
     "sources": [
       {
-        "label": "Indian e\u2011Visa (Official)",
+        "label": "Indian e‑Visa (Official)",
         "url": "https://indianvisaonline.gov.in/evisa/"
       },
       {
@@ -980,7 +980,7 @@
         "url": "https://boi.gov.in/"
       },
       {
-        "label": "BLS International \u2014 India Visa (Spain)",
+        "label": "BLS International — India Visa (Spain)",
         "url": "https://blsspainvisa.com/india/"
       }
     ]
@@ -994,7 +994,7 @@
       },
       {
         "title": "Indian visa route",
-        "details": "If eligible, use e\u2011Visa; otherwise regular visa via VFS/BLS or Indian Mission."
+        "details": "If eligible, use e‑Visa; otherwise regular visa via VFS/BLS or Indian Mission."
       },
       {
         "title": "Online application",
@@ -1018,10 +1018,10 @@
       }
     ],
     "fees": "Varies by nationality and visa type",
-    "processing": "Typically 3\u201310 working days",
+    "processing": "Typically 3–10 working days",
     "sources": [
       {
-        "label": "Indian e\u2011Visa (Official)",
+        "label": "Indian e‑Visa (Official)",
         "url": "https://indianvisaonline.gov.in/evisa/"
       },
       {
@@ -1043,7 +1043,7 @@
       },
       {
         "title": "Indian visa route",
-        "details": "If eligible, use e\u2011Visa; otherwise regular visa via VFS/BLS or Indian Mission."
+        "details": "If eligible, use e‑Visa; otherwise regular visa via VFS/BLS or Indian Mission."
       },
       {
         "title": "Online application",
@@ -1067,10 +1067,10 @@
       }
     ],
     "fees": "Varies by nationality and visa type",
-    "processing": "Typically 3\u201310 working days",
+    "processing": "Typically 3–10 working days",
     "sources": [
       {
-        "label": "Indian e\u2011Visa (Official)",
+        "label": "Indian e‑Visa (Official)",
         "url": "https://indianvisaonline.gov.in/evisa/"
       },
       {
@@ -1092,7 +1092,7 @@
       },
       {
         "title": "Indian visa route",
-        "details": "If eligible, use e\u2011Visa; otherwise regular visa via VFS/BLS or Indian Mission."
+        "details": "If eligible, use e‑Visa; otherwise regular visa via VFS/BLS or Indian Mission."
       },
       {
         "title": "Online application",
@@ -1116,10 +1116,10 @@
       }
     ],
     "fees": "Varies by nationality and visa type",
-    "processing": "Typically 3\u201310 working days",
+    "processing": "Typically 3–10 working days",
     "sources": [
       {
-        "label": "Indian e\u2011Visa (Official)",
+        "label": "Indian e‑Visa (Official)",
         "url": "https://indianvisaonline.gov.in/evisa/"
       },
       {
@@ -1141,7 +1141,7 @@
       },
       {
         "title": "Indian visa route",
-        "details": "If eligible, use e\u2011Visa; otherwise regular visa via VFS/BLS or Indian Mission."
+        "details": "If eligible, use e‑Visa; otherwise regular visa via VFS/BLS or Indian Mission."
       },
       {
         "title": "Online application",
@@ -1165,10 +1165,10 @@
       }
     ],
     "fees": "Varies by nationality and visa type",
-    "processing": "Typically 3\u201310 working days",
+    "processing": "Typically 3–10 working days",
     "sources": [
       {
-        "label": "Indian e\u2011Visa (Official)",
+        "label": "Indian e‑Visa (Official)",
         "url": "https://indianvisaonline.gov.in/evisa/"
       },
       {
@@ -1190,7 +1190,7 @@
       },
       {
         "title": "Indian visa route",
-        "details": "If eligible, use e\u2011Visa; otherwise regular visa via VFS/BLS or Indian Mission."
+        "details": "If eligible, use e‑Visa; otherwise regular visa via VFS/BLS or Indian Mission."
       },
       {
         "title": "Online application",
@@ -1214,10 +1214,10 @@
       }
     ],
     "fees": "Varies by nationality and visa type",
-    "processing": "Typically 3\u201310 working days",
+    "processing": "Typically 3–10 working days",
     "sources": [
       {
-        "label": "Indian e\u2011Visa (Official)",
+        "label": "Indian e‑Visa (Official)",
         "url": "https://indianvisaonline.gov.in/evisa/"
       },
       {
@@ -1239,7 +1239,7 @@
       },
       {
         "title": "Indian visa route",
-        "details": "If eligible, use e\u2011Visa; otherwise regular visa via VFS/BLS or Indian Mission."
+        "details": "If eligible, use e‑Visa; otherwise regular visa via VFS/BLS or Indian Mission."
       },
       {
         "title": "Online application",
@@ -1263,10 +1263,10 @@
       }
     ],
     "fees": "Varies by nationality and visa type",
-    "processing": "Typically 3\u201310 working days",
+    "processing": "Typically 3–10 working days",
     "sources": [
       {
-        "label": "Indian e\u2011Visa (Official)",
+        "label": "Indian e‑Visa (Official)",
         "url": "https://indianvisaonline.gov.in/evisa/"
       },
       {
@@ -1288,7 +1288,7 @@
       },
       {
         "title": "Indian visa route",
-        "details": "If eligible, use e\u2011Visa; otherwise regular visa via VFS/BLS or Indian Mission."
+        "details": "If eligible, use e‑Visa; otherwise regular visa via VFS/BLS or Indian Mission."
       },
       {
         "title": "Online application",
@@ -1312,10 +1312,10 @@
       }
     ],
     "fees": "Varies by nationality and visa type",
-    "processing": "Typically 3\u201310 working days",
+    "processing": "Typically 3–10 working days",
     "sources": [
       {
-        "label": "Indian e\u2011Visa (Official)",
+        "label": "Indian e‑Visa (Official)",
         "url": "https://indianvisaonline.gov.in/evisa/"
       },
       {
@@ -1337,7 +1337,7 @@
       },
       {
         "title": "Indian visa route",
-        "details": "If eligible, use e\u2011Visa; otherwise regular visa via VFS/BLS or Indian Mission."
+        "details": "If eligible, use e‑Visa; otherwise regular visa via VFS/BLS or Indian Mission."
       },
       {
         "title": "Online application",
@@ -1361,10 +1361,10 @@
       }
     ],
     "fees": "Varies by nationality and visa type",
-    "processing": "Typically 3\u201310 working days",
+    "processing": "Typically 3–10 working days",
     "sources": [
       {
-        "label": "Indian e\u2011Visa (Official)",
+        "label": "Indian e‑Visa (Official)",
         "url": "https://indianvisaonline.gov.in/evisa/"
       },
       {
@@ -1386,7 +1386,7 @@
       },
       {
         "title": "Indian visa route",
-        "details": "If eligible, use e\u2011Visa; otherwise regular visa via VFS/BLS or Indian Mission."
+        "details": "If eligible, use e‑Visa; otherwise regular visa via VFS/BLS or Indian Mission."
       },
       {
         "title": "Online application",
@@ -1410,10 +1410,10 @@
       }
     ],
     "fees": "Varies by nationality and visa type",
-    "processing": "Typically 3\u201310 working days",
+    "processing": "Typically 3–10 working days",
     "sources": [
       {
-        "label": "Indian e\u2011Visa (Official)",
+        "label": "Indian e‑Visa (Official)",
         "url": "https://indianvisaonline.gov.in/evisa/"
       },
       {
@@ -1421,7 +1421,7 @@
         "url": "https://boi.gov.in/"
       },
       {
-        "label": "VFS Global \u2014 India (South Africa)",
+        "label": "VFS Global — India (South Africa)",
         "url": "https://visa.vfsglobal.com/zaf/en/ind/"
       }
     ]
@@ -1435,7 +1435,7 @@
       },
       {
         "title": "Indian visa route",
-        "details": "If eligible, use e\u2011Visa; otherwise regular visa via VFS/BLS or Indian Mission."
+        "details": "If eligible, use e‑Visa; otherwise regular visa via VFS/BLS or Indian Mission."
       },
       {
         "title": "Online application",
@@ -1459,10 +1459,10 @@
       }
     ],
     "fees": "Varies by nationality and visa type",
-    "processing": "Typically 3\u201310 working days",
+    "processing": "Typically 3–10 working days",
     "sources": [
       {
-        "label": "Indian e\u2011Visa (Official)",
+        "label": "Indian e‑Visa (Official)",
         "url": "https://indianvisaonline.gov.in/evisa/"
       },
       {
@@ -1470,7 +1470,7 @@
         "url": "https://boi.gov.in/"
       },
       {
-        "label": "VFS Global \u2014 India (Switzerland)",
+        "label": "VFS Global — India (Switzerland)",
         "url": "https://visa.vfsglobal.com/che/en/ind/"
       }
     ]
@@ -1484,7 +1484,7 @@
       },
       {
         "title": "Indian visa route",
-        "details": "If eligible, use e\u2011Visa; otherwise regular visa via VFS/BLS or Indian Mission."
+        "details": "If eligible, use e‑Visa; otherwise regular visa via VFS/BLS or Indian Mission."
       },
       {
         "title": "Online application",
@@ -1508,10 +1508,10 @@
       }
     ],
     "fees": "Varies by nationality and visa type",
-    "processing": "Typically 3\u201310 working days",
+    "processing": "Typically 3–10 working days",
     "sources": [
       {
-        "label": "Indian e\u2011Visa (Official)",
+        "label": "Indian e‑Visa (Official)",
         "url": "https://indianvisaonline.gov.in/evisa/"
       },
       {
@@ -1519,8 +1519,2348 @@
         "url": "https://boi.gov.in/"
       },
       {
-        "label": "VFS Global \u2014 India (Netherlands)",
+        "label": "VFS Global — India (Netherlands)",
         "url": "https://visa.vfsglobal.com/nld/en/ind/"
+      }
+    ]
+  },
+  "IN->DE::STUDENT": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "6+ months validity; required blank pages."
+      },
+      {
+        "title": "Admission/Offer letter",
+        "details": "From recognised institution."
+      },
+      {
+        "title": "Financial proof",
+        "details": "Bank statements, scholarships, or sponsor docs."
+      },
+      {
+        "title": "Insurance & medical",
+        "details": "As required by host country."
+      },
+      {
+        "title": "Application & biometrics",
+        "details": "Online form; appointment and biometrics if required."
+      },
+      {
+        "title": "Accommodation",
+        "details": "Dorm booking/host letter/lease."
+      }
+    ],
+    "fees": "Consular fee + service charge (varies)",
+    "processing": "Typically 2–6+ weeks (varies by season and mission)",
+    "sources": [
+      {
+        "label": "Germany — Student Visa (Official)",
+        "url": "https://india.diplo.de/in-en/service/05-VisaEinreise/-/2523148"
+      }
+    ]
+  },
+  "IN->DE::WORK": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "6+ months validity; blank pages."
+      },
+      {
+        "title": "Employment contract/offer",
+        "details": "Meets host-country requirements."
+      },
+      {
+        "title": "Work authorisation",
+        "details": "Permit/sponsor approvals where applicable."
+      },
+      {
+        "title": "Qualifications",
+        "details": "Degrees, experience letters, registrations."
+      },
+      {
+        "title": "Application & biometrics",
+        "details": "Online form; appointment and biometrics if required."
+      },
+      {
+        "title": "Insurance",
+        "details": "Health/travel insurance; employer coverage if applicable."
+      }
+    ],
+    "fees": "Consular fee + service charge (varies)",
+    "processing": "Typically 3–8+ weeks (role/country dependent)",
+    "sources": [
+      {
+        "label": "Germany — Employment Visa",
+        "url": "https://india.diplo.de/in-en/service/05-VisaEinreise"
+      }
+    ]
+  },
+  "DE->IN::STUDENT": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Meets India’s validity requirements; blank pages."
+      },
+      {
+        "title": "Admission letter (India)",
+        "details": "From Indian university/college."
+      },
+      {
+        "title": "Proof of funds",
+        "details": "As per FRRO guidance."
+      },
+      {
+        "title": "FRRO requirements",
+        "details": "Registration after arrival if required."
+      },
+      {
+        "title": "Apply Student Visa (S) / e-Visa",
+        "details": "Online application; follow mission instructions."
+      },
+      {
+        "title": "Accommodation",
+        "details": "Hostel booking/letter/lease."
+      }
+    ],
+    "fees": "Varies by nationality and duration",
+    "processing": "3–10 working days typical; FRRO registration after arrival when required",
+    "sources": [
+      {
+        "label": "Indian e-Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      }
+    ]
+  },
+  "DE->IN::WORK": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Meets India’s validity requirements; blank pages."
+      },
+      {
+        "title": "Employment contract (India)",
+        "details": "Offer letter; salary threshold may apply."
+      },
+      {
+        "title": "Employment Visa (E)",
+        "details": "Apply online; supporting letters and qualifications."
+      },
+      {
+        "title": "FRRO registration",
+        "details": "After arrival where required."
+      },
+      {
+        "title": "Medical/Police clearance",
+        "details": "If required by mission/employer."
+      },
+      {
+        "title": "Insurance",
+        "details": "Medical/travel insurance recommended."
+      }
+    ],
+    "fees": "Varies by nationality and duration",
+    "processing": "3–15 working days typical; extra time for clearances",
+    "sources": [
+      {
+        "label": "Indian e-Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      }
+    ]
+  },
+  "IN->FR::STUDENT": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "6+ months validity; required blank pages."
+      },
+      {
+        "title": "Admission/Offer letter",
+        "details": "From recognised institution."
+      },
+      {
+        "title": "Financial proof",
+        "details": "Bank statements, scholarships, or sponsor docs."
+      },
+      {
+        "title": "Insurance & medical",
+        "details": "As required by host country."
+      },
+      {
+        "title": "Application & biometrics",
+        "details": "Online form; appointment and biometrics if required."
+      },
+      {
+        "title": "Accommodation",
+        "details": "Dorm booking/host letter/lease."
+      }
+    ],
+    "fees": "Consular fee + service charge (varies)",
+    "processing": "Typically 2–6+ weeks (varies by season and mission)",
+    "sources": [
+      {
+        "label": "France — Campus France",
+        "url": "https://www.campusfrance.org/en"
+      }
+    ]
+  },
+  "IN->FR::WORK": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "6+ months validity; blank pages."
+      },
+      {
+        "title": "Employment contract/offer",
+        "details": "Meets host-country requirements."
+      },
+      {
+        "title": "Work authorisation",
+        "details": "Permit/sponsor approvals where applicable."
+      },
+      {
+        "title": "Qualifications",
+        "details": "Degrees, experience letters, registrations."
+      },
+      {
+        "title": "Application & biometrics",
+        "details": "Online form; appointment and biometrics if required."
+      },
+      {
+        "title": "Insurance",
+        "details": "Health/travel insurance; employer coverage if applicable."
+      }
+    ],
+    "fees": "Consular fee + service charge (varies)",
+    "processing": "Typically 3–8+ weeks (role/country dependent)",
+    "sources": [
+      {
+        "label": "France-Visas — Work",
+        "url": "https://france-visas.gouv.fr/"
+      }
+    ]
+  },
+  "FR->IN::STUDENT": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Meets India’s validity requirements; blank pages."
+      },
+      {
+        "title": "Admission letter (India)",
+        "details": "From Indian university/college."
+      },
+      {
+        "title": "Proof of funds",
+        "details": "As per FRRO guidance."
+      },
+      {
+        "title": "FRRO requirements",
+        "details": "Registration after arrival if required."
+      },
+      {
+        "title": "Apply Student Visa (S) / e-Visa",
+        "details": "Online application; follow mission instructions."
+      },
+      {
+        "title": "Accommodation",
+        "details": "Hostel booking/letter/lease."
+      }
+    ],
+    "fees": "Varies by nationality and duration",
+    "processing": "3–10 working days typical; FRRO registration after arrival when required",
+    "sources": [
+      {
+        "label": "Indian e-Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      }
+    ]
+  },
+  "FR->IN::WORK": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Meets India’s validity requirements; blank pages."
+      },
+      {
+        "title": "Employment contract (India)",
+        "details": "Offer letter; salary threshold may apply."
+      },
+      {
+        "title": "Employment Visa (E)",
+        "details": "Apply online; supporting letters and qualifications."
+      },
+      {
+        "title": "FRRO registration",
+        "details": "After arrival where required."
+      },
+      {
+        "title": "Medical/Police clearance",
+        "details": "If required by mission/employer."
+      },
+      {
+        "title": "Insurance",
+        "details": "Medical/travel insurance recommended."
+      }
+    ],
+    "fees": "Varies by nationality and duration",
+    "processing": "3–15 working days typical; extra time for clearances",
+    "sources": [
+      {
+        "label": "Indian e-Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      }
+    ]
+  },
+  "IN->IT::STUDENT": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "6+ months validity; required blank pages."
+      },
+      {
+        "title": "Admission/Offer letter",
+        "details": "From recognised institution."
+      },
+      {
+        "title": "Financial proof",
+        "details": "Bank statements, scholarships, or sponsor docs."
+      },
+      {
+        "title": "Insurance & medical",
+        "details": "As required by host country."
+      },
+      {
+        "title": "Application & biometrics",
+        "details": "Online form; appointment and biometrics if required."
+      },
+      {
+        "title": "Accommodation",
+        "details": "Dorm booking/host letter/lease."
+      }
+    ],
+    "fees": "Consular fee + service charge (varies)",
+    "processing": "Typically 2–6+ weeks (varies by season and mission)",
+    "sources": [
+      {
+        "label": "Italy — Study Visa",
+        "url": "https://vistoperitalia.esteri.it/"
+      }
+    ]
+  },
+  "IN->IT::WORK": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "6+ months validity; blank pages."
+      },
+      {
+        "title": "Employment contract/offer",
+        "details": "Meets host-country requirements."
+      },
+      {
+        "title": "Work authorisation",
+        "details": "Permit/sponsor approvals where applicable."
+      },
+      {
+        "title": "Qualifications",
+        "details": "Degrees, experience letters, registrations."
+      },
+      {
+        "title": "Application & biometrics",
+        "details": "Online form; appointment and biometrics if required."
+      },
+      {
+        "title": "Insurance",
+        "details": "Health/travel insurance; employer coverage if applicable."
+      }
+    ],
+    "fees": "Consular fee + service charge (varies)",
+    "processing": "Typically 3–8+ weeks (role/country dependent)",
+    "sources": [
+      {
+        "label": "Italy — Work Visa",
+        "url": "https://vistoperitalia.esteri.it/"
+      }
+    ]
+  },
+  "IT->IN::STUDENT": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Meets India’s validity requirements; blank pages."
+      },
+      {
+        "title": "Admission letter (India)",
+        "details": "From Indian university/college."
+      },
+      {
+        "title": "Proof of funds",
+        "details": "As per FRRO guidance."
+      },
+      {
+        "title": "FRRO requirements",
+        "details": "Registration after arrival if required."
+      },
+      {
+        "title": "Apply Student Visa (S) / e-Visa",
+        "details": "Online application; follow mission instructions."
+      },
+      {
+        "title": "Accommodation",
+        "details": "Hostel booking/letter/lease."
+      }
+    ],
+    "fees": "Varies by nationality and duration",
+    "processing": "3–10 working days typical; FRRO registration after arrival when required",
+    "sources": [
+      {
+        "label": "Indian e-Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      }
+    ]
+  },
+  "IT->IN::WORK": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Meets India’s validity requirements; blank pages."
+      },
+      {
+        "title": "Employment contract (India)",
+        "details": "Offer letter; salary threshold may apply."
+      },
+      {
+        "title": "Employment Visa (E)",
+        "details": "Apply online; supporting letters and qualifications."
+      },
+      {
+        "title": "FRRO registration",
+        "details": "After arrival where required."
+      },
+      {
+        "title": "Medical/Police clearance",
+        "details": "If required by mission/employer."
+      },
+      {
+        "title": "Insurance",
+        "details": "Medical/travel insurance recommended."
+      }
+    ],
+    "fees": "Varies by nationality and duration",
+    "processing": "3–15 working days typical; extra time for clearances",
+    "sources": [
+      {
+        "label": "Indian e-Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      }
+    ]
+  },
+  "IN->ES::STUDENT": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "6+ months validity; required blank pages."
+      },
+      {
+        "title": "Admission/Offer letter",
+        "details": "From recognised institution."
+      },
+      {
+        "title": "Financial proof",
+        "details": "Bank statements, scholarships, or sponsor docs."
+      },
+      {
+        "title": "Insurance & medical",
+        "details": "As required by host country."
+      },
+      {
+        "title": "Application & biometrics",
+        "details": "Online form; appointment and biometrics if required."
+      },
+      {
+        "title": "Accommodation",
+        "details": "Dorm booking/host letter/lease."
+      }
+    ],
+    "fees": "Consular fee + service charge (varies)",
+    "processing": "Typically 2–6+ weeks (varies by season and mission)",
+    "sources": [
+      {
+        "label": "Spain — Student (Ministry)",
+        "url": "https://www.exteriores.gob.es/"
+      }
+    ]
+  },
+  "IN->ES::WORK": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "6+ months validity; blank pages."
+      },
+      {
+        "title": "Employment contract/offer",
+        "details": "Meets host-country requirements."
+      },
+      {
+        "title": "Work authorisation",
+        "details": "Permit/sponsor approvals where applicable."
+      },
+      {
+        "title": "Qualifications",
+        "details": "Degrees, experience letters, registrations."
+      },
+      {
+        "title": "Application & biometrics",
+        "details": "Online form; appointment and biometrics if required."
+      },
+      {
+        "title": "Insurance",
+        "details": "Health/travel insurance; employer coverage if applicable."
+      }
+    ],
+    "fees": "Consular fee + service charge (varies)",
+    "processing": "Typically 3–8+ weeks (role/country dependent)",
+    "sources": [
+      {
+        "label": "Spain — Work Permits",
+        "url": "https://www.exteriores.gob.es/"
+      }
+    ]
+  },
+  "ES->IN::STUDENT": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Meets India’s validity requirements; blank pages."
+      },
+      {
+        "title": "Admission letter (India)",
+        "details": "From Indian university/college."
+      },
+      {
+        "title": "Proof of funds",
+        "details": "As per FRRO guidance."
+      },
+      {
+        "title": "FRRO requirements",
+        "details": "Registration after arrival if required."
+      },
+      {
+        "title": "Apply Student Visa (S) / e-Visa",
+        "details": "Online application; follow mission instructions."
+      },
+      {
+        "title": "Accommodation",
+        "details": "Hostel booking/letter/lease."
+      }
+    ],
+    "fees": "Varies by nationality and duration",
+    "processing": "3–10 working days typical; FRRO registration after arrival when required",
+    "sources": [
+      {
+        "label": "Indian e-Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      }
+    ]
+  },
+  "ES->IN::WORK": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Meets India’s validity requirements; blank pages."
+      },
+      {
+        "title": "Employment contract (India)",
+        "details": "Offer letter; salary threshold may apply."
+      },
+      {
+        "title": "Employment Visa (E)",
+        "details": "Apply online; supporting letters and qualifications."
+      },
+      {
+        "title": "FRRO registration",
+        "details": "After arrival where required."
+      },
+      {
+        "title": "Medical/Police clearance",
+        "details": "If required by mission/employer."
+      },
+      {
+        "title": "Insurance",
+        "details": "Medical/travel insurance recommended."
+      }
+    ],
+    "fees": "Varies by nationality and duration",
+    "processing": "3–15 working days typical; extra time for clearances",
+    "sources": [
+      {
+        "label": "Indian e-Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      }
+    ]
+  },
+  "IN->ID::STUDENT": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "6+ months validity; required blank pages."
+      },
+      {
+        "title": "Admission/Offer letter",
+        "details": "From recognised institution."
+      },
+      {
+        "title": "Financial proof",
+        "details": "Bank statements, scholarships, or sponsor docs."
+      },
+      {
+        "title": "Insurance & medical",
+        "details": "As required by host country."
+      },
+      {
+        "title": "Application & biometrics",
+        "details": "Online form; appointment and biometrics if required."
+      },
+      {
+        "title": "Accommodation",
+        "details": "Dorm booking/host letter/lease."
+      }
+    ],
+    "fees": "Consular fee + service charge (varies)",
+    "processing": "Typically 2–6+ weeks (varies by season and mission)",
+    "sources": [
+      {
+        "label": "Indonesia — Immigration",
+        "url": "https://www.imigrasi.go.id/en/"
+      }
+    ]
+  },
+  "IN->ID::WORK": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "6+ months validity; blank pages."
+      },
+      {
+        "title": "Employment contract/offer",
+        "details": "Meets host-country requirements."
+      },
+      {
+        "title": "Work authorisation",
+        "details": "Permit/sponsor approvals where applicable."
+      },
+      {
+        "title": "Qualifications",
+        "details": "Degrees, experience letters, registrations."
+      },
+      {
+        "title": "Application & biometrics",
+        "details": "Online form; appointment and biometrics if required."
+      },
+      {
+        "title": "Insurance",
+        "details": "Health/travel insurance; employer coverage if applicable."
+      }
+    ],
+    "fees": "Consular fee + service charge (varies)",
+    "processing": "Typically 3–8+ weeks (role/country dependent)",
+    "sources": [
+      {
+        "label": "Indonesia — KITAS",
+        "url": "https://www.imigrasi.go.id/en/"
+      }
+    ]
+  },
+  "ID->IN::STUDENT": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Meets India’s validity requirements; blank pages."
+      },
+      {
+        "title": "Admission letter (India)",
+        "details": "From Indian university/college."
+      },
+      {
+        "title": "Proof of funds",
+        "details": "As per FRRO guidance."
+      },
+      {
+        "title": "FRRO requirements",
+        "details": "Registration after arrival if required."
+      },
+      {
+        "title": "Apply Student Visa (S) / e-Visa",
+        "details": "Online application; follow mission instructions."
+      },
+      {
+        "title": "Accommodation",
+        "details": "Hostel booking/letter/lease."
+      }
+    ],
+    "fees": "Varies by nationality and duration",
+    "processing": "3–10 working days typical; FRRO registration after arrival when required",
+    "sources": [
+      {
+        "label": "Indian e-Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      }
+    ]
+  },
+  "ID->IN::WORK": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Meets India’s validity requirements; blank pages."
+      },
+      {
+        "title": "Employment contract (India)",
+        "details": "Offer letter; salary threshold may apply."
+      },
+      {
+        "title": "Employment Visa (E)",
+        "details": "Apply online; supporting letters and qualifications."
+      },
+      {
+        "title": "FRRO registration",
+        "details": "After arrival where required."
+      },
+      {
+        "title": "Medical/Police clearance",
+        "details": "If required by mission/employer."
+      },
+      {
+        "title": "Insurance",
+        "details": "Medical/travel insurance recommended."
+      }
+    ],
+    "fees": "Varies by nationality and duration",
+    "processing": "3–15 working days typical; extra time for clearances",
+    "sources": [
+      {
+        "label": "Indian e-Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      }
+    ]
+  },
+  "IN->LK::STUDENT": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "6+ months validity; required blank pages."
+      },
+      {
+        "title": "Admission/Offer letter",
+        "details": "From recognised institution."
+      },
+      {
+        "title": "Financial proof",
+        "details": "Bank statements, scholarships, or sponsor docs."
+      },
+      {
+        "title": "Insurance & medical",
+        "details": "As required by host country."
+      },
+      {
+        "title": "Application & biometrics",
+        "details": "Online form; appointment and biometrics if required."
+      },
+      {
+        "title": "Accommodation",
+        "details": "Dorm booking/host letter/lease."
+      }
+    ],
+    "fees": "Consular fee + service charge (varies)",
+    "processing": "Typically 2–6+ weeks (varies by season and mission)",
+    "sources": [
+      {
+        "label": "Sri Lanka — Immigration",
+        "url": "https://www.immigration.gov.lk/"
+      }
+    ]
+  },
+  "IN->LK::WORK": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "6+ months validity; blank pages."
+      },
+      {
+        "title": "Employment contract/offer",
+        "details": "Meets host-country requirements."
+      },
+      {
+        "title": "Work authorisation",
+        "details": "Permit/sponsor approvals where applicable."
+      },
+      {
+        "title": "Qualifications",
+        "details": "Degrees, experience letters, registrations."
+      },
+      {
+        "title": "Application & biometrics",
+        "details": "Online form; appointment and biometrics if required."
+      },
+      {
+        "title": "Insurance",
+        "details": "Health/travel insurance; employer coverage if applicable."
+      }
+    ],
+    "fees": "Consular fee + service charge (varies)",
+    "processing": "Typically 3–8+ weeks (role/country dependent)",
+    "sources": [
+      {
+        "label": "Sri Lanka — Employment",
+        "url": "https://www.immigration.gov.lk/visas/"
+      }
+    ]
+  },
+  "LK->IN::STUDENT": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Meets India’s validity requirements; blank pages."
+      },
+      {
+        "title": "Admission letter (India)",
+        "details": "From Indian university/college."
+      },
+      {
+        "title": "Proof of funds",
+        "details": "As per FRRO guidance."
+      },
+      {
+        "title": "FRRO requirements",
+        "details": "Registration after arrival if required."
+      },
+      {
+        "title": "Apply Student Visa (S) / e-Visa",
+        "details": "Online application; follow mission instructions."
+      },
+      {
+        "title": "Accommodation",
+        "details": "Hostel booking/letter/lease."
+      }
+    ],
+    "fees": "Varies by nationality and duration",
+    "processing": "3–10 working days typical; FRRO registration after arrival when required",
+    "sources": [
+      {
+        "label": "Indian e-Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      }
+    ]
+  },
+  "LK->IN::WORK": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Meets India’s validity requirements; blank pages."
+      },
+      {
+        "title": "Employment contract (India)",
+        "details": "Offer letter; salary threshold may apply."
+      },
+      {
+        "title": "Employment Visa (E)",
+        "details": "Apply online; supporting letters and qualifications."
+      },
+      {
+        "title": "FRRO registration",
+        "details": "After arrival where required."
+      },
+      {
+        "title": "Medical/Police clearance",
+        "details": "If required by mission/employer."
+      },
+      {
+        "title": "Insurance",
+        "details": "Medical/travel insurance recommended."
+      }
+    ],
+    "fees": "Varies by nationality and duration",
+    "processing": "3–15 working days typical; extra time for clearances",
+    "sources": [
+      {
+        "label": "Indian e-Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      }
+    ]
+  },
+  "IN->NP::STUDENT": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "6+ months validity; required blank pages."
+      },
+      {
+        "title": "Admission/Offer letter",
+        "details": "From recognised institution."
+      },
+      {
+        "title": "Financial proof",
+        "details": "Bank statements, scholarships, or sponsor docs."
+      },
+      {
+        "title": "Insurance & medical",
+        "details": "As required by host country."
+      },
+      {
+        "title": "Application & biometrics",
+        "details": "Online form; appointment and biometrics if required."
+      },
+      {
+        "title": "Accommodation",
+        "details": "Dorm booking/host letter/lease."
+      }
+    ],
+    "fees": "Consular fee + service charge (varies)",
+    "processing": "Typically 2–6+ weeks (varies by season and mission)",
+    "sources": [
+      {
+        "label": "Nepal Immigration",
+        "url": "https://www.immigration.gov.np/"
+      }
+    ]
+  },
+  "IN->NP::WORK": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "6+ months validity; blank pages."
+      },
+      {
+        "title": "Employment contract/offer",
+        "details": "Meets host-country requirements."
+      },
+      {
+        "title": "Work authorisation",
+        "details": "Permit/sponsor approvals where applicable."
+      },
+      {
+        "title": "Qualifications",
+        "details": "Degrees, experience letters, registrations."
+      },
+      {
+        "title": "Application & biometrics",
+        "details": "Online form; appointment and biometrics if required."
+      },
+      {
+        "title": "Insurance",
+        "details": "Health/travel insurance; employer coverage if applicable."
+      }
+    ],
+    "fees": "Consular fee + service charge (varies)",
+    "processing": "Typically 3–8+ weeks (role/country dependent)",
+    "sources": [
+      {
+        "label": "Nepal — Work Visa",
+        "url": "https://www.immigration.gov.np/"
+      }
+    ]
+  },
+  "NP->IN::STUDENT": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Meets India’s validity requirements; blank pages."
+      },
+      {
+        "title": "Admission letter (India)",
+        "details": "From Indian university/college."
+      },
+      {
+        "title": "Proof of funds",
+        "details": "As per FRRO guidance."
+      },
+      {
+        "title": "FRRO requirements",
+        "details": "Registration after arrival if required."
+      },
+      {
+        "title": "Apply Student Visa (S) / e-Visa",
+        "details": "Online application; follow mission instructions."
+      },
+      {
+        "title": "Accommodation",
+        "details": "Hostel booking/letter/lease."
+      }
+    ],
+    "fees": "Varies by nationality and duration",
+    "processing": "3–10 working days typical; FRRO registration after arrival when required",
+    "sources": [
+      {
+        "label": "Indian e-Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      }
+    ]
+  },
+  "NP->IN::WORK": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Meets India’s validity requirements; blank pages."
+      },
+      {
+        "title": "Employment contract (India)",
+        "details": "Offer letter; salary threshold may apply."
+      },
+      {
+        "title": "Employment Visa (E)",
+        "details": "Apply online; supporting letters and qualifications."
+      },
+      {
+        "title": "FRRO registration",
+        "details": "After arrival where required."
+      },
+      {
+        "title": "Medical/Police clearance",
+        "details": "If required by mission/employer."
+      },
+      {
+        "title": "Insurance",
+        "details": "Medical/travel insurance recommended."
+      }
+    ],
+    "fees": "Varies by nationality and duration",
+    "processing": "3–15 working days typical; extra time for clearances",
+    "sources": [
+      {
+        "label": "Indian e-Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      }
+    ]
+  },
+  "IN->VN::STUDENT": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "6+ months validity; required blank pages."
+      },
+      {
+        "title": "Admission/Offer letter",
+        "details": "From recognised institution."
+      },
+      {
+        "title": "Financial proof",
+        "details": "Bank statements, scholarships, or sponsor docs."
+      },
+      {
+        "title": "Insurance & medical",
+        "details": "As required by host country."
+      },
+      {
+        "title": "Application & biometrics",
+        "details": "Online form; appointment and biometrics if required."
+      },
+      {
+        "title": "Accommodation",
+        "details": "Dorm booking/host letter/lease."
+      }
+    ],
+    "fees": "Consular fee + service charge (varies)",
+    "processing": "Typically 2–6+ weeks (varies by season and mission)",
+    "sources": [
+      {
+        "label": "Vietnam Immigration",
+        "url": "https://www.immigration.gov.vn/"
+      }
+    ]
+  },
+  "IN->VN::WORK": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "6+ months validity; blank pages."
+      },
+      {
+        "title": "Employment contract/offer",
+        "details": "Meets host-country requirements."
+      },
+      {
+        "title": "Work authorisation",
+        "details": "Permit/sponsor approvals where applicable."
+      },
+      {
+        "title": "Qualifications",
+        "details": "Degrees, experience letters, registrations."
+      },
+      {
+        "title": "Application & biometrics",
+        "details": "Online form; appointment and biometrics if required."
+      },
+      {
+        "title": "Insurance",
+        "details": "Health/travel insurance; employer coverage if applicable."
+      }
+    ],
+    "fees": "Consular fee + service charge (varies)",
+    "processing": "Typically 3–8+ weeks (role/country dependent)",
+    "sources": [
+      {
+        "label": "Vietnam — Work",
+        "url": "https://www.immigration.gov.vn/"
+      }
+    ]
+  },
+  "VN->IN::STUDENT": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Meets India’s validity requirements; blank pages."
+      },
+      {
+        "title": "Admission letter (India)",
+        "details": "From Indian university/college."
+      },
+      {
+        "title": "Proof of funds",
+        "details": "As per FRRO guidance."
+      },
+      {
+        "title": "FRRO requirements",
+        "details": "Registration after arrival if required."
+      },
+      {
+        "title": "Apply Student Visa (S) / e-Visa",
+        "details": "Online application; follow mission instructions."
+      },
+      {
+        "title": "Accommodation",
+        "details": "Hostel booking/letter/lease."
+      }
+    ],
+    "fees": "Varies by nationality and duration",
+    "processing": "3–10 working days typical; FRRO registration after arrival when required",
+    "sources": [
+      {
+        "label": "Indian e-Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      }
+    ]
+  },
+  "VN->IN::WORK": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Meets India’s validity requirements; blank pages."
+      },
+      {
+        "title": "Employment contract (India)",
+        "details": "Offer letter; salary threshold may apply."
+      },
+      {
+        "title": "Employment Visa (E)",
+        "details": "Apply online; supporting letters and qualifications."
+      },
+      {
+        "title": "FRRO registration",
+        "details": "After arrival where required."
+      },
+      {
+        "title": "Medical/Police clearance",
+        "details": "If required by mission/employer."
+      },
+      {
+        "title": "Insurance",
+        "details": "Medical/travel insurance recommended."
+      }
+    ],
+    "fees": "Varies by nationality and duration",
+    "processing": "3–15 working days typical; extra time for clearances",
+    "sources": [
+      {
+        "label": "Indian e-Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      }
+    ]
+  },
+  "IN->PH::STUDENT": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "6+ months validity; required blank pages."
+      },
+      {
+        "title": "Admission/Offer letter",
+        "details": "From recognised institution."
+      },
+      {
+        "title": "Financial proof",
+        "details": "Bank statements, scholarships, or sponsor docs."
+      },
+      {
+        "title": "Insurance & medical",
+        "details": "As required by host country."
+      },
+      {
+        "title": "Application & biometrics",
+        "details": "Online form; appointment and biometrics if required."
+      },
+      {
+        "title": "Accommodation",
+        "details": "Dorm booking/host letter/lease."
+      }
+    ],
+    "fees": "Consular fee + service charge (varies)",
+    "processing": "Typically 2–6+ weeks (varies by season and mission)",
+    "sources": [
+      {
+        "label": "Bureau of Immigration Philippines",
+        "url": "https://immigration.gov.ph/"
+      }
+    ]
+  },
+  "IN->PH::WORK": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "6+ months validity; blank pages."
+      },
+      {
+        "title": "Employment contract/offer",
+        "details": "Meets host-country requirements."
+      },
+      {
+        "title": "Work authorisation",
+        "details": "Permit/sponsor approvals where applicable."
+      },
+      {
+        "title": "Qualifications",
+        "details": "Degrees, experience letters, registrations."
+      },
+      {
+        "title": "Application & biometrics",
+        "details": "Online form; appointment and biometrics if required."
+      },
+      {
+        "title": "Insurance",
+        "details": "Health/travel insurance; employer coverage if applicable."
+      }
+    ],
+    "fees": "Consular fee + service charge (varies)",
+    "processing": "Typically 3–8+ weeks (role/country dependent)",
+    "sources": [
+      {
+        "label": "Philippines — Work Visa",
+        "url": "https://immigration.gov.ph/"
+      }
+    ]
+  },
+  "PH->IN::STUDENT": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Meets India’s validity requirements; blank pages."
+      },
+      {
+        "title": "Admission letter (India)",
+        "details": "From Indian university/college."
+      },
+      {
+        "title": "Proof of funds",
+        "details": "As per FRRO guidance."
+      },
+      {
+        "title": "FRRO requirements",
+        "details": "Registration after arrival if required."
+      },
+      {
+        "title": "Apply Student Visa (S) / e-Visa",
+        "details": "Online application; follow mission instructions."
+      },
+      {
+        "title": "Accommodation",
+        "details": "Hostel booking/letter/lease."
+      }
+    ],
+    "fees": "Varies by nationality and duration",
+    "processing": "3–10 working days typical; FRRO registration after arrival when required",
+    "sources": [
+      {
+        "label": "Indian e-Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      }
+    ]
+  },
+  "PH->IN::WORK": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Meets India’s validity requirements; blank pages."
+      },
+      {
+        "title": "Employment contract (India)",
+        "details": "Offer letter; salary threshold may apply."
+      },
+      {
+        "title": "Employment Visa (E)",
+        "details": "Apply online; supporting letters and qualifications."
+      },
+      {
+        "title": "FRRO registration",
+        "details": "After arrival where required."
+      },
+      {
+        "title": "Medical/Police clearance",
+        "details": "If required by mission/employer."
+      },
+      {
+        "title": "Insurance",
+        "details": "Medical/travel insurance recommended."
+      }
+    ],
+    "fees": "Varies by nationality and duration",
+    "processing": "3–15 working days typical; extra time for clearances",
+    "sources": [
+      {
+        "label": "Indian e-Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      }
+    ]
+  },
+  "IN->CN::STUDENT": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "6+ months validity; required blank pages."
+      },
+      {
+        "title": "Admission/Offer letter",
+        "details": "From recognised institution."
+      },
+      {
+        "title": "Financial proof",
+        "details": "Bank statements, scholarships, or sponsor docs."
+      },
+      {
+        "title": "Insurance & medical",
+        "details": "As required by host country."
+      },
+      {
+        "title": "Application & biometrics",
+        "details": "Online form; appointment and biometrics if required."
+      },
+      {
+        "title": "Accommodation",
+        "details": "Dorm booking/host letter/lease."
+      }
+    ],
+    "fees": "Consular fee + service charge (varies)",
+    "processing": "Typically 2–6+ weeks (varies by season and mission)",
+    "sources": [
+      {
+        "label": "China — COVA",
+        "url": "https://cova.mfa.gov.cn/"
+      }
+    ]
+  },
+  "IN->CN::WORK": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "6+ months validity; blank pages."
+      },
+      {
+        "title": "Employment contract/offer",
+        "details": "Meets host-country requirements."
+      },
+      {
+        "title": "Work authorisation",
+        "details": "Permit/sponsor approvals where applicable."
+      },
+      {
+        "title": "Qualifications",
+        "details": "Degrees, experience letters, registrations."
+      },
+      {
+        "title": "Application & biometrics",
+        "details": "Online form; appointment and biometrics if required."
+      },
+      {
+        "title": "Insurance",
+        "details": "Health/travel insurance; employer coverage if applicable."
+      }
+    ],
+    "fees": "Consular fee + service charge (varies)",
+    "processing": "Typically 3–8+ weeks (role/country dependent)",
+    "sources": [
+      {
+        "label": "China — Z Visa (Work)",
+        "url": "https://cova.mfa.gov.cn/"
+      }
+    ]
+  },
+  "CN->IN::STUDENT": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Meets India’s validity requirements; blank pages."
+      },
+      {
+        "title": "Admission letter (India)",
+        "details": "From Indian university/college."
+      },
+      {
+        "title": "Proof of funds",
+        "details": "As per FRRO guidance."
+      },
+      {
+        "title": "FRRO requirements",
+        "details": "Registration after arrival if required."
+      },
+      {
+        "title": "Apply Student Visa (S) / e-Visa",
+        "details": "Online application; follow mission instructions."
+      },
+      {
+        "title": "Accommodation",
+        "details": "Hostel booking/letter/lease."
+      }
+    ],
+    "fees": "Varies by nationality and duration",
+    "processing": "3–10 working days typical; FRRO registration after arrival when required",
+    "sources": [
+      {
+        "label": "Indian e-Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      }
+    ]
+  },
+  "CN->IN::WORK": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Meets India’s validity requirements; blank pages."
+      },
+      {
+        "title": "Employment contract (India)",
+        "details": "Offer letter; salary threshold may apply."
+      },
+      {
+        "title": "Employment Visa (E)",
+        "details": "Apply online; supporting letters and qualifications."
+      },
+      {
+        "title": "FRRO registration",
+        "details": "After arrival where required."
+      },
+      {
+        "title": "Medical/Police clearance",
+        "details": "If required by mission/employer."
+      },
+      {
+        "title": "Insurance",
+        "details": "Medical/travel insurance recommended."
+      }
+    ],
+    "fees": "Varies by nationality and duration",
+    "processing": "3–15 working days typical; extra time for clearances",
+    "sources": [
+      {
+        "label": "Indian e-Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      }
+    ]
+  },
+  "IN->HK::STUDENT": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "6+ months validity; required blank pages."
+      },
+      {
+        "title": "Admission/Offer letter",
+        "details": "From recognised institution."
+      },
+      {
+        "title": "Financial proof",
+        "details": "Bank statements, scholarships, or sponsor docs."
+      },
+      {
+        "title": "Insurance & medical",
+        "details": "As required by host country."
+      },
+      {
+        "title": "Application & biometrics",
+        "details": "Online form; appointment and biometrics if required."
+      },
+      {
+        "title": "Accommodation",
+        "details": "Dorm booking/host letter/lease."
+      }
+    ],
+    "fees": "Consular fee + service charge (varies)",
+    "processing": "Typically 2–6+ weeks (varies by season and mission)",
+    "sources": [
+      {
+        "label": "Hong Kong — Study",
+        "url": "https://www.immd.gov.hk/eng/services/visas/study.html"
+      }
+    ]
+  },
+  "IN->HK::WORK": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "6+ months validity; blank pages."
+      },
+      {
+        "title": "Employment contract/offer",
+        "details": "Meets host-country requirements."
+      },
+      {
+        "title": "Work authorisation",
+        "details": "Permit/sponsor approvals where applicable."
+      },
+      {
+        "title": "Qualifications",
+        "details": "Degrees, experience letters, registrations."
+      },
+      {
+        "title": "Application & biometrics",
+        "details": "Online form; appointment and biometrics if required."
+      },
+      {
+        "title": "Insurance",
+        "details": "Health/travel insurance; employer coverage if applicable."
+      }
+    ],
+    "fees": "Consular fee + service charge (varies)",
+    "processing": "Typically 3–8+ weeks (role/country dependent)",
+    "sources": [
+      {
+        "label": "Hong Kong — Employment Visa",
+        "url": "https://www.immd.gov.hk/eng/services/visas/employment.html"
+      }
+    ]
+  },
+  "HK->IN::STUDENT": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Meets India’s validity requirements; blank pages."
+      },
+      {
+        "title": "Admission letter (India)",
+        "details": "From Indian university/college."
+      },
+      {
+        "title": "Proof of funds",
+        "details": "As per FRRO guidance."
+      },
+      {
+        "title": "FRRO requirements",
+        "details": "Registration after arrival if required."
+      },
+      {
+        "title": "Apply Student Visa (S) / e-Visa",
+        "details": "Online application; follow mission instructions."
+      },
+      {
+        "title": "Accommodation",
+        "details": "Hostel booking/letter/lease."
+      }
+    ],
+    "fees": "Varies by nationality and duration",
+    "processing": "3–10 working days typical; FRRO registration after arrival when required",
+    "sources": [
+      {
+        "label": "Indian e-Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      }
+    ]
+  },
+  "HK->IN::WORK": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Meets India’s validity requirements; blank pages."
+      },
+      {
+        "title": "Employment contract (India)",
+        "details": "Offer letter; salary threshold may apply."
+      },
+      {
+        "title": "Employment Visa (E)",
+        "details": "Apply online; supporting letters and qualifications."
+      },
+      {
+        "title": "FRRO registration",
+        "details": "After arrival where required."
+      },
+      {
+        "title": "Medical/Police clearance",
+        "details": "If required by mission/employer."
+      },
+      {
+        "title": "Insurance",
+        "details": "Medical/travel insurance recommended."
+      }
+    ],
+    "fees": "Varies by nationality and duration",
+    "processing": "3–15 working days typical; extra time for clearances",
+    "sources": [
+      {
+        "label": "Indian e-Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      }
+    ]
+  },
+  "IN->RU::STUDENT": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "6+ months validity; required blank pages."
+      },
+      {
+        "title": "Admission/Offer letter",
+        "details": "From recognised institution."
+      },
+      {
+        "title": "Financial proof",
+        "details": "Bank statements, scholarships, or sponsor docs."
+      },
+      {
+        "title": "Insurance & medical",
+        "details": "As required by host country."
+      },
+      {
+        "title": "Application & biometrics",
+        "details": "Online form; appointment and biometrics if required."
+      },
+      {
+        "title": "Accommodation",
+        "details": "Dorm booking/host letter/lease."
+      }
+    ],
+    "fees": "Consular fee + service charge (varies)",
+    "processing": "Typically 2–6+ weeks (varies by season and mission)",
+    "sources": [
+      {
+        "label": "Russia — Visa portal",
+        "url": "https://visa.kdmid.ru/"
+      }
+    ]
+  },
+  "IN->RU::WORK": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "6+ months validity; blank pages."
+      },
+      {
+        "title": "Employment contract/offer",
+        "details": "Meets host-country requirements."
+      },
+      {
+        "title": "Work authorisation",
+        "details": "Permit/sponsor approvals where applicable."
+      },
+      {
+        "title": "Qualifications",
+        "details": "Degrees, experience letters, registrations."
+      },
+      {
+        "title": "Application & biometrics",
+        "details": "Online form; appointment and biometrics if required."
+      },
+      {
+        "title": "Insurance",
+        "details": "Health/travel insurance; employer coverage if applicable."
+      }
+    ],
+    "fees": "Consular fee + service charge (varies)",
+    "processing": "Typically 3–8+ weeks (role/country dependent)",
+    "sources": [
+      {
+        "label": "Russia — Work Visa",
+        "url": "https://visa.kdmid.ru/"
+      }
+    ]
+  },
+  "RU->IN::STUDENT": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Meets India’s validity requirements; blank pages."
+      },
+      {
+        "title": "Admission letter (India)",
+        "details": "From Indian university/college."
+      },
+      {
+        "title": "Proof of funds",
+        "details": "As per FRRO guidance."
+      },
+      {
+        "title": "FRRO requirements",
+        "details": "Registration after arrival if required."
+      },
+      {
+        "title": "Apply Student Visa (S) / e-Visa",
+        "details": "Online application; follow mission instructions."
+      },
+      {
+        "title": "Accommodation",
+        "details": "Hostel booking/letter/lease."
+      }
+    ],
+    "fees": "Varies by nationality and duration",
+    "processing": "3–10 working days typical; FRRO registration after arrival when required",
+    "sources": [
+      {
+        "label": "Indian e-Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      }
+    ]
+  },
+  "RU->IN::WORK": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Meets India’s validity requirements; blank pages."
+      },
+      {
+        "title": "Employment contract (India)",
+        "details": "Offer letter; salary threshold may apply."
+      },
+      {
+        "title": "Employment Visa (E)",
+        "details": "Apply online; supporting letters and qualifications."
+      },
+      {
+        "title": "FRRO registration",
+        "details": "After arrival where required."
+      },
+      {
+        "title": "Medical/Police clearance",
+        "details": "If required by mission/employer."
+      },
+      {
+        "title": "Insurance",
+        "details": "Medical/travel insurance recommended."
+      }
+    ],
+    "fees": "Varies by nationality and duration",
+    "processing": "3–15 working days typical; extra time for clearances",
+    "sources": [
+      {
+        "label": "Indian e-Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      }
+    ]
+  },
+  "IN->ZA::STUDENT": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "6+ months validity; required blank pages."
+      },
+      {
+        "title": "Admission/Offer letter",
+        "details": "From recognised institution."
+      },
+      {
+        "title": "Financial proof",
+        "details": "Bank statements, scholarships, or sponsor docs."
+      },
+      {
+        "title": "Insurance & medical",
+        "details": "As required by host country."
+      },
+      {
+        "title": "Application & biometrics",
+        "details": "Online form; appointment and biometrics if required."
+      },
+      {
+        "title": "Accommodation",
+        "details": "Dorm booking/host letter/lease."
+      }
+    ],
+    "fees": "Consular fee + service charge (varies)",
+    "processing": "Typically 2–6+ weeks (varies by season and mission)",
+    "sources": [
+      {
+        "label": "South Africa — Home Affairs",
+        "url": "http://www.dha.gov.za/"
+      }
+    ]
+  },
+  "IN->ZA::WORK": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "6+ months validity; blank pages."
+      },
+      {
+        "title": "Employment contract/offer",
+        "details": "Meets host-country requirements."
+      },
+      {
+        "title": "Work authorisation",
+        "details": "Permit/sponsor approvals where applicable."
+      },
+      {
+        "title": "Qualifications",
+        "details": "Degrees, experience letters, registrations."
+      },
+      {
+        "title": "Application & biometrics",
+        "details": "Online form; appointment and biometrics if required."
+      },
+      {
+        "title": "Insurance",
+        "details": "Health/travel insurance; employer coverage if applicable."
+      }
+    ],
+    "fees": "Consular fee + service charge (varies)",
+    "processing": "Typically 3–8+ weeks (role/country dependent)",
+    "sources": [
+      {
+        "label": "South Africa — Temporary Residence",
+        "url": "http://www.dha.gov.za/index.php/immigration-services/temporary-residence"
+      }
+    ]
+  },
+  "ZA->IN::STUDENT": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Meets India’s validity requirements; blank pages."
+      },
+      {
+        "title": "Admission letter (India)",
+        "details": "From Indian university/college."
+      },
+      {
+        "title": "Proof of funds",
+        "details": "As per FRRO guidance."
+      },
+      {
+        "title": "FRRO requirements",
+        "details": "Registration after arrival if required."
+      },
+      {
+        "title": "Apply Student Visa (S) / e-Visa",
+        "details": "Online application; follow mission instructions."
+      },
+      {
+        "title": "Accommodation",
+        "details": "Hostel booking/letter/lease."
+      }
+    ],
+    "fees": "Varies by nationality and duration",
+    "processing": "3–10 working days typical; FRRO registration after arrival when required",
+    "sources": [
+      {
+        "label": "Indian e-Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      }
+    ]
+  },
+  "ZA->IN::WORK": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Meets India’s validity requirements; blank pages."
+      },
+      {
+        "title": "Employment contract (India)",
+        "details": "Offer letter; salary threshold may apply."
+      },
+      {
+        "title": "Employment Visa (E)",
+        "details": "Apply online; supporting letters and qualifications."
+      },
+      {
+        "title": "FRRO registration",
+        "details": "After arrival where required."
+      },
+      {
+        "title": "Medical/Police clearance",
+        "details": "If required by mission/employer."
+      },
+      {
+        "title": "Insurance",
+        "details": "Medical/travel insurance recommended."
+      }
+    ],
+    "fees": "Varies by nationality and duration",
+    "processing": "3–15 working days typical; extra time for clearances",
+    "sources": [
+      {
+        "label": "Indian e-Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      }
+    ]
+  },
+  "IN->CH::STUDENT": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "6+ months validity; required blank pages."
+      },
+      {
+        "title": "Admission/Offer letter",
+        "details": "From recognised institution."
+      },
+      {
+        "title": "Financial proof",
+        "details": "Bank statements, scholarships, or sponsor docs."
+      },
+      {
+        "title": "Insurance & medical",
+        "details": "As required by host country."
+      },
+      {
+        "title": "Application & biometrics",
+        "details": "Online form; appointment and biometrics if required."
+      },
+      {
+        "title": "Accommodation",
+        "details": "Dorm booking/host letter/lease."
+      }
+    ],
+    "fees": "Consular fee + service charge (varies)",
+    "processing": "Typically 2–6+ weeks (varies by season and mission)",
+    "sources": [
+      {
+        "label": "Switzerland — SEM",
+        "url": "https://www.sem.admin.ch/sem/en/home.html"
+      }
+    ]
+  },
+  "IN->CH::WORK": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "6+ months validity; blank pages."
+      },
+      {
+        "title": "Employment contract/offer",
+        "details": "Meets host-country requirements."
+      },
+      {
+        "title": "Work authorisation",
+        "details": "Permit/sponsor approvals where applicable."
+      },
+      {
+        "title": "Qualifications",
+        "details": "Degrees, experience letters, registrations."
+      },
+      {
+        "title": "Application & biometrics",
+        "details": "Online form; appointment and biometrics if required."
+      },
+      {
+        "title": "Insurance",
+        "details": "Health/travel insurance; employer coverage if applicable."
+      }
+    ],
+    "fees": "Consular fee + service charge (varies)",
+    "processing": "Typically 3–8+ weeks (role/country dependent)",
+    "sources": [
+      {
+        "label": "Switzerland — Work",
+        "url": "https://www.sem.admin.ch/sem/en/home.html"
+      }
+    ]
+  },
+  "CH->IN::STUDENT": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Meets India’s validity requirements; blank pages."
+      },
+      {
+        "title": "Admission letter (India)",
+        "details": "From Indian university/college."
+      },
+      {
+        "title": "Proof of funds",
+        "details": "As per FRRO guidance."
+      },
+      {
+        "title": "FRRO requirements",
+        "details": "Registration after arrival if required."
+      },
+      {
+        "title": "Apply Student Visa (S) / e-Visa",
+        "details": "Online application; follow mission instructions."
+      },
+      {
+        "title": "Accommodation",
+        "details": "Hostel booking/letter/lease."
+      }
+    ],
+    "fees": "Varies by nationality and duration",
+    "processing": "3–10 working days typical; FRRO registration after arrival when required",
+    "sources": [
+      {
+        "label": "Indian e-Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      }
+    ]
+  },
+  "CH->IN::WORK": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Meets India’s validity requirements; blank pages."
+      },
+      {
+        "title": "Employment contract (India)",
+        "details": "Offer letter; salary threshold may apply."
+      },
+      {
+        "title": "Employment Visa (E)",
+        "details": "Apply online; supporting letters and qualifications."
+      },
+      {
+        "title": "FRRO registration",
+        "details": "After arrival where required."
+      },
+      {
+        "title": "Medical/Police clearance",
+        "details": "If required by mission/employer."
+      },
+      {
+        "title": "Insurance",
+        "details": "Medical/travel insurance recommended."
+      }
+    ],
+    "fees": "Varies by nationality and duration",
+    "processing": "3–15 working days typical; extra time for clearances",
+    "sources": [
+      {
+        "label": "Indian e-Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      }
+    ]
+  },
+  "IN->NL::STUDENT": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "6+ months validity; required blank pages."
+      },
+      {
+        "title": "Admission/Offer letter",
+        "details": "From recognised institution."
+      },
+      {
+        "title": "Financial proof",
+        "details": "Bank statements, scholarships, or sponsor docs."
+      },
+      {
+        "title": "Insurance & medical",
+        "details": "As required by host country."
+      },
+      {
+        "title": "Application & biometrics",
+        "details": "Online form; appointment and biometrics if required."
+      },
+      {
+        "title": "Accommodation",
+        "details": "Dorm booking/host letter/lease."
+      }
+    ],
+    "fees": "Consular fee + service charge (varies)",
+    "processing": "Typically 2–6+ weeks (varies by season and mission)",
+    "sources": [
+      {
+        "label": "Netherlands — Visas & permits",
+        "url": "https://www.netherlandsandyou.nl/travel-and-residence/visas-and-permits"
+      }
+    ]
+  },
+  "IN->NL::WORK": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "6+ months validity; blank pages."
+      },
+      {
+        "title": "Employment contract/offer",
+        "details": "Meets host-country requirements."
+      },
+      {
+        "title": "Work authorisation",
+        "details": "Permit/sponsor approvals where applicable."
+      },
+      {
+        "title": "Qualifications",
+        "details": "Degrees, experience letters, registrations."
+      },
+      {
+        "title": "Application & biometrics",
+        "details": "Online form; appointment and biometrics if required."
+      },
+      {
+        "title": "Insurance",
+        "details": "Health/travel insurance; employer coverage if applicable."
+      }
+    ],
+    "fees": "Consular fee + service charge (varies)",
+    "processing": "Typically 3–8+ weeks (role/country dependent)",
+    "sources": [
+      {
+        "label": "Netherlands — Work",
+        "url": "https://www.netherlandsandyou.nl/work"
+      }
+    ]
+  },
+  "NL->IN::STUDENT": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Meets India’s validity requirements; blank pages."
+      },
+      {
+        "title": "Admission letter (India)",
+        "details": "From Indian university/college."
+      },
+      {
+        "title": "Proof of funds",
+        "details": "As per FRRO guidance."
+      },
+      {
+        "title": "FRRO requirements",
+        "details": "Registration after arrival if required."
+      },
+      {
+        "title": "Apply Student Visa (S) / e-Visa",
+        "details": "Online application; follow mission instructions."
+      },
+      {
+        "title": "Accommodation",
+        "details": "Hostel booking/letter/lease."
+      }
+    ],
+    "fees": "Varies by nationality and duration",
+    "processing": "3–10 working days typical; FRRO registration after arrival when required",
+    "sources": [
+      {
+        "label": "Indian e-Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      }
+    ]
+  },
+  "NL->IN::WORK": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Meets India’s validity requirements; blank pages."
+      },
+      {
+        "title": "Employment contract (India)",
+        "details": "Offer letter; salary threshold may apply."
+      },
+      {
+        "title": "Employment Visa (E)",
+        "details": "Apply online; supporting letters and qualifications."
+      },
+      {
+        "title": "FRRO registration",
+        "details": "After arrival where required."
+      },
+      {
+        "title": "Medical/Police clearance",
+        "details": "If required by mission/employer."
+      },
+      {
+        "title": "Insurance",
+        "details": "Medical/travel insurance recommended."
+      }
+    ],
+    "fees": "Varies by nationality and duration",
+    "processing": "3–15 working days typical; extra time for clearances",
+    "sources": [
+      {
+        "label": "Indian e-Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
       }
     ]
   }
