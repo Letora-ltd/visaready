@@ -1,0 +1,76 @@
+<!doctype html><html><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VisaReady Admin</title>
+<link rel="stylesheet" href="../style.css">
+</head><body>
+<main class="container">
+<section class="card">
+  <h1 class="h2">Admin Login</h1>
+  <div class="grid">
+    <div><div class="label">Password</div><input id="password" type="password" placeholder="Enter admin password"></div>
+  </div>
+  <button class="btn" id="loginBtn" style="margin-top:10px;">Login</button>
+  <div id="loginMsg" class="small"></div>
+</section>
+
+<section class="card" id="editor" style="display:none;">
+  <h2 class="h2">Checklists Editor</h2>
+  <div class="grid">
+    <div><div class="label">Origin</div><input id="e_origin" placeholder="e.g., IN"></div>
+    <div><div class="label">Destination</div><input id="e_dest" placeholder="e.g., TR"></div>
+    <div><div class="label">Purpose</div><input id="e_purpose" value="TOURIST"></div>
+  </div>
+  <div class="label" style="margin-top:10px;">JSON (items, fees, processing, sources)</div>
+  <textarea id="e_json" rows="12" placeholder='{"items":[{"title":"...","details":"..."}], "fees":"...", "processing":"...", "sources":[{"label":"..","url":".."}]}'></textarea>
+  <button class="btn" id="saveBtn" style="margin-top:10px;">Save Checklist</button>
+  <div id="saveMsg" class="small"></div>
+  <hr/>
+  <h3 class="h2">Existing Keys</h3>
+  <table class="table"><thead><tr><th>Key</th><th>Last Verified</th></tr></thead><tbody id="keysBody"></tbody></table>
+</section>
+</main>
+
+<script>
+let token = null;
+
+async function loadKeys() {
+  const res = await fetch("/admin/checklists", { headers: { "Authorization": "Bearer " + token }});
+  const data = await res.json();
+  const body = document.getElementById("keysBody"); body.innerHTML = "";
+  Object.entries(data).forEach(([k,v]) => {
+    const tr = document.createElement("tr");
+    const td1 = document.createElement("td"); td1.textContent = k;
+    const td2 = document.createElement("td"); td2.textContent = v.last_verified || "—";
+    tr.appendChild(td1); tr.appendChild(td2); body.appendChild(tr);
+  });
+}
+
+document.getElementById("loginBtn").addEventListener("click", async () => {
+  const password = document.getElementById("password").value;
+  const res = await fetch("/admin/login", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ password })});
+  if(res.ok){
+    const data = await res.json();
+    token = data.token;
+    document.getElementById("loginMsg").textContent = "Logged in.";
+    document.getElementById("editor").style.display = "block";
+    loadKeys();
+  } else {
+    document.getElementById("loginMsg").textContent = "Login failed.";
+  }
+});
+
+document.getElementById("saveBtn").addEventListener("click", async () => {
+  const origin = document.getElementById("e_origin").value.trim().toUpperCase();
+  const dest = document.getElementById("e_dest").value.trim().toUpperCase();
+  const purpose = document.getElementById("e_purpose").value.trim().toUpperCase();
+  if(!origin || !dest || !purpose) { alert("Fill origin, destination, purpose"); return; }
+  let payload;
+  try { payload = JSON.parse(document.getElementById("e_json").value); }
+  catch(e){ alert("Invalid JSON"); return; }
+  const key = origin+"->"+dest+"::"+purpose;
+  const res = await fetch("/admin/checklists", { method:"PUT", headers:{"Content-Type":"application/json","Authorization":"Bearer "+token}, body: JSON.stringify({ key, data: payload })});
+  if(res.ok){ document.getElementById("saveMsg").textContent = "Saved."; loadKeys(); }
+  else { document.getElementById("saveMsg").textContent = "Save failed."; }
+});
+</script>
+</body></html>

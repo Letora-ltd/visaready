@@ -1,0 +1,792 @@
+{
+  "GB->US::TOURIST": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "At least 6 months validity beyond stay."
+      },
+      {
+        "title": "ESTA authorization",
+        "details": "Apply online before travel (visa waiver eligible)."
+      },
+      {
+        "title": "Return/onward ticket",
+        "details": "Proof of onward travel and funds."
+      },
+      {
+        "title": "Travel insurance",
+        "details": "Medical coverage recommended."
+      }
+    ],
+    "fees": "\u00a321 (ESTA) \u2014 subject to change",
+    "processing": "Immediate for most; up to 72 hours",
+    "sources": [
+      {
+        "label": "CBP ESTA",
+        "url": "https://esta.cbp.dhs.gov/"
+      },
+      {
+        "label": "U.S. Embassy (UK) \u2014 Travel",
+        "url": "https://uk.usembassy.gov/visas/"
+      }
+    ]
+  },
+  "IN->GB::TOURIST": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "At least 6 months validity beyond stay."
+      },
+      {
+        "title": "UK Standard Visitor Visa",
+        "details": "Online application + biometrics via VFS."
+      },
+      {
+        "title": "Financial evidence",
+        "details": "Bank statements/sponsor details."
+      },
+      {
+        "title": "Accommodation & itinerary",
+        "details": "Hotel bookings/invitation letter if applicable."
+      }
+    ],
+    "fees": "Approx \u00a3115 (subject to change)",
+    "processing": "Typically 3\u20136 weeks; priority options may exist",
+    "sources": [
+      {
+        "label": "Apply for a UK visa",
+        "url": "https://www.gov.uk/standard-visitor"
+      },
+      {
+        "label": "VFS Global \u2014 UK Visa (India)",
+        "url": "https://visa.vfsglobal.com/ind/en/gbr/"
+      }
+    ]
+  },
+  "IN->TR::TOURIST": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Generally 6+ months validity and 2 blank pages."
+      },
+      {
+        "title": "Visa route",
+        "details": "e-Visa for some travellers; otherwise sticker visa via VAC (VFS). Check eligibility and official guidance."
+      },
+      {
+        "title": "Application & appointment",
+        "details": "Fill online form; book biometrics/appointment if required."
+      },
+      {
+        "title": "Travel itinerary",
+        "details": "Return/onward flight bookings."
+      },
+      {
+        "title": "Accommodation proof",
+        "details": "Hotel bookings or invitation letter."
+      },
+      {
+        "title": "Financial means",
+        "details": "Recent bank statements/sponsor details per consular rules."
+      },
+      {
+        "title": "Travel insurance",
+        "details": "Covers entire stay."
+      }
+    ],
+    "fees": "Varies by route (e-Visa vs sticker); check official site",
+    "processing": "Sticker visa typically 5\u201315 working days; e-Visa often immediate if eligible",
+    "sources": [
+      {
+        "label": "Turkey e-Visa",
+        "url": "https://www.evisa.gov.tr/en/"
+      },
+      {
+        "label": "VFS Global \u2014 Turkey Visa (India)",
+        "url": "https://visa.vfsglobal.com/ind/en/tur/"
+      },
+      {
+        "label": "Ministry of Foreign Affairs, T\u00fcrkiye",
+        "url": "https://www.mfa.gov.tr/visa-information-for-foreigners.en.mfa"
+      }
+    ]
+  },
+  "IN->DE::TOURIST": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "At least 6 months validity beyond stay and required blank pages."
+      },
+      {
+        "title": "Visa type",
+        "details": "Choose the correct tourist/visit category per official guidance."
+      },
+      {
+        "title": "Application form & biometrics",
+        "details": "Complete online form; book centre/biometrics if required."
+      },
+      {
+        "title": "Travel itinerary",
+        "details": "Return/onward flight bookings."
+      },
+      {
+        "title": "Accommodation proof",
+        "details": "Hotel bookings or invitation letter."
+      },
+      {
+        "title": "Financial means",
+        "details": "Recent bank statements/sponsor documents per consulate rules."
+      },
+      {
+        "title": "Travel insurance",
+        "details": "Medical/travel insurance covering your entire stay (where required)."
+      }
+    ],
+    "fees": "Varies by route and nationality; check official site",
+    "processing": "Typically 10\u201315 working days (varies by mission/season).",
+    "sources": [
+      {
+        "label": "Germany \u2014 Embassy/Consulates in India (Official)",
+        "url": "https://india.diplo.de/in-en/service/05-VisaEinreise"
+      },
+      {
+        "label": "VFS Global \u2014 Germany (India)",
+        "url": "https://visa.vfsglobal.com/ind/en/deu/"
+      }
+    ]
+  },
+  "IN->FR::TOURIST": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "At least 6 months validity beyond stay and required blank pages."
+      },
+      {
+        "title": "Visa type",
+        "details": "Choose the correct tourist/visit category per official guidance."
+      },
+      {
+        "title": "Application form & biometrics",
+        "details": "Complete online form; book centre/biometrics if required."
+      },
+      {
+        "title": "Travel itinerary",
+        "details": "Return/onward flight bookings."
+      },
+      {
+        "title": "Accommodation proof",
+        "details": "Hotel bookings or invitation letter."
+      },
+      {
+        "title": "Financial means",
+        "details": "Recent bank statements/sponsor documents per consulate rules."
+      },
+      {
+        "title": "Travel insurance",
+        "details": "Medical/travel insurance covering your entire stay (where required)."
+      }
+    ],
+    "fees": "Varies by route and nationality; check official site",
+    "processing": "Typically 10\u201315 working days (varies by mission/season).",
+    "sources": [
+      {
+        "label": "France-Visas (Official)",
+        "url": "https://france-visas.gouv.fr/"
+      },
+      {
+        "label": "VFS Global \u2014 France (India)",
+        "url": "https://visa.vfsglobal.com/ind/en/fra/"
+      }
+    ]
+  },
+  "IN->IT::TOURIST": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "At least 6 months validity beyond stay and required blank pages."
+      },
+      {
+        "title": "Visa type",
+        "details": "Choose the correct tourist/visit category per official guidance."
+      },
+      {
+        "title": "Application form & biometrics",
+        "details": "Complete online form; book centre/biometrics if required."
+      },
+      {
+        "title": "Travel itinerary",
+        "details": "Return/onward flight bookings."
+      },
+      {
+        "title": "Accommodation proof",
+        "details": "Hotel bookings or invitation letter."
+      },
+      {
+        "title": "Financial means",
+        "details": "Recent bank statements/sponsor documents per consulate rules."
+      },
+      {
+        "title": "Travel insurance",
+        "details": "Medical/travel insurance covering your entire stay (where required)."
+      }
+    ],
+    "fees": "Varies by route and nationality; check official site",
+    "processing": "Typically 10\u201315 working days (varies by mission/season).",
+    "sources": [
+      {
+        "label": "Italy \u2014 Visa portal (Official)",
+        "url": "https://vistoperitalia.esteri.it/"
+      },
+      {
+        "label": "VFS Global \u2014 Italy (India)",
+        "url": "https://visa.vfsglobal.com/ind/en/ita/"
+      }
+    ]
+  },
+  "IN->ES::TOURIST": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "At least 6 months validity beyond stay and required blank pages."
+      },
+      {
+        "title": "Visa type",
+        "details": "Choose the correct tourist/visit category per official guidance."
+      },
+      {
+        "title": "Application form & biometrics",
+        "details": "Complete online form; book centre/biometrics if required."
+      },
+      {
+        "title": "Travel itinerary",
+        "details": "Return/onward flight bookings."
+      },
+      {
+        "title": "Accommodation proof",
+        "details": "Hotel bookings or invitation letter."
+      },
+      {
+        "title": "Financial means",
+        "details": "Recent bank statements/sponsor documents per consulate rules."
+      },
+      {
+        "title": "Travel insurance",
+        "details": "Medical/travel insurance covering your entire stay (where required)."
+      }
+    ],
+    "fees": "Varies by route and nationality; check official site",
+    "processing": "Typically 10\u201315 working days (varies by mission/season).",
+    "sources": [
+      {
+        "label": "BLS Spain Visa (India)",
+        "url": "https://india.blsspainvisa.com/"
+      },
+      {
+        "label": "Spain \u2014 Ministry of Foreign Affairs",
+        "url": "https://www.exteriores.gob.es/"
+      }
+    ]
+  },
+  "IN->ID::TOURIST": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "At least 6 months validity beyond stay and required blank pages."
+      },
+      {
+        "title": "Visa type",
+        "details": "Choose the correct tourist/visit category per official guidance."
+      },
+      {
+        "title": "Application form & biometrics",
+        "details": "Complete online form; book centre/biometrics if required."
+      },
+      {
+        "title": "Travel itinerary",
+        "details": "Return/onward flight bookings."
+      },
+      {
+        "title": "Accommodation proof",
+        "details": "Hotel bookings or invitation letter."
+      },
+      {
+        "title": "Financial means",
+        "details": "Recent bank statements/sponsor documents per consulate rules."
+      },
+      {
+        "title": "Travel insurance",
+        "details": "Medical/travel insurance covering your entire stay (where required)."
+      }
+    ],
+    "fees": "Varies by route and nationality; check official site",
+    "processing": "Typically 10\u201315 working days (varies by mission/season).",
+    "sources": [
+      {
+        "label": "Indonesia e-VOA / Molina (Official)",
+        "url": "https://molina.imigrasi.go.id/"
+      },
+      {
+        "label": "Indonesian Immigration (Official)",
+        "url": "https://www.imigrasi.go.id/en/"
+      }
+    ]
+  },
+  "IN->LK::TOURIST": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "At least 6 months validity beyond stay and required blank pages."
+      },
+      {
+        "title": "Visa type",
+        "details": "Choose the correct tourist/visit category per official guidance."
+      },
+      {
+        "title": "Application form & biometrics",
+        "details": "Complete online form; book centre/biometrics if required."
+      },
+      {
+        "title": "Travel itinerary",
+        "details": "Return/onward flight bookings."
+      },
+      {
+        "title": "Accommodation proof",
+        "details": "Hotel bookings or invitation letter."
+      },
+      {
+        "title": "Financial means",
+        "details": "Recent bank statements/sponsor documents per consulate rules."
+      },
+      {
+        "title": "Travel insurance",
+        "details": "Medical/travel insurance covering your entire stay (where required)."
+      }
+    ],
+    "fees": "Varies by route and nationality; check official site",
+    "processing": "Typically 10\u201315 working days (varies by mission/season).",
+    "sources": [
+      {
+        "label": "Sri Lanka ETA (Official)",
+        "url": "https://www.eta.gov.lk/slvisa/"
+      },
+      {
+        "label": "Department of Immigration & Emigration Sri Lanka",
+        "url": "https://www.immigration.gov.lk/"
+      }
+    ]
+  },
+  "IN->NP::TOURIST": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "At least 6 months validity beyond stay and required blank pages."
+      },
+      {
+        "title": "Visa type",
+        "details": "Choose the correct tourist/visit category per official guidance."
+      },
+      {
+        "title": "Application form & biometrics",
+        "details": "Complete online form; book centre/biometrics if required."
+      },
+      {
+        "title": "Travel itinerary",
+        "details": "Return/onward flight bookings."
+      },
+      {
+        "title": "Accommodation proof",
+        "details": "Hotel bookings or invitation letter."
+      },
+      {
+        "title": "Financial means",
+        "details": "Recent bank statements/sponsor documents per consulate rules."
+      },
+      {
+        "title": "Travel insurance",
+        "details": "Medical/travel insurance covering your entire stay (where required)."
+      }
+    ],
+    "fees": "Varies by route and nationality; check official site",
+    "processing": "Typically 10\u201315 working days (varies by mission/season).",
+    "sources": [
+      {
+        "label": "Nepal Immigration (Official)",
+        "url": "https://www.immigration.gov.np/"
+      },
+      {
+        "label": "Visit Nepal \u2014 Visa Info",
+        "url": "https://www.welcomenepal.com/plan-your-trip/visa.html"
+      }
+    ]
+  },
+  "IN->VN::TOURIST": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "At least 6 months validity beyond stay and required blank pages."
+      },
+      {
+        "title": "Visa type",
+        "details": "Choose the correct tourist/visit category per official guidance."
+      },
+      {
+        "title": "Application form & biometrics",
+        "details": "Complete online form; book centre/biometrics if required."
+      },
+      {
+        "title": "Travel itinerary",
+        "details": "Return/onward flight bookings."
+      },
+      {
+        "title": "Accommodation proof",
+        "details": "Hotel bookings or invitation letter."
+      },
+      {
+        "title": "Financial means",
+        "details": "Recent bank statements/sponsor documents per consulate rules."
+      },
+      {
+        "title": "Travel insurance",
+        "details": "Medical/travel insurance covering your entire stay (where required)."
+      }
+    ],
+    "fees": "Varies by route and nationality; check official site",
+    "processing": "Typically 10\u201315 working days (varies by mission/season).",
+    "sources": [
+      {
+        "label": "Vietnam e-Visa (Official)",
+        "url": "https://evisa.xuatnhapcanh.gov.vn/"
+      },
+      {
+        "label": "Vietnam Immigration (Info)",
+        "url": "https://www.immigration.gov.vn/"
+      }
+    ]
+  },
+  "IN->PH::TOURIST": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "At least 6 months validity beyond stay and required blank pages."
+      },
+      {
+        "title": "Visa type",
+        "details": "Choose the correct tourist/visit category per official guidance."
+      },
+      {
+        "title": "Application form & biometrics",
+        "details": "Complete online form; book centre/biometrics if required."
+      },
+      {
+        "title": "Travel itinerary",
+        "details": "Return/onward flight bookings."
+      },
+      {
+        "title": "Accommodation proof",
+        "details": "Hotel bookings or invitation letter."
+      },
+      {
+        "title": "Financial means",
+        "details": "Recent bank statements/sponsor documents per consulate rules."
+      },
+      {
+        "title": "Travel insurance",
+        "details": "Medical/travel insurance covering your entire stay (where required)."
+      }
+    ],
+    "fees": "Varies by route and nationality; check official site",
+    "processing": "Typically 10\u201315 working days (varies by mission/season).",
+    "sources": [
+      {
+        "label": "Bureau of Immigration Philippines (Official)",
+        "url": "https://immigration.gov.ph/"
+      },
+      {
+        "label": "Philippine Embassy / Consulate (check mission)",
+        "url": "https://dfa.gov.ph/"
+      }
+    ]
+  },
+  "IN->CN::TOURIST": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "At least 6 months validity beyond stay and required blank pages."
+      },
+      {
+        "title": "Visa type",
+        "details": "Choose the correct tourist/visit category per official guidance."
+      },
+      {
+        "title": "Application form & biometrics",
+        "details": "Complete online form; book centre/biometrics if required."
+      },
+      {
+        "title": "Travel itinerary",
+        "details": "Return/onward flight bookings."
+      },
+      {
+        "title": "Accommodation proof",
+        "details": "Hotel bookings or invitation letter."
+      },
+      {
+        "title": "Financial means",
+        "details": "Recent bank statements/sponsor documents per consulate rules."
+      },
+      {
+        "title": "Travel insurance",
+        "details": "Medical/travel insurance covering your entire stay (where required)."
+      }
+    ],
+    "fees": "Varies by route and nationality; check official site",
+    "processing": "Typically 10\u201315 working days (varies by mission/season).",
+    "sources": [
+      {
+        "label": "China Online Visa Application (COVA)",
+        "url": "https://cova.mfa.gov.cn/"
+      },
+      {
+        "label": "Chinese Visa Application Service Center (India)",
+        "url": "https://www.visaforchina.cn/"
+      }
+    ]
+  },
+  "IN->HK::TOURIST": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "At least 6 months validity beyond stay and required blank pages."
+      },
+      {
+        "title": "Visa type",
+        "details": "Choose the correct tourist/visit category per official guidance."
+      },
+      {
+        "title": "Application form & biometrics",
+        "details": "Complete online form; book centre/biometrics if required."
+      },
+      {
+        "title": "Travel itinerary",
+        "details": "Return/onward flight bookings."
+      },
+      {
+        "title": "Accommodation proof",
+        "details": "Hotel bookings or invitation letter."
+      },
+      {
+        "title": "Financial means",
+        "details": "Recent bank statements/sponsor documents per consulate rules."
+      },
+      {
+        "title": "Travel insurance",
+        "details": "Medical/travel insurance covering your entire stay (where required)."
+      }
+    ],
+    "fees": "Varies by route and nationality; check official site",
+    "processing": "Typically 10\u201315 working days (varies by mission/season).",
+    "sources": [
+      {
+        "label": "Hong Kong Immigration (Official) \u2014 Visit Visa",
+        "url": "https://www.immd.gov.hk/eng/services/visas/visit-transit/visit-visa-entry-permit.html"
+      },
+      {
+        "label": "GovHK",
+        "url": "https://www.gov.hk/en/nonresidents/visarequire/"
+      }
+    ]
+  },
+  "IN->RU::TOURIST": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "At least 6 months validity beyond stay and required blank pages."
+      },
+      {
+        "title": "Visa type",
+        "details": "Choose the correct tourist/visit category per official guidance."
+      },
+      {
+        "title": "Application form & biometrics",
+        "details": "Complete online form; book centre/biometrics if required."
+      },
+      {
+        "title": "Travel itinerary",
+        "details": "Return/onward flight bookings."
+      },
+      {
+        "title": "Accommodation proof",
+        "details": "Hotel bookings or invitation letter."
+      },
+      {
+        "title": "Financial means",
+        "details": "Recent bank statements/sponsor documents per consulate rules."
+      },
+      {
+        "title": "Travel insurance",
+        "details": "Medical/travel insurance covering your entire stay (where required)."
+      }
+    ],
+    "fees": "Varies by route and nationality; check official site",
+    "processing": "Typically 10\u201315 working days (varies by mission/season).",
+    "sources": [
+      {
+        "label": "Russia \u2014 Visa Application (Official)",
+        "url": "https://visa.kdmid.ru/"
+      },
+      {
+        "label": "Embassy of Russia in India",
+        "url": "https://india.mid.ru/en/"
+      }
+    ]
+  },
+  "IN->ZA::TOURIST": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "At least 6 months validity beyond stay and required blank pages."
+      },
+      {
+        "title": "Visa type",
+        "details": "Choose the correct tourist/visit category per official guidance."
+      },
+      {
+        "title": "Application form & biometrics",
+        "details": "Complete online form; book centre/biometrics if required."
+      },
+      {
+        "title": "Travel itinerary",
+        "details": "Return/onward flight bookings."
+      },
+      {
+        "title": "Accommodation proof",
+        "details": "Hotel bookings or invitation letter."
+      },
+      {
+        "title": "Financial means",
+        "details": "Recent bank statements/sponsor documents per consulate rules."
+      },
+      {
+        "title": "Travel insurance",
+        "details": "Medical/travel insurance covering your entire stay (where required)."
+      }
+    ],
+    "fees": "Varies by route and nationality; check official site",
+    "processing": "Typically 10\u201315 working days (varies by mission/season).",
+    "sources": [
+      {
+        "label": "Department of Home Affairs South Africa (Official)",
+        "url": "http://www.dha.gov.za/"
+      },
+      {
+        "label": "VFS Global \u2014 South Africa (India)",
+        "url": "https://visa.vfsglobal.com/ind/en/zaf/"
+      }
+    ]
+  },
+  "IN->CH::TOURIST": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "At least 6 months validity beyond stay and required blank pages."
+      },
+      {
+        "title": "Visa type",
+        "details": "Choose the correct tourist/visit category per official guidance."
+      },
+      {
+        "title": "Application form & biometrics",
+        "details": "Complete online form; book centre/biometrics if required."
+      },
+      {
+        "title": "Travel itinerary",
+        "details": "Return/onward flight bookings."
+      },
+      {
+        "title": "Accommodation proof",
+        "details": "Hotel bookings or invitation letter."
+      },
+      {
+        "title": "Financial means",
+        "details": "Recent bank statements/sponsor documents per consulate rules."
+      },
+      {
+        "title": "Travel insurance",
+        "details": "Medical/travel insurance covering your entire stay (where required)."
+      }
+    ],
+    "fees": "Varies by route and nationality; check official site",
+    "processing": "Typically 10\u201315 working days (varies by mission/season).",
+    "sources": [
+      {
+        "label": "Switzerland \u2014 State Secretariat for Migration (SEM)",
+        "url": "https://www.sem.admin.ch/sem/en/home.html"
+      },
+      {
+        "label": "VFS Global \u2014 Switzerland (India)",
+        "url": "https://visa.vfsglobal.com/ind/en/che/"
+      }
+    ]
+  },
+  "IN->NL::TOURIST": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "At least 6 months validity beyond stay and required blank pages."
+      },
+      {
+        "title": "Visa type",
+        "details": "Choose the correct tourist/visit category per official guidance."
+      },
+      {
+        "title": "Application form & biometrics",
+        "details": "Complete online form; book centre/biometrics if required."
+      },
+      {
+        "title": "Travel itinerary",
+        "details": "Return/onward flight bookings."
+      },
+      {
+        "title": "Accommodation proof",
+        "details": "Hotel bookings or invitation letter."
+      },
+      {
+        "title": "Financial means",
+        "details": "Recent bank statements/sponsor documents per consulate rules."
+      },
+      {
+        "title": "Travel insurance",
+        "details": "Medical/travel insurance covering your entire stay (where required)."
+      }
+    ],
+    "fees": "Varies by route and nationality; check official site",
+    "processing": "Typically 10\u201315 working days (varies by mission/season).",
+    "sources": [
+      {
+        "label": "Government of the Netherlands \u2014 Visas",
+        "url": "https://www.netherlandsandyou.nl/travel-and-residence/visas"
+      },
+      {
+        "label": "VFS Global \u2014 Netherlands (India)",
+        "url": "https://visa.vfsglobal.com/ind/en/nld/"
+      }
+    ]
+  }
+}
