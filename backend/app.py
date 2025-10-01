@@ -83,3 +83,6 @@ def admin_put(payload: PutChecklist, authorization: str | None = Header(default=
     data[payload.key] = payload.data
     save_json("checklists.json", data)
     return {"ok": True, "key": payload.key}
+
+from . import admin_csv
+app.include_router(admin_csv.router)
