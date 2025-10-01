@@ -165,6 +165,20 @@
   </div>
 </section>
 
+
+<section class="card" id="validateCard">
+  <h2 class="h2">Validate All Checklists</h2>
+  <p class="small">Runs a static check for missing fields, empty items, and malformed URLs.</p>
+  <div class="grid">
+    <div><div class="label">Admin Password</div><input id="val_pwd" type="password" placeholder="Enter admin password"></div>
+  </div>
+  <div style="margin-top:10px;">
+    <button class="btn" id="val_btn">Run Validation</button>
+    <span id="val_msg" class="small" style="margin-left:10px;"></span>
+  </div>
+  <div id="val_out" class="small" style="margin-top:10px;"></div>
+</section>
+
 </main>
 
 <script> const BACKEND = 'http://127.0.0.1:8000'; </script>
@@ -473,6 +487,32 @@ document.getElementById('kb_copy').onclick=()=>{
   const el=document.getElementById('kb_out'); el.select(); document.execCommand('copy');
 };
 kb_loadCountries();
+</script>
+
+
+<script>
+let VAL_TOKEN=null;
+async function val_login(){
+  const pwd = document.getElementById('val_pwd').value.trim();
+  if(!pwd) throw new Error("Enter admin password");
+  const res = await fetch(`${BACKEND}/admin/login`, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({password: pwd})});
+  if(!res.ok) throw new Error("Login failed");
+  VAL_TOKEN = (await res.json()).token; return VAL_TOKEN;
+}
+document.getElementById('val_btn').onclick = async () => {
+  const msg=document.getElementById('val_msg'); const out=document.getElementById('val_out');
+  msg.textContent=''; out.textContent='';
+  try{
+    if(!VAL_TOKEN) await val_login();
+    const res = await fetch(`${BACKEND}/admin/validate`, { headers:{'Authorization':'Bearer '+VAL_TOKEN} });
+    if(!res.ok){ msg.textContent='Validation failed: '+(await res.text()); return; }
+    const data = await res.json();
+    msg.textContent = `Issues found: ${data.count}`;
+    if(data.count===0){ out.textContent='All good ✔'; return; }
+    const lines = data.issues.map(i => `• ${i.key} — ${i.issue}`);
+    out.textContent = lines.join('\n');
+  }catch(e){ console.error(e); msg.textContent='Validation failed'; }
+};
 </script>
 
 </body></html>

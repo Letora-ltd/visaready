@@ -187,3 +187,9 @@ def admin_duplicate_bulk(payload: BulkDuplicateIn, authorization: str | None = H
     return {"ok": True, "created_or_updated": made, "skipped": skipped}
 
 app.include_router(admin_csv.router)
+
+try:
+    from . import admin_validate
+except Exception:
+    import admin_validate
+app.include_router(admin_validate.router)
