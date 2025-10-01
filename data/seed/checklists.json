@@ -130,7 +130,7 @@
         "details": "Complete online form; book centre/biometrics if required."
       },
       {
-        "title": "Travel itinerary",
+        "title": "Itinerary",
         "details": "Return/onward flight bookings."
       },
       {
@@ -139,18 +139,18 @@
       },
       {
         "title": "Financial means",
-        "details": "Recent bank statements/sponsor documents per consulate rules."
+        "details": "Bank statements/sponsor documents as per rules."
       },
       {
-        "title": "Travel insurance",
-        "details": "Medical/travel insurance covering your entire stay (where required)."
+        "title": "Insurance",
+        "details": "Travel/medical insurance as required/recommended."
       }
     ],
-    "fees": "Varies by route and nationality; check official site",
-    "processing": "Typically 10\u201315 working days (varies by mission/season).",
+    "fees": "Varies; check official site",
+    "processing": "Typically 10\u201315 working days",
     "sources": [
       {
-        "label": "Germany \u2014 Embassy/Consulates in India (Official)",
+        "label": "Germany \u2014 Embassy/Consulates in India",
         "url": "https://india.diplo.de/in-en/service/05-VisaEinreise"
       },
       {
@@ -175,7 +175,7 @@
         "details": "Complete online form; book centre/biometrics if required."
       },
       {
-        "title": "Travel itinerary",
+        "title": "Itinerary",
         "details": "Return/onward flight bookings."
       },
       {
@@ -184,18 +184,18 @@
       },
       {
         "title": "Financial means",
-        "details": "Recent bank statements/sponsor documents per consulate rules."
+        "details": "Bank statements/sponsor documents as per rules."
       },
       {
-        "title": "Travel insurance",
-        "details": "Medical/travel insurance covering your entire stay (where required)."
+        "title": "Insurance",
+        "details": "Travel/medical insurance as required/recommended."
       }
     ],
-    "fees": "Varies by route and nationality; check official site",
-    "processing": "Typically 10\u201315 working days (varies by mission/season).",
+    "fees": "Varies; check official site",
+    "processing": "Typically 10\u201315 working days",
     "sources": [
       {
-        "label": "France-Visas (Official)",
+        "label": "France-Visas",
         "url": "https://france-visas.gouv.fr/"
       },
       {
@@ -220,7 +220,7 @@
         "details": "Complete online form; book centre/biometrics if required."
       },
       {
-        "title": "Travel itinerary",
+        "title": "Itinerary",
         "details": "Return/onward flight bookings."
       },
       {
@@ -229,18 +229,18 @@
       },
       {
         "title": "Financial means",
-        "details": "Recent bank statements/sponsor documents per consulate rules."
+        "details": "Bank statements/sponsor documents as per rules."
       },
       {
-        "title": "Travel insurance",
-        "details": "Medical/travel insurance covering your entire stay (where required)."
+        "title": "Insurance",
+        "details": "Travel/medical insurance as required/recommended."
       }
     ],
-    "fees": "Varies by route and nationality; check official site",
-    "processing": "Typically 10\u201315 working days (varies by mission/season).",
+    "fees": "Varies; check official site",
+    "processing": "Typically 10\u201315 working days",
     "sources": [
       {
-        "label": "Italy \u2014 Visa portal (Official)",
+        "label": "Italy \u2014 Visa portal",
         "url": "https://vistoperitalia.esteri.it/"
       },
       {
@@ -265,7 +265,7 @@
         "details": "Complete online form; book centre/biometrics if required."
       },
       {
-        "title": "Travel itinerary",
+        "title": "Itinerary",
         "details": "Return/onward flight bookings."
       },
       {
@@ -274,22 +274,22 @@
       },
       {
         "title": "Financial means",
-        "details": "Recent bank statements/sponsor documents per consulate rules."
+        "details": "Bank statements/sponsor documents as per rules."
       },
       {
-        "title": "Travel insurance",
-        "details": "Medical/travel insurance covering your entire stay (where required)."
+        "title": "Insurance",
+        "details": "Travel/medical insurance as required/recommended."
       }
     ],
-    "fees": "Varies by route and nationality; check official site",
-    "processing": "Typically 10\u201315 working days (varies by mission/season).",
+    "fees": "Varies; check official site",
+    "processing": "Typically 10\u201315 working days",
     "sources": [
       {
         "label": "BLS Spain Visa (India)",
         "url": "https://india.blsspainvisa.com/"
       },
       {
-        "label": "Spain \u2014 Ministry of Foreign Affairs",
+        "label": "Spain MFA",
         "url": "https://www.exteriores.gob.es/"
       }
     ]
@@ -310,7 +310,7 @@
         "details": "Complete online form; book centre/biometrics if required."
       },
       {
-        "title": "Travel itinerary",
+        "title": "Itinerary",
         "details": "Return/onward flight bookings."
       },
       {
@@ -319,22 +319,22 @@
       },
       {
         "title": "Financial means",
-        "details": "Recent bank statements/sponsor documents per consulate rules."
+        "details": "Bank statements/sponsor documents as per rules."
       },
       {
-        "title": "Travel insurance",
-        "details": "Medical/travel insurance covering your entire stay (where required)."
+        "title": "Insurance",
+        "details": "Travel/medical insurance as required/recommended."
       }
     ],
-    "fees": "Varies by route and nationality; check official site",
-    "processing": "Typically 10\u201315 working days (varies by mission/season).",
+    "fees": "Varies; check official site",
+    "processing": "Typically 10\u201315 working days",
     "sources": [
       {
-        "label": "Indonesia e-VOA / Molina (Official)",
+        "label": "Indonesia e-VOA",
         "url": "https://molina.imigrasi.go.id/"
       },
       {
-        "label": "Indonesian Immigration (Official)",
+        "label": "Indonesian Immigration",
         "url": "https://www.imigrasi.go.id/en/"
       }
     ]
@@ -355,7 +355,7 @@
         "details": "Complete online form; book centre/biometrics if required."
       },
       {
-        "title": "Travel itinerary",
+        "title": "Itinerary",
         "details": "Return/onward flight bookings."
       },
       {
@@ -364,22 +364,22 @@
       },
       {
         "title": "Financial means",
-        "details": "Recent bank statements/sponsor documents per consulate rules."
+        "details": "Bank statements/sponsor documents as per rules."
       },
       {
-        "title": "Travel insurance",
-        "details": "Medical/travel insurance covering your entire stay (where required)."
+        "title": "Insurance",
+        "details": "Travel/medical insurance as required/recommended."
       }
     ],
-    "fees": "Varies by route and nationality; check official site",
-    "processing": "Typically 10\u201315 working days (varies by mission/season).",
+    "fees": "Varies; check official site",
+    "processing": "Typically 10\u201315 working days",
     "sources": [
       {
-        "label": "Sri Lanka ETA (Official)",
+        "label": "Sri Lanka ETA",
         "url": "https://www.eta.gov.lk/slvisa/"
       },
       {
-        "label": "Department of Immigration & Emigration Sri Lanka",
+        "label": "SL Immigration",
         "url": "https://www.immigration.gov.lk/"
       }
     ]
@@ -400,7 +400,7 @@
         "details": "Complete online form; book centre/biometrics if required."
       },
       {
-        "title": "Travel itinerary",
+        "title": "Itinerary",
         "details": "Return/onward flight bookings."
       },
       {
@@ -409,22 +409,22 @@
       },
       {
         "title": "Financial means",
-        "details": "Recent bank statements/sponsor documents per consulate rules."
+        "details": "Bank statements/sponsor documents as per rules."
       },
       {
-        "title": "Travel insurance",
-        "details": "Medical/travel insurance covering your entire stay (where required)."
+        "title": "Insurance",
+        "details": "Travel/medical insurance as required/recommended."
       }
     ],
-    "fees": "Varies by route and nationality; check official site",
-    "processing": "Typically 10\u201315 working days (varies by mission/season).",
+    "fees": "Varies; check official site",
+    "processing": "Typically 10\u201315 working days",
     "sources": [
       {
-        "label": "Nepal Immigration (Official)",
+        "label": "Nepal Immigration",
         "url": "https://www.immigration.gov.np/"
       },
       {
-        "label": "Visit Nepal \u2014 Visa Info",
+        "label": "Visit Nepal Visa",
         "url": "https://www.welcomenepal.com/plan-your-trip/visa.html"
       }
     ]
@@ -445,7 +445,7 @@
         "details": "Complete online form; book centre/biometrics if required."
       },
       {
-        "title": "Travel itinerary",
+        "title": "Itinerary",
         "details": "Return/onward flight bookings."
       },
       {
@@ -454,22 +454,22 @@
       },
       {
         "title": "Financial means",
-        "details": "Recent bank statements/sponsor documents per consulate rules."
+        "details": "Bank statements/sponsor documents as per rules."
       },
       {
-        "title": "Travel insurance",
-        "details": "Medical/travel insurance covering your entire stay (where required)."
+        "title": "Insurance",
+        "details": "Travel/medical insurance as required/recommended."
       }
     ],
-    "fees": "Varies by route and nationality; check official site",
-    "processing": "Typically 10\u201315 working days (varies by mission/season).",
+    "fees": "Varies; check official site",
+    "processing": "Typically 10\u201315 working days",
     "sources": [
       {
-        "label": "Vietnam e-Visa (Official)",
+        "label": "Vietnam e-Visa",
         "url": "https://evisa.xuatnhapcanh.gov.vn/"
       },
       {
-        "label": "Vietnam Immigration (Info)",
+        "label": "Vietnam Immigration",
         "url": "https://www.immigration.gov.vn/"
       }
     ]
@@ -490,7 +490,7 @@
         "details": "Complete online form; book centre/biometrics if required."
       },
       {
-        "title": "Travel itinerary",
+        "title": "Itinerary",
         "details": "Return/onward flight bookings."
       },
       {
@@ -499,22 +499,22 @@
       },
       {
         "title": "Financial means",
-        "details": "Recent bank statements/sponsor documents per consulate rules."
+        "details": "Bank statements/sponsor documents as per rules."
       },
       {
-        "title": "Travel insurance",
-        "details": "Medical/travel insurance covering your entire stay (where required)."
+        "title": "Insurance",
+        "details": "Travel/medical insurance as required/recommended."
       }
     ],
-    "fees": "Varies by route and nationality; check official site",
-    "processing": "Typically 10\u201315 working days (varies by mission/season).",
+    "fees": "Varies; check official site",
+    "processing": "Typically 10\u201315 working days",
     "sources": [
       {
-        "label": "Bureau of Immigration Philippines (Official)",
+        "label": "Bureau of Immigration Philippines",
         "url": "https://immigration.gov.ph/"
       },
       {
-        "label": "Philippine Embassy / Consulate (check mission)",
+        "label": "Philippine DFA",
         "url": "https://dfa.gov.ph/"
       }
     ]
@@ -535,7 +535,7 @@
         "details": "Complete online form; book centre/biometrics if required."
       },
       {
-        "title": "Travel itinerary",
+        "title": "Itinerary",
         "details": "Return/onward flight bookings."
       },
       {
@@ -544,22 +544,22 @@
       },
       {
         "title": "Financial means",
-        "details": "Recent bank statements/sponsor documents per consulate rules."
+        "details": "Bank statements/sponsor documents as per rules."
       },
       {
-        "title": "Travel insurance",
-        "details": "Medical/travel insurance covering your entire stay (where required)."
+        "title": "Insurance",
+        "details": "Travel/medical insurance as required/recommended."
       }
     ],
-    "fees": "Varies by route and nationality; check official site",
-    "processing": "Typically 10\u201315 working days (varies by mission/season).",
+    "fees": "Varies; check official site",
+    "processing": "Typically 10\u201315 working days",
     "sources": [
       {
-        "label": "China Online Visa Application (COVA)",
+        "label": "China Online Visa (COVA)",
         "url": "https://cova.mfa.gov.cn/"
       },
       {
-        "label": "Chinese Visa Application Service Center (India)",
+        "label": "Chinese VAC",
         "url": "https://www.visaforchina.cn/"
       }
     ]
@@ -580,7 +580,7 @@
         "details": "Complete online form; book centre/biometrics if required."
       },
       {
-        "title": "Travel itinerary",
+        "title": "Itinerary",
         "details": "Return/onward flight bookings."
       },
       {
@@ -589,22 +589,22 @@
       },
       {
         "title": "Financial means",
-        "details": "Recent bank statements/sponsor documents per consulate rules."
+        "details": "Bank statements/sponsor documents as per rules."
       },
       {
-        "title": "Travel insurance",
-        "details": "Medical/travel insurance covering your entire stay (where required)."
+        "title": "Insurance",
+        "details": "Travel/medical insurance as required/recommended."
       }
     ],
-    "fees": "Varies by route and nationality; check official site",
-    "processing": "Typically 10\u201315 working days (varies by mission/season).",
+    "fees": "Varies; check official site",
+    "processing": "Typically 10\u201315 working days",
     "sources": [
       {
-        "label": "Hong Kong Immigration (Official) \u2014 Visit Visa",
+        "label": "Hong Kong Immigration \u2014 Visit",
         "url": "https://www.immd.gov.hk/eng/services/visas/visit-transit/visit-visa-entry-permit.html"
       },
       {
-        "label": "GovHK",
+        "label": "GovHK \u2014 Visa",
         "url": "https://www.gov.hk/en/nonresidents/visarequire/"
       }
     ]
@@ -625,7 +625,7 @@
         "details": "Complete online form; book centre/biometrics if required."
       },
       {
-        "title": "Travel itinerary",
+        "title": "Itinerary",
         "details": "Return/onward flight bookings."
       },
       {
@@ -634,18 +634,18 @@
       },
       {
         "title": "Financial means",
-        "details": "Recent bank statements/sponsor documents per consulate rules."
+        "details": "Bank statements/sponsor documents as per rules."
       },
       {
-        "title": "Travel insurance",
-        "details": "Medical/travel insurance covering your entire stay (where required)."
+        "title": "Insurance",
+        "details": "Travel/medical insurance as required/recommended."
       }
     ],
-    "fees": "Varies by route and nationality; check official site",
-    "processing": "Typically 10\u201315 working days (varies by mission/season).",
+    "fees": "Varies; check official site",
+    "processing": "Typically 10\u201315 working days",
     "sources": [
       {
-        "label": "Russia \u2014 Visa Application (Official)",
+        "label": "Russia \u2014 Visa application",
         "url": "https://visa.kdmid.ru/"
       },
       {
@@ -670,7 +670,7 @@
         "details": "Complete online form; book centre/biometrics if required."
       },
       {
-        "title": "Travel itinerary",
+        "title": "Itinerary",
         "details": "Return/onward flight bookings."
       },
       {
@@ -679,18 +679,18 @@
       },
       {
         "title": "Financial means",
-        "details": "Recent bank statements/sponsor documents per consulate rules."
+        "details": "Bank statements/sponsor documents as per rules."
       },
       {
-        "title": "Travel insurance",
-        "details": "Medical/travel insurance covering your entire stay (where required)."
+        "title": "Insurance",
+        "details": "Travel/medical insurance as required/recommended."
       }
     ],
-    "fees": "Varies by route and nationality; check official site",
-    "processing": "Typically 10\u201315 working days (varies by mission/season).",
+    "fees": "Varies; check official site",
+    "processing": "Typically 10\u201315 working days",
     "sources": [
       {
-        "label": "Department of Home Affairs South Africa (Official)",
+        "label": "South Africa \u2014 Home Affairs",
         "url": "http://www.dha.gov.za/"
       },
       {
@@ -715,7 +715,7 @@
         "details": "Complete online form; book centre/biometrics if required."
       },
       {
-        "title": "Travel itinerary",
+        "title": "Itinerary",
         "details": "Return/onward flight bookings."
       },
       {
@@ -724,18 +724,18 @@
       },
       {
         "title": "Financial means",
-        "details": "Recent bank statements/sponsor documents per consulate rules."
+        "details": "Bank statements/sponsor documents as per rules."
       },
       {
-        "title": "Travel insurance",
-        "details": "Medical/travel insurance covering your entire stay (where required)."
+        "title": "Insurance",
+        "details": "Travel/medical insurance as required/recommended."
       }
     ],
-    "fees": "Varies by route and nationality; check official site",
-    "processing": "Typically 10\u201315 working days (varies by mission/season).",
+    "fees": "Varies; check official site",
+    "processing": "Typically 10\u201315 working days",
     "sources": [
       {
-        "label": "Switzerland \u2014 State Secretariat for Migration (SEM)",
+        "label": "Switzerland \u2014 SEM",
         "url": "https://www.sem.admin.ch/sem/en/home.html"
       },
       {
@@ -760,7 +760,7 @@
         "details": "Complete online form; book centre/biometrics if required."
       },
       {
-        "title": "Travel itinerary",
+        "title": "Itinerary",
         "details": "Return/onward flight bookings."
       },
       {
@@ -769,23 +769,758 @@
       },
       {
         "title": "Financial means",
-        "details": "Recent bank statements/sponsor documents per consulate rules."
+        "details": "Bank statements/sponsor documents as per rules."
       },
       {
-        "title": "Travel insurance",
-        "details": "Medical/travel insurance covering your entire stay (where required)."
+        "title": "Insurance",
+        "details": "Travel/medical insurance as required/recommended."
       }
     ],
-    "fees": "Varies by route and nationality; check official site",
-    "processing": "Typically 10\u201315 working days (varies by mission/season).",
+    "fees": "Varies; check official site",
+    "processing": "Typically 10\u201315 working days",
     "sources": [
       {
-        "label": "Government of the Netherlands \u2014 Visas",
+        "label": "Netherlands \u2014 Government visas",
         "url": "https://www.netherlandsandyou.nl/travel-and-residence/visas"
       },
       {
         "label": "VFS Global \u2014 Netherlands (India)",
         "url": "https://visa.vfsglobal.com/ind/en/nld/"
+      }
+    ]
+  },
+  "DE->IN::TOURIST": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Valid for the duration required by India; sufficient blank pages."
+      },
+      {
+        "title": "Indian visa route",
+        "details": "If eligible, use e\u2011Visa; otherwise regular visa via VFS/BLS or Indian Mission."
+      },
+      {
+        "title": "Online application",
+        "details": "Complete the online form; print and book appointment if needed."
+      },
+      {
+        "title": "Biometrics & submission",
+        "details": "Provide biometrics (if applicable) and submit documents."
+      },
+      {
+        "title": "Itinerary & accommodation",
+        "details": "Return flight and hotel bookings/invitation."
+      },
+      {
+        "title": "Financial means",
+        "details": "Recent bank statements/sponsor docs as per mission guidance."
+      },
+      {
+        "title": "Travel/medical insurance",
+        "details": "Recommended; sometimes required by carriers/missions."
+      }
+    ],
+    "fees": "Varies by nationality and visa type",
+    "processing": "Typically 3\u201310 working days",
+    "sources": [
+      {
+        "label": "Indian e\u2011Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      },
+      {
+        "label": "VFS Global \u2014 India (Germany)",
+        "url": "https://visa.vfsglobal.com/deu/en/ind/"
+      }
+    ]
+  },
+  "FR->IN::TOURIST": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Valid for the duration required by India; sufficient blank pages."
+      },
+      {
+        "title": "Indian visa route",
+        "details": "If eligible, use e\u2011Visa; otherwise regular visa via VFS/BLS or Indian Mission."
+      },
+      {
+        "title": "Online application",
+        "details": "Complete the online form; print and book appointment if needed."
+      },
+      {
+        "title": "Biometrics & submission",
+        "details": "Provide biometrics (if applicable) and submit documents."
+      },
+      {
+        "title": "Itinerary & accommodation",
+        "details": "Return flight and hotel bookings/invitation."
+      },
+      {
+        "title": "Financial means",
+        "details": "Recent bank statements/sponsor docs as per mission guidance."
+      },
+      {
+        "title": "Travel/medical insurance",
+        "details": "Recommended; sometimes required by carriers/missions."
+      }
+    ],
+    "fees": "Varies by nationality and visa type",
+    "processing": "Typically 3\u201310 working days",
+    "sources": [
+      {
+        "label": "Indian e\u2011Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      },
+      {
+        "label": "VFS Global \u2014 India (France)",
+        "url": "https://visa.vfsglobal.com/fra/en/ind/"
+      }
+    ]
+  },
+  "IT->IN::TOURIST": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Valid for the duration required by India; sufficient blank pages."
+      },
+      {
+        "title": "Indian visa route",
+        "details": "If eligible, use e\u2011Visa; otherwise regular visa via VFS/BLS or Indian Mission."
+      },
+      {
+        "title": "Online application",
+        "details": "Complete the online form; print and book appointment if needed."
+      },
+      {
+        "title": "Biometrics & submission",
+        "details": "Provide biometrics (if applicable) and submit documents."
+      },
+      {
+        "title": "Itinerary & accommodation",
+        "details": "Return flight and hotel bookings/invitation."
+      },
+      {
+        "title": "Financial means",
+        "details": "Recent bank statements/sponsor docs as per mission guidance."
+      },
+      {
+        "title": "Travel/medical insurance",
+        "details": "Recommended; sometimes required by carriers/missions."
+      }
+    ],
+    "fees": "Varies by nationality and visa type",
+    "processing": "Typically 3\u201310 working days",
+    "sources": [
+      {
+        "label": "Indian e\u2011Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      },
+      {
+        "label": "VFS Global \u2014 India (Italy)",
+        "url": "https://visa.vfsglobal.com/ita/en/ind/"
+      }
+    ]
+  },
+  "ES->IN::TOURIST": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Valid for the duration required by India; sufficient blank pages."
+      },
+      {
+        "title": "Indian visa route",
+        "details": "If eligible, use e\u2011Visa; otherwise regular visa via VFS/BLS or Indian Mission."
+      },
+      {
+        "title": "Online application",
+        "details": "Complete the online form; print and book appointment if needed."
+      },
+      {
+        "title": "Biometrics & submission",
+        "details": "Provide biometrics (if applicable) and submit documents."
+      },
+      {
+        "title": "Itinerary & accommodation",
+        "details": "Return flight and hotel bookings/invitation."
+      },
+      {
+        "title": "Financial means",
+        "details": "Recent bank statements/sponsor docs as per mission guidance."
+      },
+      {
+        "title": "Travel/medical insurance",
+        "details": "Recommended; sometimes required by carriers/missions."
+      }
+    ],
+    "fees": "Varies by nationality and visa type",
+    "processing": "Typically 3\u201310 working days",
+    "sources": [
+      {
+        "label": "Indian e\u2011Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      },
+      {
+        "label": "BLS International \u2014 India Visa (Spain)",
+        "url": "https://blsspainvisa.com/india/"
+      }
+    ]
+  },
+  "ID->IN::TOURIST": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Valid for the duration required by India; sufficient blank pages."
+      },
+      {
+        "title": "Indian visa route",
+        "details": "If eligible, use e\u2011Visa; otherwise regular visa via VFS/BLS or Indian Mission."
+      },
+      {
+        "title": "Online application",
+        "details": "Complete the online form; print and book appointment if needed."
+      },
+      {
+        "title": "Biometrics & submission",
+        "details": "Provide biometrics (if applicable) and submit documents."
+      },
+      {
+        "title": "Itinerary & accommodation",
+        "details": "Return flight and hotel bookings/invitation."
+      },
+      {
+        "title": "Financial means",
+        "details": "Recent bank statements/sponsor docs as per mission guidance."
+      },
+      {
+        "title": "Travel/medical insurance",
+        "details": "Recommended; sometimes required by carriers/missions."
+      }
+    ],
+    "fees": "Varies by nationality and visa type",
+    "processing": "Typically 3\u201310 working days",
+    "sources": [
+      {
+        "label": "Indian e\u2011Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      },
+      {
+        "label": "Embassy of India, Jakarta",
+        "url": "https://www.indianembassyjakarta.gov.in/"
+      }
+    ]
+  },
+  "LK->IN::TOURIST": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Valid for the duration required by India; sufficient blank pages."
+      },
+      {
+        "title": "Indian visa route",
+        "details": "If eligible, use e\u2011Visa; otherwise regular visa via VFS/BLS or Indian Mission."
+      },
+      {
+        "title": "Online application",
+        "details": "Complete the online form; print and book appointment if needed."
+      },
+      {
+        "title": "Biometrics & submission",
+        "details": "Provide biometrics (if applicable) and submit documents."
+      },
+      {
+        "title": "Itinerary & accommodation",
+        "details": "Return flight and hotel bookings/invitation."
+      },
+      {
+        "title": "Financial means",
+        "details": "Recent bank statements/sponsor docs as per mission guidance."
+      },
+      {
+        "title": "Travel/medical insurance",
+        "details": "Recommended; sometimes required by carriers/missions."
+      }
+    ],
+    "fees": "Varies by nationality and visa type",
+    "processing": "Typically 3\u201310 working days",
+    "sources": [
+      {
+        "label": "Indian e\u2011Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      },
+      {
+        "label": "High Commission of India, Colombo",
+        "url": "https://www.hcicolombo.gov.in/"
+      }
+    ]
+  },
+  "NP->IN::TOURIST": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Valid for the duration required by India; sufficient blank pages."
+      },
+      {
+        "title": "Indian visa route",
+        "details": "If eligible, use e\u2011Visa; otherwise regular visa via VFS/BLS or Indian Mission."
+      },
+      {
+        "title": "Online application",
+        "details": "Complete the online form; print and book appointment if needed."
+      },
+      {
+        "title": "Biometrics & submission",
+        "details": "Provide biometrics (if applicable) and submit documents."
+      },
+      {
+        "title": "Itinerary & accommodation",
+        "details": "Return flight and hotel bookings/invitation."
+      },
+      {
+        "title": "Financial means",
+        "details": "Recent bank statements/sponsor docs as per mission guidance."
+      },
+      {
+        "title": "Travel/medical insurance",
+        "details": "Recommended; sometimes required by carriers/missions."
+      }
+    ],
+    "fees": "Varies by nationality and visa type",
+    "processing": "Typically 3\u201310 working days",
+    "sources": [
+      {
+        "label": "Indian e\u2011Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      },
+      {
+        "label": "Embassy of India, Kathmandu",
+        "url": "https://www.indembkathmandu.gov.in/"
+      }
+    ]
+  },
+  "VN->IN::TOURIST": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Valid for the duration required by India; sufficient blank pages."
+      },
+      {
+        "title": "Indian visa route",
+        "details": "If eligible, use e\u2011Visa; otherwise regular visa via VFS/BLS or Indian Mission."
+      },
+      {
+        "title": "Online application",
+        "details": "Complete the online form; print and book appointment if needed."
+      },
+      {
+        "title": "Biometrics & submission",
+        "details": "Provide biometrics (if applicable) and submit documents."
+      },
+      {
+        "title": "Itinerary & accommodation",
+        "details": "Return flight and hotel bookings/invitation."
+      },
+      {
+        "title": "Financial means",
+        "details": "Recent bank statements/sponsor docs as per mission guidance."
+      },
+      {
+        "title": "Travel/medical insurance",
+        "details": "Recommended; sometimes required by carriers/missions."
+      }
+    ],
+    "fees": "Varies by nationality and visa type",
+    "processing": "Typically 3\u201310 working days",
+    "sources": [
+      {
+        "label": "Indian e\u2011Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      },
+      {
+        "label": "Embassy of India, Hanoi",
+        "url": "https://www.indembassyhanoi.gov.in/"
+      }
+    ]
+  },
+  "PH->IN::TOURIST": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Valid for the duration required by India; sufficient blank pages."
+      },
+      {
+        "title": "Indian visa route",
+        "details": "If eligible, use e\u2011Visa; otherwise regular visa via VFS/BLS or Indian Mission."
+      },
+      {
+        "title": "Online application",
+        "details": "Complete the online form; print and book appointment if needed."
+      },
+      {
+        "title": "Biometrics & submission",
+        "details": "Provide biometrics (if applicable) and submit documents."
+      },
+      {
+        "title": "Itinerary & accommodation",
+        "details": "Return flight and hotel bookings/invitation."
+      },
+      {
+        "title": "Financial means",
+        "details": "Recent bank statements/sponsor docs as per mission guidance."
+      },
+      {
+        "title": "Travel/medical insurance",
+        "details": "Recommended; sometimes required by carriers/missions."
+      }
+    ],
+    "fees": "Varies by nationality and visa type",
+    "processing": "Typically 3\u201310 working days",
+    "sources": [
+      {
+        "label": "Indian e\u2011Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      },
+      {
+        "label": "Embassy of India, Manila",
+        "url": "https://www.eoimanila.gov.in/"
+      }
+    ]
+  },
+  "CN->IN::TOURIST": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Valid for the duration required by India; sufficient blank pages."
+      },
+      {
+        "title": "Indian visa route",
+        "details": "If eligible, use e\u2011Visa; otherwise regular visa via VFS/BLS or Indian Mission."
+      },
+      {
+        "title": "Online application",
+        "details": "Complete the online form; print and book appointment if needed."
+      },
+      {
+        "title": "Biometrics & submission",
+        "details": "Provide biometrics (if applicable) and submit documents."
+      },
+      {
+        "title": "Itinerary & accommodation",
+        "details": "Return flight and hotel bookings/invitation."
+      },
+      {
+        "title": "Financial means",
+        "details": "Recent bank statements/sponsor docs as per mission guidance."
+      },
+      {
+        "title": "Travel/medical insurance",
+        "details": "Recommended; sometimes required by carriers/missions."
+      }
+    ],
+    "fees": "Varies by nationality and visa type",
+    "processing": "Typically 3\u201310 working days",
+    "sources": [
+      {
+        "label": "Indian e\u2011Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      },
+      {
+        "label": "Indian Visa Application Center (China)",
+        "url": "https://www.visaforchina.cn/"
+      }
+    ]
+  },
+  "HK->IN::TOURIST": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Valid for the duration required by India; sufficient blank pages."
+      },
+      {
+        "title": "Indian visa route",
+        "details": "If eligible, use e\u2011Visa; otherwise regular visa via VFS/BLS or Indian Mission."
+      },
+      {
+        "title": "Online application",
+        "details": "Complete the online form; print and book appointment if needed."
+      },
+      {
+        "title": "Biometrics & submission",
+        "details": "Provide biometrics (if applicable) and submit documents."
+      },
+      {
+        "title": "Itinerary & accommodation",
+        "details": "Return flight and hotel bookings/invitation."
+      },
+      {
+        "title": "Financial means",
+        "details": "Recent bank statements/sponsor docs as per mission guidance."
+      },
+      {
+        "title": "Travel/medical insurance",
+        "details": "Recommended; sometimes required by carriers/missions."
+      }
+    ],
+    "fees": "Varies by nationality and visa type",
+    "processing": "Typically 3\u201310 working days",
+    "sources": [
+      {
+        "label": "Indian e\u2011Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      },
+      {
+        "label": "Consulate General of India, Hong Kong",
+        "url": "https://www.cgihk.gov.in/"
+      }
+    ]
+  },
+  "RU->IN::TOURIST": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Valid for the duration required by India; sufficient blank pages."
+      },
+      {
+        "title": "Indian visa route",
+        "details": "If eligible, use e\u2011Visa; otherwise regular visa via VFS/BLS or Indian Mission."
+      },
+      {
+        "title": "Online application",
+        "details": "Complete the online form; print and book appointment if needed."
+      },
+      {
+        "title": "Biometrics & submission",
+        "details": "Provide biometrics (if applicable) and submit documents."
+      },
+      {
+        "title": "Itinerary & accommodation",
+        "details": "Return flight and hotel bookings/invitation."
+      },
+      {
+        "title": "Financial means",
+        "details": "Recent bank statements/sponsor docs as per mission guidance."
+      },
+      {
+        "title": "Travel/medical insurance",
+        "details": "Recommended; sometimes required by carriers/missions."
+      }
+    ],
+    "fees": "Varies by nationality and visa type",
+    "processing": "Typically 3\u201310 working days",
+    "sources": [
+      {
+        "label": "Indian e\u2011Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      },
+      {
+        "label": "Embassy of India, Moscow",
+        "url": "https://indianembassy-moscow.gov.in/"
+      }
+    ]
+  },
+  "ZA->IN::TOURIST": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Valid for the duration required by India; sufficient blank pages."
+      },
+      {
+        "title": "Indian visa route",
+        "details": "If eligible, use e\u2011Visa; otherwise regular visa via VFS/BLS or Indian Mission."
+      },
+      {
+        "title": "Online application",
+        "details": "Complete the online form; print and book appointment if needed."
+      },
+      {
+        "title": "Biometrics & submission",
+        "details": "Provide biometrics (if applicable) and submit documents."
+      },
+      {
+        "title": "Itinerary & accommodation",
+        "details": "Return flight and hotel bookings/invitation."
+      },
+      {
+        "title": "Financial means",
+        "details": "Recent bank statements/sponsor docs as per mission guidance."
+      },
+      {
+        "title": "Travel/medical insurance",
+        "details": "Recommended; sometimes required by carriers/missions."
+      }
+    ],
+    "fees": "Varies by nationality and visa type",
+    "processing": "Typically 3\u201310 working days",
+    "sources": [
+      {
+        "label": "Indian e\u2011Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      },
+      {
+        "label": "VFS Global \u2014 India (South Africa)",
+        "url": "https://visa.vfsglobal.com/zaf/en/ind/"
+      }
+    ]
+  },
+  "CH->IN::TOURIST": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Valid for the duration required by India; sufficient blank pages."
+      },
+      {
+        "title": "Indian visa route",
+        "details": "If eligible, use e\u2011Visa; otherwise regular visa via VFS/BLS or Indian Mission."
+      },
+      {
+        "title": "Online application",
+        "details": "Complete the online form; print and book appointment if needed."
+      },
+      {
+        "title": "Biometrics & submission",
+        "details": "Provide biometrics (if applicable) and submit documents."
+      },
+      {
+        "title": "Itinerary & accommodation",
+        "details": "Return flight and hotel bookings/invitation."
+      },
+      {
+        "title": "Financial means",
+        "details": "Recent bank statements/sponsor docs as per mission guidance."
+      },
+      {
+        "title": "Travel/medical insurance",
+        "details": "Recommended; sometimes required by carriers/missions."
+      }
+    ],
+    "fees": "Varies by nationality and visa type",
+    "processing": "Typically 3\u201310 working days",
+    "sources": [
+      {
+        "label": "Indian e\u2011Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      },
+      {
+        "label": "VFS Global \u2014 India (Switzerland)",
+        "url": "https://visa.vfsglobal.com/che/en/ind/"
+      }
+    ]
+  },
+  "NL->IN::TOURIST": {
+    "last_verified": "2025-10-01",
+    "items": [
+      {
+        "title": "Valid passport",
+        "details": "Valid for the duration required by India; sufficient blank pages."
+      },
+      {
+        "title": "Indian visa route",
+        "details": "If eligible, use e\u2011Visa; otherwise regular visa via VFS/BLS or Indian Mission."
+      },
+      {
+        "title": "Online application",
+        "details": "Complete the online form; print and book appointment if needed."
+      },
+      {
+        "title": "Biometrics & submission",
+        "details": "Provide biometrics (if applicable) and submit documents."
+      },
+      {
+        "title": "Itinerary & accommodation",
+        "details": "Return flight and hotel bookings/invitation."
+      },
+      {
+        "title": "Financial means",
+        "details": "Recent bank statements/sponsor docs as per mission guidance."
+      },
+      {
+        "title": "Travel/medical insurance",
+        "details": "Recommended; sometimes required by carriers/missions."
+      }
+    ],
+    "fees": "Varies by nationality and visa type",
+    "processing": "Typically 3\u201310 working days",
+    "sources": [
+      {
+        "label": "Indian e\u2011Visa (Official)",
+        "url": "https://indianvisaonline.gov.in/evisa/"
+      },
+      {
+        "label": "Bureau of Immigration (India)",
+        "url": "https://boi.gov.in/"
+      },
+      {
+        "label": "VFS Global \u2014 India (Netherlands)",
+        "url": "https://visa.vfsglobal.com/nld/en/ind/"
       }
     ]
   }
