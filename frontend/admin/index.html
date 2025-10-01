@@ -1290,32 +1290,75 @@ function downloadTextFile(filename, text){
 </script>
 
 
+
+
 <!-- v-bulk-refresh -->
 <script>
 /* v-bulk-refresh */
 (function(){
-  // Add a button to the Search & Filters card that bulk-sets last_verified = today
-  function ensureBulkButton(){
+  // ------------- UI injection -------------
+  function ensureBulkControls(){
     const card = document.getElementById('keySearchCard');
-    if (!card) return;
-    if (document.getElementById('ks_bulk_today')) return; // already added
+    if (!card) return false;
 
-    const row = document.createElement('div');
-    row.style.marginTop = '10px';
-    row.style.display = 'flex';
-    row.style.gap = '8px';
-    row.style.flexWrap = 'wrap';
+    let row = document.getElementById('ks_bulk_row');
+    if (!row) {
+      row = document.createElement('div');
+      row.id = 'ks_bulk_row';
+      row.style.marginTop = '10px';
+      row.style.display = 'flex';
+      row.style.gap = '8px';
+      row.style.flexWrap = 'wrap';
+      card.appendChild(row);
+    }
 
-    row.innerHTML = `
-      <button class="btn" id="ks_bulk_today">Set last_verified = today (for filtered rows)</button>
-      <span id="ks_bulk_msg" class="small"></span>
-    `;
-    card.appendChild(row);
+    if (!document.getElementById('ks_bulk_today')){
+      const btn = document.createElement('button');
+      btn.id = 'ks_bulk_today';
+      btn.className = 'btn';
+      btn.textContent = 'Set last_verified = today (for filtered rows)';
+      row.appendChild(btn);
+      btn.onclick = handleBulkToday;
+    }
 
-    document.getElementById('ks_bulk_today').onclick = handleBulkToday;
+    if (!document.getElementById('ks_bulk_batch')){
+      const wrap = document.createElement('label');
+      wrap.style.display = 'inline-flex';
+      wrap.style.alignItems = 'center';
+      wrap.style.gap = '6px';
+      wrap.innerHTML = `Batch size: <input id="ks_bulk_batch" type="number" min="1" max="50" value="4" style="width:80px;">`;
+      row.appendChild(wrap);
+    }
+
+    if (!document.getElementById('ks_bulk_delay')){
+      const wrap = document.createElement('label');
+      wrap.style.display = 'inline-flex';
+      wrap.style.alignItems = 'center';
+      wrap.style.gap = '6px';
+      wrap.innerHTML = `Delay (ms): <input id="ks_bulk_delay" type="number" min="0" max="10000" value="200" style="width:90px;">`;
+      row.appendChild(wrap);
+    }
+
+    if (!document.getElementById('ks_bulk_skip_today')){
+      const wrap = document.createElement('label');
+      wrap.style.display = 'inline-flex';
+      wrap.style.alignItems = 'center';
+      wrap.style.gap = '6px';
+      wrap.innerHTML = `<input id="ks_bulk_skip_today" type="checkbox" checked> Only if not today`;
+      row.appendChild(wrap);
+    }
+
+    if (!document.getElementById('ks_bulk_msg')){
+      const span = document.createElement('span');
+      span.id = 'ks_bulk_msg';
+      span.className = 'small';
+      row.appendChild(span);
+    }
+
+    return true;
   }
 
-  // Helpers: reuse your auth if present, else minimal fallback using the Validate password box
+  // ------------- Auth/helpers -------------
   async function ensureValToken(){
     if (window.VAL_TOKEN) return window.VAL_TOKEN;
     const pwdEl = document.getElementById('val_pwd') || document.getElementById('password');
@@ -1329,7 +1372,6 @@ function downloadTextFile(filename, text){
     window.VAL_TOKEN = tok; window.token = tok;
     return tok;
   }
-
   async function authed(url, opts={}, relogin=true){
     if (typeof window.authedFetch === 'function') return window.authedFetch(url, opts, relogin);
     await ensureValToken();
@@ -1342,16 +1384,23 @@ function downloadTextFile(filename, text){
     }
     return res;
   }
-
   function parseDate(dstr){
     if(!dstr) return null;
-    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dstr.trim());
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec((dstr||'').trim());
     if(!m) return null;
     const dt = new Date(Date.UTC(+m[1], +m[2]-1, +m[3]));
     return isNaN(dt.getTime()) ? null : dt;
   }
-
-  // Recompute the current filtered set (mirrors your applyFilters logic)
+  function todayStr(){
+    const t = new Date();
+    const y=t.getUTCFullYear(), m=String(t.getUTCMonth()+1).padStart(2,'0'), d=String(t.getUTCDate()).padStart(2,'0');
+    return `${y}-${m}-${d}`;
+  }
+  function splitKey(k){
+    const [corr, purpose] = String(k||'').split('::');
+    const [origin, dest] = (corr||'').split('->');
+    return { origin:(origin||'').toUpperCase(), dest:(dest||'').toUpperCase(), purpose:(purpose||'').toUpperCase() };
+  }
   function currentFilteredKeys(){
     const q = (document.getElementById('ks_q')?.value || '').toLowerCase().trim();
     const o = (document.getElementById('ks_origin')?.value || '').toUpperCase().trim();
@@ -1364,7 +1413,6 @@ function downloadTextFile(filename, text){
     if (d) rows = rows.filter(r=>r.dest===d);
     if (p) rows = rows.filter(r=>r.purpose===p);
     if (outdatedOnly) rows = rows.filter(r=>r._outdated);
-
     if (q){
       rows = rows.filter(r =>
         (r.key||'').toLowerCase().includes(q) ||
@@ -1376,14 +1424,6 @@ function downloadTextFile(filename, text){
     }
     return rows.map(r => r.key);
   }
-
-  function splitKey(k){
-    // "IN->DE::TOURIST" => {origin,dest,purpose}
-    const [corr, purpose] = String(k||'').split('::');
-    const [origin, dest] = (corr||'').split('->');
-    return { origin:(origin||'').toUpperCase(), dest:(dest||'').toUpperCase(), purpose:(purpose||'').toUpperCase() };
-  }
-
   async function fetchChecklist(key){
     const {origin,dest,purpose} = splitKey(key);
     const url = `${BACKEND}/api/checklist?origin=${encodeURIComponent(origin)}&dest=${encodeURIComponent(dest)}&category=${encodeURIComponent(purpose)}`;
@@ -1391,7 +1431,6 @@ function downloadTextFile(filename, text){
     if (!r.ok) throw new Error(`Fetch failed for ${key}: ${r.status}`);
     return await r.json();
   }
-
   async function putChecklist(key, data){
     const payload = { key, data };
     const r = await authed(`${BACKEND}/admin/checklists`, {
@@ -1402,22 +1441,38 @@ function downloadTextFile(filename, text){
     if (!r.ok) throw new Error(`PUT failed for ${key}: ${await r.text()}`);
     return await r.json();
   }
+  function sleep(ms){ return new Promise(res=>setTimeout(res, ms||0)); }
 
-  function todayStr(){
-    const t = new Date();
-    const y = t.getUTCFullYear();
-    const m = String(t.getUTCMonth()+1).padStart(2,'0');
-    const d = String(t.getUTCDate()).padStart(2,'0');
-    return `${y}-${m}-${d}`;
-  }
-
+  // ------------- Bulk handler -------------
   async function handleBulkToday(){
     const msg = document.getElementById('ks_bulk_msg');
     msg.textContent = '';
+
     let keys = currentFilteredKeys();
     if (!keys.length){ msg.textContent = 'No filtered rows to update.'; return; }
 
-    const ok = window.confirm(`Update last_verified = ${todayStr()} for ${keys.length} key(s)?`);
+    const batchEl = document.getElementById('ks_bulk_batch');
+    const delayEl = document.getElementById('ks_bulk_delay');
+    const skipTodayEl = document.getElementById('ks_bulk_skip_today');
+
+    const BATCH = Math.max(1, Math.min(50, parseInt(batchEl?.value || '4', 10) || 4));
+    const DELAY = Math.max(0, Math.min(10000, parseInt(delayEl?.value || '200', 10) || 0));
+    const SKIP_TODAY = !!(skipTodayEl && skipTodayEl.checked);
+    const today = todayStr();
+
+    // If skipping rows already stamped today, pre-filter keys cheaply by cache if possible
+    if (SKIP_TODAY && Array.isArray(window.__ALL_KEYS__)){
+      const todayKeys = new Set(
+        window.__ALL_KEYS__.filter(r => String(r.last_verified||'').trim() === today).map(r=>r.key)
+      );
+      keys = keys.filter(k => !todayKeys.has(k));
+    }
+
+    if (!keys.length){ msg.textContent = 'Nothing to update (already stamped today).'; return; }
+
+    const ok = window.confirm(
+      `Update last_verified = ${today} for ${keys.length} key(s)?\n\nBatch size: ${BATCH}\nDelay between batches: ${DELAY} ms\nSkip rows already today: ${SKIP_TODAY ? 'Yes' : 'No'}`
+    );
     if (!ok) return;
 
     try{
@@ -1427,34 +1482,31 @@ function downloadTextFile(filename, text){
     }
 
     let done=0, errs=0;
-    const BATCH = 4;
-    const chunks = [];
-    for (let i=0;i<keys.length;i+=BATCH) chunks.push(keys.slice(i,i+BATCH));
-
-    for (const chunk of chunks){
+    for (let i=0; i<keys.length; i+=BATCH){
+      const chunk = keys.slice(i, i+BATCH);
       await Promise.all(chunk.map(async (key)=>{
         try{
           const current = await fetchChecklist(key);
-          const updated = Object.assign({}, current, { last_verified: todayStr() });
+          if (SKIP_TODAY && String(current.last_verified||'').trim() === today) {
+            // Double-check server value and skip if already today
+            return;
+          }
+          const updated = Object.assign({}, current, { last_verified: today });
           await putChecklist(key, updated);
           done++;
-          msg.textContent = `Progress: ${done}/${keys.length} updated…`;
-        }catch(e){
-          console.error(e);
-          errs++;
-          msg.textContent = `Progress: ${done}/${keys.length} updated… (${errs} failed)`;
-        }
+        }catch(e){ console.error(e); errs++; }
       }));
+      msg.textContent = `Progress: ${done}/${keys.length} updated… (${errs} failed)`;
+      if (i + BATCH < keys.length && DELAY > 0) await sleep(DELAY);
     }
 
     msg.textContent = `Done ✔ Updated: ${done}, Failed: ${errs}. Refreshing table…`;
 
-    // Refresh cache & table
+    // Refresh cache & table (minimal)
     try{
       const res = await authed(`${BACKEND}/admin/checklists`, { method:'GET' });
       if (res.ok){
         const data = await res.json();
-        // If your normalizeKeyRow is already present, reuse; else minimal recalc
         window.__ALL_KEYS__ = Object.entries(data).map(([k,v])=>{
           const [corr="", purRaw=""] = String(k||"").split("::");
           const [origin="", dest=""] = corr.split("->");
@@ -1469,14 +1521,12 @@ function downloadTextFile(filename, text){
           }
           return { key:k, origin:origin.toUpperCase(), dest:dest.toUpperCase(), purpose:purRaw.toUpperCase(), last_verified:last, _parsedDate:parsed, _outdated:outd };
         });
-        // Reapply filters if available
         if (typeof window.applyFilters === 'function') window.applyFilters();
       }
     }catch(e){ console.error('post-refresh failed', e); }
-
   }
 
-  document.addEventListener('DOMContentLoaded', ensureBulkButton);
+  document.addEventListener('DOMContentLoaded', ensureBulkControls);
 })();
 </script>
 
