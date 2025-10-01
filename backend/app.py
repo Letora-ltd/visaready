@@ -273,3 +273,54 @@ async def rbac_guard(request: Request, call_next):
         admin_rbac.audit(request, (claims or {}).get("sub","-") if claims else "-", f"{method} {path}", key, True, request.headers.get("X-Reason"))
     return response
 # ===== end v48 =====
+
+# ===== v49 AUTHX & RBAC2 (appended) =====
+try:
+    from . import authx
+except Exception:
+    import authx
+try:
+    from . import rbac2
+except Exception:
+    import rbac2
+
+from fastapi import Request, Header
+import json as _json
+
+app.include_router(authx.router)
+
+@app.middleware("http")
+async def auth_rbac_mw(request: Request, call_next):
+    path = request.url.path
+    method = request.method.upper()
+    route_key = f"{path}:{method}"
+    guarded = rbac2.allow_write(route_key)
+    claims = None
+    key = None
+    # attach claims to request.state if access token present (for header badge)
+    authz = request.headers.get("authorization","")
+    if authz.startswith("Bearer "):
+        try:
+            claims = authx._unsign(authz.split(" ",1)[1])
+        except Exception:
+            claims = None
+    request.state.claims = claims
+
+    if guarded:
+        # parse payload to extract key if present
+        body_bytes = await request.body()
+        try:
+            payload = _json.loads(body_bytes.decode() or "{}")
+        except Exception:
+            payload = {}
+        key = payload.get("key") or payload.get("dst_key") or None
+        if not claims:
+            from fastapi import HTTPException
+            raise HTTPException(401, "Missing/invalid access token")
+        # scope checks
+        rbac2.check_scope(claims.get("role",""), (claims.get("scope") or {}), key)
+        async def receive():
+            return {"type": "http.request", "body": body_bytes}
+        request._receive = receive
+    response = await call_next(request)
+    return response

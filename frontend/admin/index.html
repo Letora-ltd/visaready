@@ -1530,4 +1530,39 @@ function downloadTextFile(filename, text){
 })();
 </script>
 
+
+<!-- v-admin header badge -->
+<script>
+/* v-admin-header-badge */
+(function(){
+  function ensureBadge(){
+    const main = document.querySelector('main.container');
+    if(!main) return;
+    if (document.getElementById('adm_badge')) return;
+    const bar = document.createElement('div');
+    bar.id = 'adm_badge';
+    bar.style.display='flex'; bar.style.justifyContent='space-between';
+    bar.style.alignItems='center'; bar.style.margin='8px 0';
+    bar.innerHTML = '<span class="small" id="adm_badge_text">—</span>';
+    main.prepend(bar);
+  }
+  async function who(){
+    try{
+      const tok = window.token || window.VAL_TOKEN || '';
+      if(!tok) { ensureBadge(); document.getElementById('adm_badge_text').textContent = 'Admin: (not signed)'; return; }
+      const r = await fetch(`${BACKEND}/auth/whoami`, { headers: { 'Authorization': 'Bearer '+tok }});
+      if(!r.ok){ ensureBadge(); document.getElementById('adm_badge_text').textContent = 'Admin: (token invalid)'; return; }
+      const j = await r.json();
+      const c = j.claims || {};
+      ensureBadge();
+      document.getElementById('adm_badge_text').textContent = `Admin: ${c.sub||'?'}  |  Role: ${c.role||'?'} `;
+    }catch(e){
+      ensureBadge();
+      document.getElementById('adm_badge_text').textContent = 'Admin: (error)';
+    }
+  }
+  document.addEventListener('DOMContentLoaded', who);
+})();
+</script>
+
 </body></html>
