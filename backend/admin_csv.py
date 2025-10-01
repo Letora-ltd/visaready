@@ -1,9 +1,17 @@
-
 from fastapi import APIRouter, Header, HTTPException, UploadFile, File, Response
 import csv, io, json, time
-from .app import _auth, load_json, save_json
+
+# No import from app.py to avoid circular! Use utils directly.
+from .utils import load_json, save_json, verify_token
 
 router = APIRouter()
+
+def _auth(authorization: str | None):
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Missing token")
+    token = authorization.split(" ", 1)[1]
+    if not verify_token(token):
+        raise HTTPException(status_code=401, detail="Token expired/invalid")
 
 @router.get("/admin/export/csv")
 def admin_export_csv(authorization: str | None = Header(default=None)):
@@ -24,39 +32,48 @@ def admin_export_csv(authorization: str | None = Header(default=None)):
         }
         w.writerow(row)
     csv_bytes = buf.getvalue().encode("utf-8-sig")
-    headers = {
-        "Content-Disposition": f'attachment; filename="visaready_checklists_{int(time.time())}.csv"'
-    }
+    headers = {"Content-Disposition": f'attachment; filename="visaready_checklists_{int(time.time())}.csv"'}
     return Response(content=csv_bytes, media_type="text/csv; charset=utf-8", headers=headers)
 
 @router.post("/admin/import/csv")
-async def admin_import_csv(authorization: str | None = Header(default=None),
-                           file: UploadFile = File(...),
-                           mode: str = "merge"):
+async def admin_import_csv(
+    authorization: str | None = Header(default=None),
+    file: UploadFile = File(...),
+    mode: str = "merge"
+):
+    """
+    mode: 'merge' (update/insert) or 'replace' (overwrite everything by provided rows)
+    """
     _auth(authorization)
     if not file.filename.lower().endswith(".csv"):
         raise HTTPException(400, "Please upload a .csv file")
+
     body = (await file.read()).decode("utf-8-sig", errors="replace")
     r = csv.DictReader(io.StringIO(body))
+
     current = load_json("checklists.json")
     new_data = {} if mode == "replace" else dict(current)
+
     n = 0
     for row in r:
         key = (row.get("key") or "").strip()
-        if not key: continue
+        if not key:
+            continue
         try:
             items = json.loads(row.get("items_json") or "[]")
             sources = json.loads(row.get("sources_json") or "[]")
         except json.JSONDecodeError:
             raise HTTPException(400, f"Invalid JSON in items_json/sources_json for key={key}")
+
         entry = {
-            "last_verified": row.get("last_verified") or time.strftime("%Y-%m-%d"),
-            "fees": row.get("fees") or "",
-            "processing": row.get("processing") or "",
+            "last_verified": (row.get("last_verified") or "").strip() or time.strftime("%Y-%m-%d"),
+            "fees": (row.get("fees") or "").strip(),
+            "processing": (row.get("processing") or "").strip(),
             "items": items,
             "sources": sources
         }
         new_data[key] = entry
         n += 1
+
     save_json("checklists.json", new_data)
     return {"ok": True, "updated": n, "mode": mode}

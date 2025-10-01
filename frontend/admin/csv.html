@@ -42,46 +42,53 @@
   </section>
 </main>
 
+
 <script>
   const BACKEND = 'http://127.0.0.1:8000';
-</script>
-
-<script>
-let token = null;
-
+  let token = null;
+  
 async function ensureLogin() {
-  const pwd = document.getElementById('pwd').value.trim();
-  if (!pwd) { alert("Enter admin password"); throw new Error("no password"); }
-  if (token) return token;
-  const res = await fetch(${BACKEND}/admin/login', {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({ password: pwd })
-  });
-  if (!res.ok) { alert('Login failed'); throw new Error('login failed'); }
-  const data = await res.json();
-  token = data.token;
-  return token;
-}
-
-document.getElementById('exportBtn').addEventListener('click', async () => {
-  try {
-    await ensureLogin();
-    const res = await fetch(${BACKEND}/admin/export/csv', {
-      headers: { 'Authorization': 'Bearer ' + token }
+    const pwd = document.getElementById('pwd').value.trim();
+    if (!pwd) { alert("Enter admin password"); throw new Error("no password"); }
+    if (token) return token;
+    const res = await fetch(`${BACKEND}/admin/login`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ password: pwd })
     });
-    if (!res.ok) { alert('Export failed'); return; }
-    const blob = await res.blob();
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = 'visaready_checklists.csv'; a.click();
-    URL.revokeObjectURL(url);
-    document.getElementById('msg').textContent = 'Exported CSV successfully.';
-  } catch (e) {
-    console.error(e);
-    document.getElementById('msg').textContent = 'Export failed.';
+    if (!res.ok) { throw new Error('login failed: ' + (await res.text())); }
+    token = (await res.json()).token;
+    return token;
   }
-});
+
+document.getElementById('exportBtn').onclick = async () => {
+    const msg = document.getElementById('msg');
+    try {
+      await ensureLogin();
+      const res = await fetch(`${BACKEND}/admin/export/csv`, {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      if (!res.ok) {
+        msg.textContent = `Export failed: ${res.status} ${await res.text()}`;
+        return;
+      }
+      const blob = await res.blob();
+      if (!blob || blob.size === 0) {
+        msg.textContent = 'Export returned empty file.';
+        return;
+      }
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'visaready_checklists.csv';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      msg.textContent = 'Exported CSV successfully.';
+    } catch (e) {
+      console.error(e);
+      msg.textContent = 'Export failed (see console).';
+    }
+  };
 
 document.getElementById('importBtn').addEventListener('click', async () => {
   try {
@@ -92,7 +99,7 @@ document.getElementById('importBtn').addEventListener('click', async () => {
     const form = new FormData();
     form.append('file', f);
     form.append('mode', mode);
-    const res = await fetch(${BACKEND}/admin/import/csv', {
+    const res = await fetch('/admin/import/csv', {
       method:'POST',
       headers: { 'Authorization': 'Bearer ' + token },
       body: form
@@ -113,4 +120,3 @@ document.getElementById('importBtn').addEventListener('click', async () => {
 </script>
 </body>
 </html>
-
