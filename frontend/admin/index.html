@@ -78,13 +78,47 @@
   </div>
 </section>
 
+
+<section class="card" id="dupCard">
+  <h2 class="h2">Duplicate Corridor</h2>
+  <p class="small">Clone an existing key (items + optional fees/processing/sources) to a new key.</p>
+  <div class="grid">
+    <div>
+      <div class="label">Source key (e.g., IN-&gt;DE::TOURIST)</div>
+      <input id="dup_src" placeholder="IN->DE::TOURIST" />
+    </div>
+    <div>
+      <div class="label">Destination key</div>
+      <input id="dup_dst" placeholder="IN->FR::TOURIST" />
+    </div>
+    <div>
+      <div class="label">Admin Password</div>
+      <input id="dup_pwd" type="password" placeholder="Enter admin password" />
+    </div>
+  </div>
+  <div style="margin-top:10px; display:flex; gap:12px; flex-wrap:wrap;">
+    <label style="display:inline-flex;align-items:center;gap:6px;">
+      <input type="checkbox" id="dup_overwrite"> Overwrite if exists
+    </label>
+    <label style="display:inline-flex;align-items:center;gap:6px;">
+      <input type="checkbox" id="dup_copy_fp" checked> Copy fees & processing
+    </label>
+    <label style="display:inline-flex;align-items:center;gap:6px;">
+      <input type="checkbox" id="dup_copy_src" checked> Copy sources
+    </label>
+    <button class="btn" id="dup_btn">Duplicate</button>
+    <span id="dup_msg" class="small"></span>
+  </div>
+</section>
+
 </main>
 
-<script>`n  const BACKEND = 'http://127.0.0.1:8000';
+<script> const BACKEND = 'http://127.0.0.1:8000'; </script>
+<script>
 let token = null;
 
 async function loadKeys() {
-  const res = await fetch(`${BACKEND}/admin/checklists", { headers: { "Authorization": "Bearer " + token }});
+  const res = await fetch(${BACKEND}/admin/checklists", { headers: { "Authorization": "Bearer " + token }});
   const data = await res.json();
   const body = document.getElementById("keysBody"); body.innerHTML = "";
   Object.entries(data).forEach(([k,v]) => {
@@ -97,7 +131,7 @@ async function loadKeys() {
 
 document.getElementById("loginBtn").addEventListener("click", async () => {
   const password = document.getElementById("password").value;
-  const res = await fetch(`${BACKEND}/admin/login", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ password })});
+  const res = await fetch(${BACKEND}/admin/login", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ password })});
   if(res.ok){
     const data = await res.json();
     token = data.token;
@@ -118,7 +152,7 @@ document.getElementById("saveBtn").addEventListener("click", async () => {
   try { payload = JSON.parse(document.getElementById("e_json").value); }
   catch(e){ alert("Invalid JSON"); return; }
   const key = origin+"->"+dest+"::"+purpose;
-  const res = await fetch(`${BACKEND}/admin/checklists", { method:"PUT", headers:{"Content-Type":"application/json","Authorization":"Bearer "+token}, body: JSON.stringify({ key, data: payload })});
+  const res = await fetch(${BACKEND}/admin/checklists", { method:"PUT", headers:{"Content-Type":"application/json","Authorization":"Bearer "+token}, body: JSON.stringify({ key, data: payload })});
   if(res.ok){ document.getElementById("saveMsg").textContent = "Saved."; loadKeys(); }
   else { document.getElementById("saveMsg").textContent = "Save failed."; }
 });
@@ -267,6 +301,60 @@ document.getElementById('ie_saveBtn').onclick = async () => {
     msg.textContent = 'Saved ✔';
   } catch (e) {
     console.error(e); msg.textContent = 'Save failed.';
+  }
+};
+</script>
+
+
+<script>
+let DUP_TOKEN = null;
+
+async function dup_login() {
+  const pwd = document.getElementById('dup_pwd').value.trim();
+  if(!pwd) throw new Error("Enter admin password");
+  const res = await fetch(`${BACKEND}/admin/login`, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ password: pwd })
+  });
+  if(!res.ok) throw new Error("Login failed: " + await res.text());
+  DUP_TOKEN = (await res.json()).token;
+  return DUP_TOKEN;
+}
+
+document.getElementById('dup_btn').onclick = async () => {
+  const msg = document.getElementById('dup_msg');
+  msg.textContent = '';
+  const src = document.getElementById('dup_src').value.trim();
+  const dst = document.getElementById('dup_dst').value.trim();
+  const overwrite = document.getElementById('dup_overwrite').checked;
+  const copy_fp = document.getElementById('dup_copy_fp').checked;
+  const copy_src = document.getElementById('dup_copy_src').checked;
+
+  if(!src || !dst){ msg.textContent = 'Enter both source and destination keys'; return; }
+
+  try {
+    if(!DUP_TOKEN) await dup_login();
+    const payload = {
+      src_key: src,
+      dst_key: dst,
+      overwrite: overwrite,
+      copy_fees_processing: copy_fp,
+      copy_sources: copy_src
+    };
+    const res = await fetch(`${BACKEND}/admin/duplicate`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+DUP_TOKEN},
+      body: JSON.stringify(payload)
+    });
+    if(!res.ok){
+      msg.textContent = 'Duplicate failed: ' + (await res.text());
+      return;
+    }
+    const data = await res.json();
+    msg.textContent = 'Duplicated to ' + data.dst_key + ' ✔';
+  } catch(e){
+    console.error(e);
+    msg.textContent = 'Duplicate failed.';
   }
 };
 </script>
