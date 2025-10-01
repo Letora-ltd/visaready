@@ -1,34 +1,18 @@
-<!doctype html><html><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>VisaReady Admin</title>
-<link rel="stylesheet" href="../style.css">
-</head><body>
-<main class="container">
-<section class="card">
-  <h1 class="h2">Admin Login</h1>
-  <div class="grid">
-    <div><div class="label">Password</div><input id="password" type="password" placeholder="Enter admin password"></div>
-  </div>
-  <button class="btn" id="loginBtn" style="margin-top:10px;">Login</button>
-  <div id="loginMsg" class="small"></div>
-</section>
+import os, re
 
-<section class="card" id="editor" style="display:none;">
-  <h2 class="h2">Checklists Editor</h2><p><a href="./csv.html">CSV Import/Export</a></p>
-  <div class="grid">
-    <div><div class="label">Origin</div><input id="e_origin" placeholder="e.g., IN"></div>
-    <div><div class="label">Destination</div><input id="e_dest" placeholder="e.g., TR"></div>
-    <div><div class="label">Purpose</div><input id="e_purpose" value="TOURIST"></div>
-  </div>
-  <div class="label" style="margin-top:10px;">JSON (items, fees, processing, sources)</div>
-  <textarea id="e_json" rows="12" placeholder='{"items":[{"title":"...","details":"..."}], "fees":"...", "processing":"...", "sources":[{"label":"..","url":".."}]}'></textarea>
-  <button class="btn" id="saveBtn" style="margin-top:10px;">Save Checklist</button>
-  <div id="saveMsg" class="small"></div>
-  <hr/>
-  <h3 class="h2">Existing Keys</h3>
-  <table class="table"><thead><tr><th>Key</th><th>Last Verified</th></tr></thead><tbody id="keysBody"></tbody></table>
-</section>
+ADMIN_PATH = os.path.join("frontend","admin","index.html")
 
+html = ""
+with open(ADMIN_PATH, "r", encoding="utf-8") as f:
+    html = f.read()
+
+# Ensure BACKEND const exists (re-use what you set for CSV)
+if "const BACKEND" not in html:
+    html = html.replace("<script>", "<script>\n  const BACKEND='http://127.0.0.1:8000';", 1)
+
+# Add an Inline Editor card if missing
+if "id=\"inlineEditor\"" not in html:
+    injection = """
 <section class="card" id="inlineEditor">
   <h2 class="h2">Inline Editor (Friendly)</h2>
   <p class="small">Edit with plain text. Format each line as <code>Title :: Details</code> for items and <code>Label :: URL</code> for sources.</p>
@@ -77,53 +61,13 @@
     </div>
   </div>
 </section>
+"""
+    # Insert just before closing </main> or at end of first admin card
+    html = html.replace("</main>", injection + "\n</main>")
 
-</main>
-
-<script>`n  const BACKEND = 'http://127.0.0.1:8000';
-let token = null;
-
-async function loadKeys() {
-  const res = await fetch(`${BACKEND}/admin/checklists", { headers: { "Authorization": "Bearer " + token }});
-  const data = await res.json();
-  const body = document.getElementById("keysBody"); body.innerHTML = "";
-  Object.entries(data).forEach(([k,v]) => {
-    const tr = document.createElement("tr");
-    const td1 = document.createElement("td"); td1.textContent = k;
-    const td2 = document.createElement("td"); td2.textContent = v.last_verified || "—";
-    tr.appendChild(td1); tr.appendChild(td2); body.appendChild(tr);
-  });
-}
-
-document.getElementById("loginBtn").addEventListener("click", async () => {
-  const password = document.getElementById("password").value;
-  const res = await fetch(`${BACKEND}/admin/login", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ password })});
-  if(res.ok){
-    const data = await res.json();
-    token = data.token;
-    document.getElementById("loginMsg").textContent = "Logged in.";
-    document.getElementById("editor").style.display = "block";
-    loadKeys();
-  } else {
-    document.getElementById("loginMsg").textContent = "Login failed.";
-  }
-});
-
-document.getElementById("saveBtn").addEventListener("click", async () => {
-  const origin = document.getElementById("e_origin").value.trim().toUpperCase();
-  const dest = document.getElementById("e_dest").value.trim().toUpperCase();
-  const purpose = document.getElementById("e_purpose").value.trim().toUpperCase();
-  if(!origin || !dest || !purpose) { alert("Fill origin, destination, purpose"); return; }
-  let payload;
-  try { payload = JSON.parse(document.getElementById("e_json").value); }
-  catch(e){ alert("Invalid JSON"); return; }
-  const key = origin+"->"+dest+"::"+purpose;
-  const res = await fetch(`${BACKEND}/admin/checklists", { method:"PUT", headers:{"Content-Type":"application/json","Authorization":"Bearer "+token}, body: JSON.stringify({ key, data: payload })});
-  if(res.ok){ document.getElementById("saveMsg").textContent = "Saved."; loadKeys(); }
-  else { document.getElementById("saveMsg").textContent = "Save failed."; }
-});
-</script>
-
+# Add helper JS only once
+if "function ie_parseItemsText(" not in html:
+    js_block = """
 <script>
 // ---- Inline Editor helpers ----
 let IE_TOKEN = null;
@@ -141,7 +85,7 @@ async function ie_login() {
 }
 
 function ie_parseItemsText(text) {
-  const lines = (text || '').split(/\r?\n/);
+  const lines = (text || '').split(/\\r?\\n/);
   const items = [];
   const warnings = [];
   lines.forEach((ln, i) => {
@@ -164,7 +108,7 @@ function ie_parseItemsText(text) {
 }
 
 function ie_parseSourcesText(text) {
-  const lines = (text || '').split(/\r?\n/);
+  const lines = (text || '').split(/\\r?\\n/);
   const sources = [];
   const warnings = [];
   lines.forEach((ln, i) => {
@@ -211,8 +155,8 @@ document.getElementById('ie_loadBtn').onclick = async () => {
     document.getElementById('ie_proc').value = data.processing || '';
     document.getElementById('ie_last').value = data.last_verified || '';
 
-    const items_text = (data.items||[]).map(it => `${it.title||''} :: ${it.details||''}`.trim()).join('\n');
-    const sources_text = (data.sources||[]).map(s => `${s.label||''} :: ${s.url||''}`.trim()).join('\n');
+    const items_text = (data.items||[]).map(it => `${it.title||''} :: ${it.details||''}`.trim()).join('\\n');
+    const sources_text = (data.sources||[]).map(s => `${s.label||''} :: ${s.url||''}`.trim()).join('\\n');
     document.getElementById('ie_items').value = items_text;
     document.getElementById('ie_sources').value = sources_text;
 
@@ -270,5 +214,11 @@ document.getElementById('ie_saveBtn').onclick = async () => {
   }
 };
 </script>
+"""
+    # append before closing body
+    html = html.replace("</body>", js_block + "\n</body>")
 
-</body></html>
+with open(ADMIN_PATH, "w", encoding="utf-8") as f:
+    f.write(html)
+
+print("v3.6 Inline Editor + validation added to frontend/admin/index.html")
