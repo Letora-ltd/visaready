@@ -187,7 +187,7 @@
 let token = null;
 
 async function loadKeys() {
-  const res = await fetch(`{BACKEND}/admin/checklists`, { headers: { "Authorization": "Bearer " + token }});
+  const res = await fetch(`${BACKEND}/admin/checklists`, { headers: { "Authorization": "Bearer " + token }});
   const data = await res.json();
   const body = document.getElementById("keysBody"); body.innerHTML = "";
   Object.entries(data).forEach(([k,v]) => {
@@ -200,7 +200,7 @@ async function loadKeys() {
 
 document.getElementById("loginBtn").addEventListener("click", async () => {
   const password = document.getElementById("password").value;
-  const res = await fetch(`{BACKEND}/admin/login`, { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ password })});
+  const res = await fetch(`${BACKEND}/admin/login`, { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ password })});
   if(res.ok){
     const data = await res.json();
     token = data.token;
@@ -221,7 +221,7 @@ document.getElementById("saveBtn").addEventListener("click", async () => {
   try { payload = JSON.parse(document.getElementById("e_json").value); }
   catch(e){ alert("Invalid JSON"); return; }
   const key = origin+"->"+dest+"::"+purpose;
-  const res = await fetch(`{BACKEND}/admin/checklists`, { method:"PUT", headers:{"Content-Type":"application/json","Authorization":"Bearer "+token}, body: JSON.stringify({ key, data: payload })});
+  const res = await fetch(`${BACKEND}/admin/checklists`, { method:"PUT", headers:{"Content-Type":"application/json","Authorization":"Bearer "+token}, body: JSON.stringify({ key, data: payload })});
   if(res.ok){ document.getElementById("saveMsg").textContent = "Saved."; loadKeys(); }
   else { document.getElementById("saveMsg").textContent = "Save failed."; }
 });
