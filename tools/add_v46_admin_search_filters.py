@@ -125,5 +125,3 @@ with open(ADMIN, "w", encoding="utf-8") as f:
     f.write(html)
 
 print("v46: Admin search + filters added above Existing Keys.")
-"""
-print("v46: Admin search + filters added.")
