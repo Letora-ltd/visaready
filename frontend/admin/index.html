@@ -2,7 +2,44 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>VisaReady Admin</title>
 <link rel="stylesheet" href="../style.css">
-</head><body>
+</head>
+<script>
+  // --- Auth helpers for all admin calls ---
+  async function ensureValToken() {
+    if (window.VAL_TOKEN) return window.VAL_TOKEN;
+    const pwdEl = document.getElementById('val_pwd');
+    const pwd = pwdEl ? pwdEl.value.trim() : '';
+    if (!pwd) { alert('Enter admin password'); throw new Error('No password'); }
+    const res = await fetch(`${BACKEND}/admin/login`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ password: pwd })
+    });
+    if (!res.ok) throw new Error('Login failed');
+    window.VAL_TOKEN = (await res.json()).token;
+    return window.VAL_TOKEN;
+  }
+
+  async function authedFetch(url, options = {}, relogin = true) {
+    await ensureValToken();
+    const headers = Object.assign({}, options.headers || {}, {
+      'Authorization': 'Bearer ' + window.VAL_TOKEN
+    });
+    let res = await fetch(url, Object.assign({}, options, { headers }));
+    if (res.status === 401 && relogin) {
+      // token stale → re-login once and retry
+      window.VAL_TOKEN = null;
+      await ensureValToken();
+      const headers2 = Object.assign({}, options.headers || {}, {
+        'Authorization': 'Bearer ' + window.VAL_TOKEN
+      });
+      res = await fetch(url, Object.assign({}, options, { headers: headers2 }));
+    }
+    return res;
+  }
+</script>
+
+<body>
 <main class="container">
 <section class="card">
   <h1 class="h2">Admin Login</h1>
@@ -176,7 +213,7 @@
     <button class="btn" id="val_btn">Run Validation</button>
     <button class="btn" id="val_fix_btn" style="margin-left:8px;">Fix trivial issues</button>
     <button class="btn" id="val_dry_btn" style="margin-left:8px;">Dry-run Fix</button>
-    <button class="btn" id="val_dry_apply_btn" style="margin-left:8px;">Dry-run + Apply</button style="margin-left:8px;">Fix trivial issues</button>
+    <button class="btn" id="val_dry_apply_btn" style="margin-left:8px;">Dry-run + Apply</button>
     <span id="val_msg" class="small" style="margin-left:10px;"></span>
   </div>
   <div id="val_out" class="small" style="margin-top:10px;"></div>
@@ -623,4 +660,67 @@ function downloadTextFile(filename, text){
   };
 })();
 </script>
+
+<script>
+  // If you don’t already have BACKEND at top, this guard keeps things safe.
+  if (typeof BACKEND === 'undefined') {
+    const s = document.createElement('script');
+    s.innerHTML = "const BACKEND='http://127.0.0.1:8000';";
+    document.head.appendChild(s);
+  }
+
+  // Reuse the helper you already added above:
+  //   ensureValToken() and authedFetch(url, options)
+  // This handler wires the Dry-run Fix button.
+  (function wireDryRunOnly(){
+    const btn = document.getElementById('val_dry_btn');
+    if (!btn) return;
+
+    btn.onclick = async () => {
+      const msg = document.getElementById('val_msg');
+      const out = document.getElementById('val_out');
+      msg.textContent = '';
+      out.textContent = '';
+
+      try {
+        const res = await authedFetch(`${BACKEND}/admin/validate/dryfix`, { method:'POST' });
+        if (!res.ok) {
+          msg.textContent = 'Dry-run failed: ' + (await res.text());
+          return;
+        }
+        const data = await res.json();
+        const changes = Array.isArray(data.changes) ? data.changes : [];
+        msg.textContent = `Dry-run — Fixed: ${data.fixed}, Normalized: ${data.normalized}, Changes: ${changes.length}`;
+
+        if (!changes.length) {
+          out.textContent = 'No changes needed.';
+          return;
+        }
+        out.textContent = changes
+          .map(c => `• ${c.key} — ${c.path}: ${JSON.stringify(c.old)} → ${JSON.stringify(c.new)}`)
+          .join('\n');
+
+        // Add a one-click diff download (once)
+        if (!document.getElementById('val_dry_dl')) {
+          const dl = document.createElement('button');
+          dl.id = 'val_dry_dl';
+          dl.className = 'btn';
+          dl.style.marginLeft = '8px';
+          dl.textContent = 'Download diff';
+          dl.onclick = () => {
+            const blob = new Blob([out.textContent], {type:'text/plain;charset=utf-8;'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url; a.download = 'visaready_dryfix_diff.txt'; a.click();
+            URL.revokeObjectURL(url);
+          };
+          document.getElementById('val_btn').parentNode.appendChild(dl);
+        }
+      } catch (e) {
+        console.error(e);
+        msg.textContent = 'Dry-run failed (see console).';
+      }
+    };
+  })();
+</script>
+
 </body></html>
