@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VisaReady — Secure Sign In</title>
+<link rel="icon" href="../favicon.ico">
+<style>
+/* ===== VisaReady Auth Portal (no external libs) ===== */
+:root{
+  --bg1:#0B3C5D; --bg2:#13293D; --glass:rgba(255,255,255,0.08);
+  --txt:#e7eef6; --muted:#99A4B2; --accent:#A3E635; --warn:#f97316; --err:#ef4444; --ok:#22c55e;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--txt);background:#0b1a2a;}
+/* Animated gradient background */
+.bg{
+  position:fixed; inset:0; z-index:-2;
+  background: radial-gradient(1200px 1200px at 10% 10%, #153e5f 0%, transparent 60%),
+              radial-gradient(1000px 1000px at 90% 10%, #0c4855 0%, transparent 60%),
+              radial-gradient(1200px 1200px at 50% 100%, #0a3f84 0%, transparent 60%),
+              linear-gradient(180deg, #0b1a2a, #0a1220);
+  filter:saturate(1.2) brightness(0.95);
+}
+.fog{
+  position:fixed; inset:-10%; z-index:-1; pointer-events:none; opacity:.5;
+  background:
+    radial-gradient(50% 30% at 20% 30%, rgba(163,230,53,.15) 0%, transparent 60%),
+    radial-gradient(40% 30% at 80% 20%, rgba(14,165,233,.18) 0%, transparent 60%),
+    radial-gradient(40% 30% at 50% 80%, rgba(255,255,255,.06) 0%, transparent 60%);
+  filter: blur(40px);
+  animation: drift 18s ease-in-out infinite alternate;
+}
+@keyframes drift{from{transform:translate3d(-10px,0,0)}to{transform:translate3d(10px,8px,0)}}
+
+.container{min-height:100%;display:grid;place-items:center;padding:28px}
+.card{
+  width:100%; max-width:980px;
+  display:grid; grid-template-columns: 1.1fr 1fr; gap:0;
+  border-radius:24px; overflow:hidden;
+  background:linear-gradient(120deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+  box-shadow:0 20px 60px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);
+}
+.left{
+  padding:36px 32px; display:flex; flex-direction:column; justify-content:space-between;
+  background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01));
+}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{
+  width:44px;height:44px;border-radius:12px;
+  background:linear-gradient(135deg, var(--accent), #4ade80);
+  box-shadow:0 8px 24px rgba(163,230,53,.35);
+}
+.title{font-weight:800;letter-spacing:.3px}
+.pitch{color:var(--muted);line-height:1.6;margin-top:10px}
+.hero{
+  margin-top:24px; padding:18px; border-radius:16px;
+  background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+  border:1px dashed rgba(255,255,255,.12);
+}
+.hero h3{margin:0 0 4px 0}
+.badges{display:flex; gap:8px; flex-wrap:wrap;margin-top:10px}
+.badge{
+  font-size:12px;padding:6px 10px;border-radius:999px; border:1px solid rgba(255,255,255,.15);
+  background:rgba(255,255,255,.06); color:#dbeafe; letter-spacing:.2px
+}
+.footer{
+  font-size:12px; color:var(--muted); display:flex; justify-content:space-between; align-items:center; gap:8px
+}
+
+/* right panel */
+.right{ padding:36px 32px; backdrop-filter: blur(6px); background:rgba(10,12,22,.45)}
+.tabs{ display:flex; gap:12px; margin-bottom:18px}
+.tab{
+  padding:10px 14px;border-radius:12px; cursor:pointer; user-select:none; font-weight:700;
+  color:var(--muted); background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.06);
+}
+.tab.active{ color:#0d1b2a; background:var(--accent); border-color:transparent; box-shadow:0 8px 22px rgba(163,230,53,.35)}
+.form{ display:grid; gap:12px; }
+.row{ display:grid; gap:6px; }
+label{ font-size:12px; letter-spacing:.3px; color:#dbeafe; }
+input{
+  width:100%; padding:12px 14px; border-radius:12px; outline:none; color:#dbeafe;
+  background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1);
+}
+input::placeholder{color:#9fb3c8}
+.btn{
+  padding:12px 14px; border:none; border-radius:12px; font-weight:800; cursor:pointer;
+  background:var(--accent); color:#09121e; box-shadow:0 12px 28px rgba(163,230,53,.35);
+}
+.btn:disabled{opacity:.65; cursor:not-allowed}
+.helper{display:flex; justify-content:space-between; align-items:center; font-size:12px; color:var(--muted)}
+.error,.ok,.warn{font-size:13px;margin-top:10px}
+.error{color:var(--err)}
+.ok{color:var(--ok)}
+.warn{color:var(--warn)}
+
+/* strength meter */
+.meter{height:8px;border-radius:999px; background:rgba(255,255,255,.08); overflow:hidden}
+.mbar{height:100%;width:0%;background:linear-gradient(90deg,#ef4444,#f59e0b,#22c55e); transition:width .2s ease}
+
+/* responsive */
+@media (max-width: 940px){
+  .card{ grid-template-columns: 1fr; }
+  .left{ display:none }
+}
+</style>
+</head>
+<body>
+<div class="bg"></div><div class="fog"></div>
+<div class="container">
+  <div class="card">
+    <div class="left">
+      <div>
+        <div class="brand">
+          <div class="logo"></div>
+          <div>
+            <div class="title">VisaReady</div>
+            <div class="small" style="color:var(--muted)">Secure Access Portal</div>
+          </div>
+        </div>
+
+        <div class="hero">
+          <h3>Built for speed, trust & control</h3>
+          <div class="pitch">
+            One account for users, admins and super-admins.
+            Short-lived access, rotating refresh, device binding, and scope-aware controls.
+          </div>
+          <div class="badges">
+            <div class="badge">JWT 15m</div>
+            <div class="badge">Refresh 7d</div>
+            <div class="badge">PBKDF2</div>
+            <div class="badge">Rate-limited</div>
+            <div class="badge">Audit-ready</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <span>© 2025 VisaReady</span>
+        <span>Need help? <a href="#" style="color:#c7f9cc; text-decoration:none">docs</a></span>
+      </div>
+    </div>
+
+    <div class="right">
+      <div class="tabs">
+        <div id="tabSignIn"   class="tab active">Sign in</div>
+        <div id="tabCreate"   class="tab">Create account</div>
+      </div>
+
+      <!-- Sign in -->
+      <div id="paneSignIn" class="form">
+        <div class="row">
+          <label>Email</label>
+          <input id="si_email" type="email" placeholder="you@example.com" autocomplete="username">
+        </div>
+        <div class="row">
+          <label>Password</label>
+          <input id="si_password" type="password" placeholder="Enter password" autocomplete="current-password">
+        </div>
+        <div class="helper">
+          <span id="si_hint">Access lasts ~15 minutes. We'll refresh in background.</span>
+          <a id="si_forgot" href="#" style="color:#93c5fd; text-decoration:none; opacity:.8">Forgot?</a>
+        </div>
+        <button id="btnSignIn" class="btn">Continue</button>
+        <div id="si_err" class="error" style="display:none"></div>
+        <div id="si_ok"  class="ok" style="display:none"></div>
+      </div>
+
+      <!-- Create -->
+      <div id="paneCreate" class="form" style="display:none">
+        <div class="row">
+          <label>Email</label>
+          <input id="su_email" type="email" placeholder="you@example.com" autocomplete="username">
+        </div>
+        <div class="row">
+          <label>Password</label>
+          <input id="su_password" type="password" placeholder="At least 12 characters" autocomplete="new-password">
+          <div class="meter"><div id="mbar" class="mbar"></div></div>
+        </div>
+        <div class="helper"><span id="su_hint">Avoid common passwords; we check a local blacklist.</span></div>
+        <button id="btnCreate" class="btn">Create account</button>
+        <div id="su_err" class="error" style="display:none"></div>
+        <div id="su_ok"  class="ok" style="display:none"></div>
+      </div>
+
+      <!-- Profile / post-login -->
+      <div id="paneProfile" class="form" style="display:none">
+        <div class="row">
+          <label>Signed in as</label>
+          <input id="pf_email" disabled>
+        </div>
+        <div class="row">
+          <label>Role</label>
+          <input id="pf_role" disabled>
+        </div>
+        <div class="row">
+          <label>Scope</label>
+          <input id="pf_scope" disabled>
+        </div>
+        <div class="helper">
+          <button id="pf_to_admin" class="btn" style="background:#60a5fa; box-shadow:0 12px 28px rgba(96,165,250,.35)">Go to Admin</button>
+          <button id="pf_to_app" class="btn" style="background:#f472b6; box-shadow:0 12px 28px rgba(244,114,182,.35)">Open App</button>
+          <button id="pf_logout" class="btn" style="background:#fca5a5; box-shadow:0 12px 28px rgba(252,165,165,.35)">Logout</button>
+        </div>
+        <div id="pf_ok" class="ok" style="display:none"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+const BACKEND = 'http://127.0.0.1:8000';
+
+function byId(id){ return document.getElementById(id); }
+function show(id,b=true){ const el=byId(id); if(!el) return; el.style.display=b?'':'none'; }
+function setText(id,txt){ const el=byId(id); if(!el) return; el.textContent=txt; }
+function cls(el, on, cls){ if(!el) return; on? el.classList.add(cls): el.classList.remove(cls); }
+
+function storeTokens(access, refresh){
+  window.token = access; window.VAL_TOKEN = access;
+  localStorage.setItem('vr_token', access);
+  if(refresh) localStorage.setItem('vr_refresh', refresh);
+}
+function getAccess(){ return window.token || window.VAL_TOKEN || localStorage.getItem('vr_token') || ''; }
+async function refreshAccess(){
+  const r = localStorage.getItem('vr_refresh'); if(!r) return null;
+  try{
+    const res = await fetch(BACKEND+'/auth/refresh',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({refresh:r})});
+    if(!res.ok) return null; const j=await res.json(); storeTokens(j.access, j.refresh); return j.access;
+  }catch(e){ return null; }
+}
+async function whoami(){
+  const tok = getAccess(); if(!tok) return null;
+  const r = await fetch(BACKEND+'/auth/whoami',{headers:{Authorization:'Bearer '+tok}});
+  if(r.status===401){ const nt=await refreshAccess(); if(!nt) return null; return await whoami(); }
+  if(!r.ok) return null; const j=await r.json(); return j.claims||null;
+}
+function passScore(p){
+  let s=0; if(!p) return s;
+  if(p.length>=12) s+=1; if(/[A-Z]/.test(p)) s+=1; if(/[a-z]/.test(p)) s+=1; if(/[0-9]/.test(p)) s+=1; if(/[^A-Za-z0-9]/.test(p)) s+=1;
+  if(p.length>=20) s+=1; return Math.min(5,s);
+}
+function setMeter(p){
+  const bar = byId('mbar'); if(!bar) return;
+  const s = passScore(p); const pct = [0,20,40,60,80,100][s];
+  bar.style.width = pct+'%';
+}
+
+function switchPane(name){
+  const panes = ['paneSignIn','paneCreate','paneProfile']; panes.forEach(id=>show(id,false));
+  show(name,true);
+  const tabs = [byId('tabSignIn'),byId('tabCreate')];
+  if(name==='paneSignIn'){ cls(tabs[0],true,'active'); cls(tabs[1],false,'active'); }
+  if(name==='paneCreate'){ cls(tabs[0],false,'active'); cls(tabs[1],true,'active'); }
+}
+
+byId('tabSignIn').onclick = ()=>switchPane('paneSignIn');
+byId('tabCreate').onclick = ()=>switchPane('paneCreate');
+
+byId('su_password').addEventListener('input', e=>setMeter(e.target.value));
+
+byId('btnCreate').onclick = async ()=>{
+  const email = byId('su_email').value.trim();
+  const pass  = byId('su_password').value;
+  setText('su_err',''); setText('su_ok',''); show('su_err',false); show('su_ok',false);
+
+  if(!email || !pass){ setText('su_err','Enter email & password'); show('su_err'); return; }
+  if(pass.length<12){ setText('su_err','Password must be at least 12 characters'); show('su_err'); return; }
+  try{
+    const r = await fetch(BACKEND+'/auth/signup',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password:pass})});
+    if(!r.ok){ setText('su_err','Sign up failed: '+(await r.text())); show('su_err'); return; }
+    setText('su_ok','Account created. Please sign in.'); show('su_ok');
+    switchPane('paneSignIn');
+  }catch(e){ setText('su_err','Network error'); show('su_err'); }
+};
+
+byId('btnSignIn').onclick = async ()=>{
+  const email = byId('si_email').value.trim();
+  const pass  = byId('si_password').value;
+  setText('si_err',''); setText('si_ok',''); show('si_err',false); show('si_ok',false);
+  if(!email || !pass){ setText('si_err','Enter email & password'); show('si_err'); return; }
+  try{
+    const r = await fetch(BACKEND+'/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password:pass})});
+    if(!r.ok){ setText('si_err','Login failed: '+(await r.text())); show('si_err'); return; }
+    const j = await r.json();
+    storeTokens(j.access, j.refresh);
+    setText('si_ok','Welcome back'); show('si_ok');
+    // hydrate profile
+    const c = await whoami();
+    if(c){
+      byId('pf_email').value = c.sub || '';
+      byId('pf_role').value  = c.role || '';
+      byId('pf_scope').value = JSON.stringify(c.scope || {}, null, 0);
+    }
+    switchPane('paneProfile');
+  }catch(e){ setText('si_err','Network error'); show('si_err'); }
+};
+
+// Post-login actions
+byId('pf_logout').onclick = ()=>{
+  localStorage.removeItem('vr_token'); localStorage.removeItem('vr_refresh');
+  window.token=null; window.VAL_TOKEN=null;
+  switchPane('paneSignIn');
+};
+byId('pf_to_admin').onclick = ()=>{ window.location.href = '/admin/'; };
+byId('pf_to_app').onclick   = ()=>{ window.location.href = '/'; };
+
+// If already signed in, show profile
+(async ()=>{
+  const c = await whoami();
+  if(c){
+    byId('pf_email').value = c.sub || '';
+    byId('pf_role').value  = c.role || '';
+    byId('pf_scope').value = JSON.stringify(c.scope || {}, null, 0);
+    switchPane('paneProfile');
+  }
+})();
+</script>
+</body>
+</html>
