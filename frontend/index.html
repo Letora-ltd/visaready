@@ -45,6 +45,7 @@
 </footer>
 
 <script>
+  const BACKEND='http://127.0.0.1:8000';
 document.addEventListener("DOMContentLoaded", async () => {
   const originSel = document.getElementById("origin");
   const destSel = document.getElementById("dest");
@@ -61,7 +62,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   async function loadSeed() {
     // Try backend first
     try {
-      const seed = await fetch("/api/seed").then(r => r.json());
+      const seed = await fetch(`${BACKEND}/api/seed`).then(r => r.json());
       return seed;
     } catch (e) {
       // Fallback to static
