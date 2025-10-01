@@ -229,6 +229,8 @@ async function ie_login() {
 }
 
 function ie_parseItemsText(text) {
+  // supports: Title :: Details  (and optional third :: URL)
+
   const lines = (text || '').split(/\r?\n/);
   const items = [];
   const warnings = [];
@@ -246,7 +248,7 @@ function ie_parseItemsText(text) {
       warnings.push(`Line ${i+1}: missing " :: " — "${line}"`);
       title = line; details = '';
     }
-    items.push({ title: (title||'').trim(), details: (details||'').trim() });
+    items.push({ title: (title||'').trim(), details: (details||'').trim(), source_url: (line.split('::').length>2? line.split('::').slice(2).join('::').trim(): undefined) });
   });
   return { items, warnings };
 }
