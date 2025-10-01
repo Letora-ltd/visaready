@@ -115,7 +115,7 @@ document.getElementById('importBtn').addEventListener('click', async () => {
     const form = new FormData();
     form.append('file', f);
     form.append('mode', mode);
-    const res = await fetch('/admin/import/csv', {
+    const res = await fetch(`${BACKEND}/admin/import/csv`, {
       method:'POST',
       headers: { 'Authorization': 'Bearer ' + token },
       body: form
