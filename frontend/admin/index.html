@@ -111,6 +111,35 @@
   </div>
 </section>
 
+
+<section class="card" id="bulkDupCard">
+  <h2 class="h2">Bulk Duplicate</h2>
+  <p class="small">Clone one key to many. One destination per line (e.g., <code>IN-&gt;FR::TOURIST</code>).</p>
+  <div class="grid">
+    <div><div class="label">Source key</div><input id="bdup_src" placeholder="IN->DE::TOURIST"></div>
+    <div><div class="label">Admin Password</div><input id="bdup_pwd" type="password" placeholder="Enter admin password"></div>
+  </div>
+  <div class="grid" style="margin-top:10px;">
+    <div>
+      <div class="label">Destination keys (one per line)</div>
+      <textarea id="bdup_dst" rows="8" placeholder="IN->ES::TOURIST&#10;IN->IT::TOURIST&#10;IN->NL::TOURIST"></textarea>
+    </div>
+  </div>
+  <div style="margin-top:10px; display:flex; gap:12px; flex-wrap:wrap;">
+    <label style="display:inline-flex;align-items:center;gap:6px;">
+      <input type="checkbox" id="bdup_overwrite"> Overwrite if exists
+    </label>
+    <label style="display:inline-flex;align-items:center;gap:6px;">
+      <input type="checkbox" id="bdup_copy_fp" checked> Copy fees & processing
+    </label>
+    <label style="display:inline-flex;align-items:center;gap:6px;">
+      <input type="checkbox" id="bdup_copy_src" checked> Copy sources
+    </label>
+    <button class="btn" id="bdup_btn">Duplicate</button>
+    <span id="bdup_msg" class="small"></span>
+  </div>
+</section>
+
 </main>
 
 <script> const BACKEND = 'http://127.0.0.1:8000'; </script>
@@ -356,6 +385,38 @@ document.getElementById('dup_btn').onclick = async () => {
     console.error(e);
     msg.textContent = 'Duplicate failed.';
   }
+};
+</script>
+
+
+<script>
+let BDUP_TOKEN = null;
+async function bdup_login(){
+  const pwd = document.getElementById('bdup_pwd').value.trim();
+  if(!pwd) throw new Error("Enter admin password");
+  const res = await fetch(`${BACKEND}/admin/login`, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({password: pwd})});
+  if(!res.ok) throw new Error("Login failed");
+  BDUP_TOKEN = (await res.json()).token; return BDUP_TOKEN;
+}
+document.getElementById('bdup_btn').onclick = async () => {
+  const msg = document.getElementById('bdup_msg'); msg.textContent='';
+  const src = document.getElementById('bdup_src').value.trim();
+  const dst = document.getElementById('bdup_dst').value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+  const overwrite = document.getElementById('bdup_overwrite').checked;
+  const copy_fp = document.getElementById('bdup_copy_fp').checked;
+  const copy_src = document.getElementById('bdup_copy_src').checked;
+  if(!src || !dst.length){ msg.textContent='Enter source and at least one destination'; return; }
+  try{
+    if(!BDUP_TOKEN) await bdup_login();
+    const res = await fetch(`${BACKEND}/admin/duplicate/bulk`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+BDUP_TOKEN},
+      body: JSON.stringify({src_key:src, dst_keys:dst, overwrite:overwrite, copy_fees_processing:copy_fp, copy_sources:copy_src})
+    });
+    if(!res.ok){ msg.textContent='Bulk duplicate failed: '+(await res.text()); return; }
+    const data = await res.json();
+    msg.textContent = `Done ✔ Created/Updated: ${data.created_or_updated.length}, Skipped: ${data.skipped.length}`;
+  }catch(e){ console.error(e); msg.textContent='Bulk duplicate failed'; }
 };
 </script>
 

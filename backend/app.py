@@ -136,4 +136,54 @@ def admin_duplicate(payload: DuplicateIn, authorization: str | None = Header(def
     save_json("checklists.json", data)
     return {"ok": True, "dst_key": dst_key}
 
+
+# -------- Bulk duplicate corridors --------
+class BulkDuplicateIn(BaseModel):
+    src_key: str
+    dst_keys: list[str]
+    overwrite: bool = False
+    copy_fees_processing: bool = True
+    copy_sources: bool = True
+
+@app.post("/admin/duplicate/bulk")
+def admin_duplicate_bulk(payload: BulkDuplicateIn, authorization: str | None = Header(default=None)):
+    _auth(authorization)
+
+    def norm_key(k: str):
+        if "::" not in k or "->" not in k:
+            raise HTTPException(400, f"Bad key format: {k} (expected ORIGIN->DEST::PURPOSE)")
+        corr, purpose = k.split("::", 1)
+        origin, dest = corr.split("->", 1)
+        return f"{origin.upper()}->{dest.upper()}::{purpose.upper()}"
+
+    data = load_json("checklists.json")
+    src_key = norm_key(payload.src_key)
+    if src_key not in data:
+        raise HTTPException(404, f"Source key not found: {src_key}")
+
+    src_entry = data[src_key]
+    made, skipped = [], []
+
+    for raw in payload.dst_keys:
+        if not raw.strip(): continue
+        dst_key = norm_key(raw.strip())
+        if (not payload.overwrite) and dst_key in data:
+            skipped.append(dst_key); continue
+
+        new_entry = {
+            "items": list(src_entry.get("items", [])),
+            "last_verified": src_entry.get("last_verified", ""),
+        }
+        if payload.copy_fees_processing:
+            new_entry["fees"] = src_entry.get("fees", "")
+            new_entry["processing"] = src_entry.get("processing", "")
+        if payload.copy_sources:
+            new_entry["sources"] = list(src_entry.get("sources", []))
+
+        data[dst_key] = new_entry
+        made.append(dst_key)
+
+    save_json("checklists.json", data)
+    return {"ok": True, "created_or_updated": made, "skipped": skipped}
+
 app.include_router(admin_csv.router)
