@@ -1,4 +1,4 @@
-import json, os, datetime, sys
+import json, os, datetime
 
 FRONT = os.path.join("frontend","seed","checklists.json")
 BACK  = os.path.join("data","seed","checklists.json")
@@ -23,13 +23,16 @@ def add_entry(store, key, items, sources, fees, proc, stamp):
 today = str(datetime.date.today())
 CODES = ["DE","FR","IT","ES","ID","LK","NP","VN","PH","CN","HK","RU","ZA","CH","NL"]
 
+# Load once (frontend becomes the “source of truth”; backend mirrors it)
+checklists = load(FRONT)
+
 # Official India links (used for XX->IN)
 S_IN = [
     {"label":"Indian e-Visa (Official)", "url":"https://indianvisaonline.gov.in/evisa/"},
     {"label":"Bureau of Immigration (India)", "url":"https://boi.gov.in/"}
 ]
 
-# Light country-side source placeholders for IN->XX (you can refine later in Admin)
+# Host-country student/work sources for IN->XX (light placeholders; refine later in Admin)
 S_OUT_STUDENT = {
     "DE":[{"label":"Germany — Student Visa (Official)","url":"https://india.diplo.de/in-en/service/05-VisaEinreise/-/2523148"}],
     "FR":[{"label":"France — Campus France","url":"https://www.campusfrance.org/en"}],
@@ -54,7 +57,7 @@ S_OUT_WORK = {
     "ES":[{"label":"Spain — Work Permits","url":"https://www.exteriores.gob.es/"}],
     "ID":[{"label":"Indonesia — KITAS","url":"https://www.imigrasi.go.id/en/"}],
     "LK":[{"label":"Sri Lanka — Employment","url":"https://www.immigration.gov.lk/visas/"}],
-    "NP":[{"label":"Nepal — Work Visa","url":"https://www.imigration.gov.np/".replace("imigration","immigration")}],
+    "NP":[{"label":"Nepal — Work Visa","url":"https://www.immigration.gov.np/"}],
     "VN":[{"label":"Vietnam — Work","url":"https://www.immigration.gov.vn/"}],
     "PH":[{"label":"Philippines — Work Visa","url":"https://immigration.gov.ph/"}],
     "CN":[{"label":"China — Z Visa (Work)","url":"https://cova.mfa.gov.cn/"}],
@@ -109,17 +112,13 @@ proc_work_in     = "3–15 working days typical; extra time for clearances"
 
 for code in CODES:
     # IN -> XX
-    key_s = f"IN->{code}::STUDENT"
-    key_w = f"IN->{code}::WORK"
-    add_entry(checklists, key_s, IN_TO_X_STUDENT, S_OUT_STUDENT.get(code, []), fees_student_out, proc_student_out, today)
-    add_entry(checklists, key_w, IN_TO_X_WORK,    S_OUT_WORK.get(code,    []), fees_work_out,    proc_work_out,    today)
+    add_entry(checklists, f"IN->{code}::STUDENT", IN_TO_X_STUDENT, S_OUT_STUDENT.get(code, []), fees_student_out, proc_student_out, today)
+    add_entry(checklists, f"IN->{code}::WORK",    IN_TO_X_WORK,    S_OUT_WORK.get(code,    []), fees_work_out,    proc_work_out,    today)
     # XX -> IN
-    key_s2 = f"{code}->IN::STUDENT"
-    key_w2 = f"{code}->IN::WORK"
-    add_entry(checklists, key_s2, X_TO_IN_STUDENT, S_IN, fees_in, proc_student_in, today)
-    add_entry(checklists, key_w2, X_TO_IN_WORK,    S_IN, fees_in, proc_work_in,    today)
+    add_entry(checklists, f"{code}->IN::STUDENT", X_TO_IN_STUDENT, S_IN, fees_in, proc_student_in, today)
+    add_entry(checklists, f"{code}->IN::WORK",    X_TO_IN_WORK,    S_IN, fees_in, proc_work_in,    today)
 
-# Write back to both copies
+# Write out
 dump(FRONT, checklists)
 dump(BACK,  checklists)
 
