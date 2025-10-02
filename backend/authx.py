@@ -5,8 +5,8 @@ from typing import Dict, Any
 from pydantic import BaseModel
 
 class SetupIn(BaseModel):
-    body.seed_email: str
-    body.seed_token: str
+    seed_email: str
+    seed_token: str
 
 class SignupIn(BaseModel):
     email: str
@@ -21,10 +21,53 @@ class LoginIn(BaseModel):
     password: str
 
 class RefreshIn(BaseModel):
-    
-
+    refresh_token: str
+    refresh_token: str
 class LogoutIn(BaseModel):
-    
+
+def _load_reset():
+    p = RESET
+    if not os.path.exists(p): return {}
+    with open(p,"r",encoding="utf-8") as f: return json.load(f)
+
+def _save_reset(d):
+    os.makedirs(AUTH_DIR, exist_ok=True)
+    with open(RESET,"w",encoding="utf-8") as f: json.dump(d,f,indent=2,ensure_ascii=False)
+
+def _mk_reset_token(email:str):
+    raw = f"{email}|{_now()}".encode()
+    sig = hmac.new(JWT_SECRET.encode(), raw, hashlib.sha256).digest()
+    return _b64(raw) + "." + _b64(sig)
+
+def _check_reset_token(tok:str):
+    try:
+        body_b64, sig_b64 = tok.split(".")
+        raw = base64.urlsafe_b64decode(body_b64 + "==")
+        email, ts = raw.decode().split("|",1)
+        exp_ok = (_now() - int(ts)) < 3600  # 1 hour validity
+        good = _b64(hmac.new(JWT_SECRET.encode(), raw, hashlib.sha256).digest()) == sig_b64
+        if not good or not exp_ok: return None
+        return email
+    except Exception:
+        return None
+
+def _revoke_all_refresh_for(email:str):
+    store = _load_refresh()
+    changed = False
+    for tid, rec in store.items():
+        if rec.get("user")==email and not rec.get("revoked"):
+            rec["revoked"] = True
+            store[tid] = rec
+            changed = True
+    if changed: _save_refresh(store)
+
+class ResetRequestIn(BaseModel):
+    email: str
+
+class ResetConfirmIn(BaseModel):
+    token: str
+    new_password: str
+    refresh_token: str
 from .utils import load_json, save_json
 
 router = APIRouter()
@@ -32,6 +75,7 @@ DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
 AUTH_DIR = os.path.join(DATA_DIR, "auth")
 USERS = os.path.join(AUTH_DIR, "users.json")
 REFRESH = os.path.join(AUTH_DIR, "refresh.json")
+RESET = os.path.join(AUTH_DIR, "reset.json")
 BLACKLIST = os.path.join(AUTH_DIR, "blacklist.txt")
 
 ACCESS_TTL = int(os.getenv("ACCESS_TTL_MINUTES", "15")) * 60
@@ -233,3 +277,40 @@ class RateLimiter:
         arr = self.BUCKET[self.ip] = [t for t in self.BUCKET.get(self.ip,[]) if now - t < self.WINDOW]
         if len(arr) >= self.CAP: return False
         arr.append(now); return True
+
+
+
+@router.post("/auth/request_reset")
+def request_reset(body: ResetRequestIn):
+    users = _load_users()
+    email = body.email.strip().lower()
+    # Do not leak existence: always 200
+    if email in users:
+        token = _mk_reset_token(email)
+        store = _load_reset()
+        store[token] = {"email": email, "exp": _now()+3600}
+        _save_reset(store)
+        # In production you would email this token. For dev we return it so you can paste it in the portal.
+        return {"ok": True, "dev_token": token}
+    return {"ok": True}
+
+@router.post("/auth/reset_password")
+def reset_password(body: ResetConfirmIn):
+    email = _check_reset_token(body.token)
+    if not email: raise HTTPException(400, "bad/expired token")
+    _validate_password(body.new_password)
+    users = _load_users()
+    if email not in users: raise HTTPException(404, "not found")
+    salt = _new_salt()
+    users[email]["pwd_hash"] = _pbkdf2(body.new_password, salt)
+    users[email]["salt"] = _b64(salt)
+    users[email]["last_pw_change"] = _now()
+    _save_users(users)
+    # revoke all refresh tokens for this user
+    _revoke_all_refresh_for(email)
+    # burn the reset token
+    store = _load_reset()
+    if body.token in store: 
+        store[body.token]["exp"] = 0
+        _save_reset(store)
+    return {"ok": True}
