@@ -2,6 +2,29 @@
 import os, json, time, hmac, hashlib, base64, random, string
 from fastapi import APIRouter, HTTPException, Request, Header
 from typing import Dict, Any
+from pydantic import BaseModel
+
+class SetupIn(BaseModel):
+    body.seed_email: str
+    body.seed_token: str
+
+class SignupIn(BaseModel):
+    email: str
+    password: str
+
+class SignupMasterIn(BaseModel):
+    email: str
+    password: str
+
+class LoginIn(BaseModel):
+    email: str
+    password: str
+
+class RefreshIn(BaseModel):
+    
+
+class LogoutIn(BaseModel):
+    
 from .utils import load_json, save_json
 
 router = APIRouter()
@@ -99,29 +122,29 @@ def _validate_password(pwd:str):
     if _breach_check_local(pwd): raise HTTPException(400, "Password too common")
 
 @router.post("/auth/setup")
-def setup(seed_email: str, seed_token: str):
+def setup(body: SetupIn):
     # One-time super admin bootstrap; disables itself by writing a marker
     marker = os.path.join(AUTH_DIR, ".setup_done")
     if os.path.exists(marker): raise HTTPException(403, "setup already done")
     expect_email = os.getenv("SUPERADMIN_SEED_EMAIL","").strip()
     expect_token = os.getenv("SUPERADMIN_SEED_TOKEN","").strip()
     if not expect_email or not expect_token: raise HTTPException(400, "seed envs not set")
-    if seed_email.strip().lower()!=expect_email.lower() or seed_token.strip()!=expect_token.strip():
+    if body.seed_email.strip().lower()!=expect_email.lower() or body.seed_token.strip()!=expect_token.strip():
         raise HTTPException(401, "seed mismatch")
 
     users = _load_users()
-    if seed_email in users: raise HTTPException(409, "already exists")
+    if body.seed_email in users: raise HTTPException(409, "already exists")
     salt = _new_salt()
     # we do not set a password here; super admin will set via /auth/signup_master
-    users[seed_email] = {"pwd_hash": "", "salt": _b64(salt), "role":"super_admin", "scope": _ensure_scope("super_admin"),
+    users[body.seed_email] = {"pwd_hash": "", "salt": _b64(salt), "role":"super_admin", "scope": _ensure_scope("super_admin"),
                          "created_at": _now(), "locked": False, "last_pw_change": 0}
     _save_users(users)
     with open(marker,"w") as f: f.write("1")
     return {"ok": True}
 
 @router.post("/auth/signup")    # user role
-def signup(email: str, password: str):
-    _validate_password(password)
+def signup():
+    _validate_password(body.password)
     users = _load_users()
     if email in users and users[email]["pwd_hash"]: raise HTTPException(409, "account exists")
     salt = _new_salt()
@@ -132,10 +155,10 @@ def signup(email: str, password: str):
     return {"ok": True}
 
 @router.post("/auth/signup_master")  # set password for seeded superadmin
-def signup_master(email: str, password: str):
+def signup_master():
     marker = os.path.join(AUTH_DIR, ".setup_done")
     if not os.path.exists(marker): raise HTTPException(403, "setup not initialised")
-    _validate_password(password)
+    _validate_password(body.password)
     users = _load_users()
     if email not in users: raise HTTPException(404, "no seed user")
     salt = _new_salt()
@@ -146,27 +169,27 @@ def signup_master(email: str, password: str):
     return {"ok": True}
 
 @router.post("/auth/login")
-def login(request: Request, email: str, password: str):
+def login(request: Request, body: LoginIn):
     # rate limit: simple IP window 5/min (in-memory ephemeral)
     lim = RateLimiter.get(request.client.host)
     if not lim.allow(): raise HTTPException(429, "Too many attempts, try later")
 
     users = _load_users()
-    u = users.get(email)
+    u = users.get(body.email)
     if not u: raise HTTPException(401, "invalid")
     if u.get("locked"): raise HTTPException(401, "locked")
     salt = base64.urlsafe_b64decode((u["salt"]+"==").encode())
-    if _pbkdf2(password, salt) != u["pwd_hash"]: raise HTTPException(401, "invalid")
+    if _pbkdf2(body.password, salt) != u["pwd_hash"]: raise HTTPException(401, "invalid")
 
     scope = u.get("scope") or _ensure_scope(u.get("role","user"))
-    access = _mk_access(email, u.get("role","user"), scope)
-    refresh_id = _mk_refresh(email, _ua_ip_hash(request))
+    access = _mk_access(body.email, u.get("role","user"), scope)
+    refresh_id = _mk_refresh(body.email, _ua_ip_hash(request))
     return {"access": access, "refresh": refresh_id, "role": u.get("role","user"), "scope": scope}
 
 @router.post("/auth/refresh")
-def refresh(request: Request, refresh: str):
+def refresh(request: Request, body: RefreshIn):
     store = _load_refresh()
-    rec = store.get(refresh)
+    rec = store.get(body.refresh)
     if not rec or rec.get("revoked"): raise HTTPException(401, "invalid refresh")
     if rec["exp"] < _now(): raise HTTPException(401, "expired")
     if rec["ua"] != _ua_ip_hash(request): raise HTTPException(401, "device mismatch")
@@ -177,16 +200,16 @@ def refresh(request: Request, refresh: str):
     access = _mk_access(rec["user"], u.get("role","user"), scope)
     # rotate refresh
     rec["revoked"] = True
-    store[refresh] = rec
+    store[body.refresh] = rec
     new_id = _mk_refresh(rec["user"], rec["ua"])
     _save_refresh(store)
     return {"access": access, "refresh": new_id}
 
 @router.post("/auth/logout")
-def logout(refresh: str):
+def logout(body: LogoutIn):
     store = _load_refresh()
-    if refresh in store:
-        store[refresh]["revoked"] = True
+    if body.refresh in store:
+        store[body.refresh]["revoked"] = True
         _save_refresh(store)
     return {"ok": True}
 

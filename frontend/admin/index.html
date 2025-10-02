@@ -1750,4 +1750,43 @@ function downloadTextFile(filename, text){
 })();
 </script>
 
+
+<!-- v-open-auth-portal -->
+<script>
+/* v-open-auth-portal */
+(function(){
+  function injectOpenAuth(){
+    const loginBtn = document.getElementById('loginBtn');
+    if(!loginBtn) return;
+    const row = loginBtn.parentElement;
+    if(!row || document.getElementById('open_auth_btn')) return;
+    const a = document.createElement('a');
+    a.id = 'open_auth_btn';
+    a.textContent = 'Open Auth Portal';
+    a.href = '/auth/';
+    a.className = 'btn';
+    a.style.marginLeft = '10px';
+    row.appendChild(a);
+  }
+
+  function autoRedirectIfNoToken(){
+    try{
+      const tok = window.token || window.VAL_TOKEN || localStorage.getItem('vr_token') || '';
+      if(!tok){
+        // only redirect when user actually hits /admin/ landing and is not logged in
+        // leave editors alone if they are already on a deep admin screen with UI open
+        if (location.pathname.replace(/\/+$/,'') === '/admin'){
+          setTimeout(()=>{ location.href = '/auth/'; }, 400);
+        }
+      }
+    }catch(e){}
+  }
+
+  document.addEventListener('DOMContentLoaded', ()=>{
+    injectOpenAuth();
+    autoRedirectIfNoToken();
+  });
+})();
+</script>
+
 </body></html>
