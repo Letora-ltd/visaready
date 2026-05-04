@@ -22,7 +22,7 @@ else:
 
 class Settings(BaseSettings):
     database_url: str = Field(default=default_db, alias="DATABASE_URL")
-    cors_origins: list[str] = ["*"]
+    cors_origins: list[str] = ["http://localhost:5173", "http://localhost:3000", "null"]
     api_rate_limit_per_minute: int = Field(default=120, alias="API_RATE_LIMIT_PER_MINUTE")
     admin_api_key: str = Field(default="dev-admin-key", alias="ADMIN_API_KEY")
     

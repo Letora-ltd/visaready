@@ -289,7 +289,14 @@
                     body: JSON.stringify(body)
                 });
 
-                const data = await res.json();
+                const contentType = res.headers.get("content-type");
+                let data;
+                if (contentType && contentType.indexOf("application/json") !== -1) {
+                    data = await res.json();
+                } else {
+                    const text = await res.text();
+                    throw new Error(`Server returned non-JSON response (${res.status}). Please check backend logs.`);
+                }
 
                 if (!res.ok) {
                     throw new Error(data.detail || 'Authentication failed');
