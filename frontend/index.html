@@ -3,319 +3,239 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vixa - Smart Visa Platform | UK Schengen Appointments</title>
-    <meta name="description" content="Check Schengen visa appointment availability from the UK. Smart visa discovery and application tracking.">
+    <title>Vixa Premium | Smart Visa Monetization</title>
     <link rel="stylesheet" href="/style.css">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <style>
+        .premium-badge {
+            background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 99px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+        .pricing-card {
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .pricing-card.featured {
+            border-color: #f59e0b;
+            background: rgba(245, 158, 11, 0.05);
+            transform: scale(1.05);
+        }
+        .fomo-delay {
+            background: #fff7ed;
+            border: 1px solid #ffedd5;
+            color: #9a3412;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
     <header class="nav">
-        <div class="nav-brand">
-            <span>VIXA</span> Intelligence
-        </div>
+        <div class="nav-brand"><span>VIXA</span> Premium</div>
         <nav>
-            <a href="#slots">Appointments</a>
-            <a href="#discover">Discover</a>
-            <a href="#track">Track</a>
+            <a href="#dashboard">Dashboard</a>
+            <a href="#pricing">Upgrade</a>
         </nav>
         <div class="nav-user">
+            <span id="subBadge" class="premium-badge" style="display: none;">Premium</span>
             <span class="user-email" id="userEmail"></span>
             <button class="btn-logout" onclick="logout()">Sign Out</button>
         </div>
     </header>
 
     <div class="container">
-        <!-- Intelligence Panel -->
-        <section class="intel-panel animate-fade-in">
-            <div style="flex: 1;">
-                <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-1);">
-                    <span style="background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 4px; font-size: var(--font-xs); font-weight: 700; text-transform: uppercase;">Next Best Action</span>
-                    <span id="bestRouteLabel" style="font-size: var(--font-sm); font-weight: 500;">Analyzing routes...</span>
-                </div>
-                <h2 id="bestRouteTitle" style="font-size: var(--font-xl); font-weight: 700; margin-bottom: var(--space-3);">Identify high-probability visa corridors</h2>
-                <div style="max-width: 400px;">
-                    <div style="display: flex; justify-content: space-between; font-size: var(--font-xs); margin-bottom: 4px;">
-                        <span>System Readiness</span>
-                        <span id="progressText">0%</span>
+        <!-- Dashboard Content -->
+        <section id="dashboard">
+            <div class="grid" style="grid-template-columns: 2fr 1fr; gap: 2rem;">
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    <div id="recommendationPanel" class="card" style="background: var(--primary); color: white; display: none;">
+                        <h2 id="recMessage" style="margin: 0;">Analyzing...</h2>
+                        <p id="recSub" style="margin: 5px 0 0; opacity: 0.8;"></p>
                     </div>
-                    <div class="progress-bar-container">
-                        <div id="progressBar" class="progress-bar" style="width: 0%;"></div>
+
+                    <section class="card">
+                        <h3>Live Intelligence Monitor</h3>
+                        <div id="slotsGrid" class="slots-container"></div>
+                    </section>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    <section class="card" style="border-top: 4px solid var(--accent);">
+                        <h3>Subscription</h3>
+                        <div id="subStatus" style="margin-bottom: 1rem;">Checking status...</div>
+                        <button id="upgradeBtn" class="btn-primary" style="background: #f59e0b; display: none;" onclick="document.getElementById('pricing').scrollIntoView({behavior: 'smooth'})">Upgrade to Premium ⚡</button>
+                    </section>
+
+                    <section id="vixaa-alerts" class="card">
+                        <h3>Alert Setup</h3>
+                        <div class="input-group">
+                            <label>Telegram ID</label>
+                            <input type="text" id="telegramId" placeholder="e.g. 12345678">
+                        </div>
+                        <div class="input-group" style="margin-top: 10px;">
+                            <label>Country</label>
+                            <select id="alertCountry">
+                                <option value="Belgium">Belgium</option>
+                                <option value="France">France</option>
+                            </select>
+                        </div>
+                        <button class="btn-primary" style="margin-top: 15px;" onclick="subscribeAlert()">Set Alert</button>
+                        <div id="alertLimitMsg" class="fomo-delay" style="display: none;">
+                            💎 <b>Free Tier Limit:</b> You can only track 1 location. Upgrade for unlimited tracking.
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Section -->
+        <section id="pricing" style="margin-top: 4rem; padding-bottom: 4rem;">
+            <div style="text-align: center; margin-bottom: 3rem;">
+                <h2 style="font-size: 2.5rem;">Unlock the ⚡ Premium Advantage</h2>
+                <p style="color: var(--text-light);">Beat the bots and secure your visa appointment faster.</p>
+            </div>
+            
+            <div class="grid" style="grid-template-columns: repeat(2, 1fr); max-width: 800px; margin: 0 auto; gap: 2rem;">
+                <div class="card pricing-card">
+                    <h4>Vixa Free</h4>
+                    <div style="font-size: 2rem; font-weight: 800; margin: 1rem 0;">₹0 <span style="font-size: 1rem; font-weight: 400;">/mo</span></div>
+                    <ul style="list-style: none; padding: 0; margin-bottom: 2rem;">
+                        <li>✅ Basic Slot Monitoring</li>
+                        <li>⏳ <b>Delayed Alerts</b> (3-5 min delay)</li>
+                        <li>📍 1 Tracked Location</li>
+                    </ul>
+                    <button class="btn-ghost" disabled>Current Plan</button>
+                </div>
+
+                <div class="card pricing-card featured">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h4>Vixa Premium</h4>
+                        <span class="premium-badge">Most Popular</span>
                     </div>
-                </div>
-            </div>
-            <div style="text-align: right;">
-                <div style="font-size: var(--font-2xl); font-weight: 800; line-height: 1;">24/7</div>
-                <div style="font-size: var(--font-xs); opacity: 0.8; margin-bottom: var(--space-4);">Active Monitoring</div>
-                <button class="btn-primary" style="background: var(--white); color: var(--accent); width: auto; padding: 0.5rem 1.5rem;" onclick="document.getElementById('slots').scrollIntoView({behavior: 'smooth'})">
-                    Check Slots →
-                </button>
-            </div>
-        </section>
-
-        <!-- Stats Grid -->
-        <div class="grid" style="margin-bottom: var(--space-8); grid-template-columns: repeat(3, 1fr);">
-            <div class="card" style="padding: var(--space-4); margin-bottom: 0;">
-                <div style="color: var(--text-light); font-size: var(--font-xs); font-weight: 600; text-transform: uppercase;">Verified Corridors</div>
-                <div style="font-size: var(--font-2xl); font-weight: 800; color: var(--accent);">142</div>
-            </div>
-            <div class="card" style="padding: var(--space-4); margin-bottom: 0;">
-                <div style="color: var(--text-light); font-size: var(--font-xs); font-weight: 600; text-transform: uppercase;">Average Wait Time</div>
-                <div style="font-size: var(--font-2xl); font-weight: 800; color: var(--accent);">3.2 Days</div>
-            </div>
-            <div class="card" style="padding: var(--space-4); margin-bottom: 0;">
-                <div style="color: var(--text-light); font-size: var(--font-xs); font-weight: 600; text-transform: uppercase;">Success Rate</div>
-                <div style="font-size: var(--font-2xl); font-weight: 800; color: var(--accent);">98.4%</div>
-            </div>
-        </div>
-
-        <!-- Hero Section (Subtle) -->
-        <section class="hero animate-fade-in" style="padding: var(--space-8) var(--space-4); margin-bottom: var(--space-8); background: none; text-align: left;">
-            <h2 style="font-size: var(--font-2xl);">Your visa journey, <span style="color: var(--accent);">quantified.</span></h2>
-            <p style="margin: 0; max-width: 100%;">Real-time intelligence for Schengen visa appointments. High-trust data for UK travelers.</p>
-        </section>
-
-        <!-- Slots Section -->
-        <section id="slots" class="card animate-fade-in" style="animation-delay: 0.1s;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                <h3>Live Availability Monitor</h3>
-                <div style="width: 200px;">
-                    <select id="slotFilter" onchange="loadSlots()">
-                        <option value="">Filter Regions</option>
-                        <option value="FR">France</option>
-                        <option value="ES">Spain</option>
-                        <option value="IT">Italy</option>
-                        <option value="DE">Germany</option>
-                        <option value="GR">Greece</option>
-                    </select>
-                </div>
-            </div>
-            <div style="margin-bottom: 1.5rem; padding: 0.75rem 1rem; background: var(--primary-light); border-radius: 0.5rem; display: flex; align-items: flex-start; gap: 0.75rem; border-left: 4px solid var(--accent);">
-                <span style="font-size: 1.25rem;">ℹ️</span>
-                <p style="font-size: var(--font-xs); color: var(--text-dark); margin: 0; line-height: 1.4;">
-                    <strong>Disclaimer:</strong> Appointment availability changes rapidly. While we verify data every few minutes, we recommend checking the official portal immediately after finding a slot. Vixa does not guarantee appointment booking.
-                </p>
-            </div>
-            <div id="slotsGrid" class="slots-container">
-                <!-- Shimmer Loading State -->
-                <div class="slot-card shimmer" style="height: 280px; min-height: 280px;"></div>
-                <div class="slot-card shimmer" style="height: 280px; min-height: 280px;"></div>
-                <div class="slot-card shimmer" style="height: 280px; min-height: 280px;"></div>
-            </div>
-        </section>
-
-        <!-- Discovery Section -->
-        <section id="discover" class="card animate-fade-in" style="animation-delay: 0.2s;">
-            <h3>Intelligent Discovery</h3>
-            <p style="margin-bottom: 1.5rem; color: var(--text-light);">We've verified 42 corridors for you today.</p>
-            <div class="row">
-                <div class="input-group" style="flex: 1;">
-                    <label>Origin</label>
-                    <select id="searchOrigin">
-                        <option value="GB">United Kingdom (LHR)</option>
-                        <option value="IN">India (DEL)</option>
-                    </select>
-                </div>
-                <div class="input-group" style="flex: 2;">
-                    <label>Destination</label>
-                    <input id="searchQ" placeholder="Search by country, city, or visa type...">
-                </div>
-                <div class="input-group">
-                    <button class="btn-primary" onclick="searchCorridors()">Explore →</button>
-                </div>
-            </div>
-            <ul id="corridors" style="margin-top: 1.5rem; list-style: none;"></ul>
-        </section>
-
-        <!-- Tracking Section -->
-        <section id="track" class="card animate-fade-in" style="animation-delay: 0.5s;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                <h3>Tracking Dashboard</h3>
-                <div id="refreshGroup">
-                    <button class="btn-ghost" style="width: auto; padding: 0.5rem 1rem;" onclick="loadApplications()">Refresh</button>
-                </div>
-            </div>
-            <div id="appsList">
-                <div style="text-align: center; color: var(--text-light); padding: 3rem 1rem; border: 2px dashed #e2e8f0; border-radius: 1rem;">
-                    <p>Login to view and track your visa applications in real-time.</p>
+                    <div style="font-size: 2rem; font-weight: 800; margin: 1rem 0;">₹999 <span style="font-size: 1rem; font-weight: 400;">/mo</span></div>
+                    <ul style="list-style: none; padding: 0; margin-bottom: 2rem;">
+                        <li>✅ <b>Instant Priority Alerts</b> ⚡</li>
+                        <li>✅ <b>Unlimited</b> Tracked Locations</li>
+                        <li>✅ <b>Advanced</b> Prediction Engine</li>
+                        <li>✅ <b>Expert</b> Document Review</li>
+                    </ul>
+                    <button class="btn-primary" style="background: #f59e0b;" onclick="startPayment()">Upgrade Now →</button>
                 </div>
             </div>
         </section>
-
-        <footer style="margin-top: 4rem; text-align: center; color: var(--text-light); padding-bottom: 4rem; border-top: 1px solid var(--primary-light); padding-top: 2rem;">
-            <div style="max-width: 800px; margin: 0 auto 2rem; font-size: var(--font-xs); line-height: 1.6; opacity: 0.8;">
-                <p><strong>General Disclaimer:</strong> Vixa is an independent information service and is not affiliated with any embassy, consulate, or government agency. We aggregate and verify appointment availability through public and private sources. We do not provide legal advice or guarantee visa approval. All trademarks and logos are the property of their respective owners.</p>
-            </div>
-            <p>&copy; 2026 Vixa platform. Smart Visa Platform. <a href="/legal/privacy.html">Privacy</a> &middot; <a href="/legal/terms.html">Terms</a> &middot; <a href="/legal/security.html">Security</a></p>
-        </footer>
     </div>
 
     <script>
-        const BACKEND = '';
-        const API = BACKEND;
-        let token = localStorage.getItem('vr_token') || '';
+        const API = '';
+        let token = localStorage.getItem('vr_token');
+        const user = JSON.parse(localStorage.getItem('vr_user') || '{}');
 
-        // Session Check
-        (function() {
-            const user = JSON.parse(localStorage.getItem('vr_user') || '{}');
-            if (!token) {
-                window.location.href = './auth/index.html';
-                return;
-            }
-            document.getElementById('userEmail').textContent = user.email || 'User';
-        })();
+        if (!token) window.location.href = './auth/index.html';
+        document.getElementById('userEmail').textContent = user.email;
 
-        function logout() {
-            localStorage.removeItem('vr_token');
-            localStorage.removeItem('vr_user');
-            localStorage.removeItem('vr_role');
-            window.location.href = './auth/index.html';
+        async function init() {
+            loadDashboard();
+            checkSubscription();
         }
 
-        const hdr = () => token ? { 'Authorization': 'Bearer ' + token } : {};
+        async function checkSubscription() {
+            try {
+                const res = await fetch(`${API}/api/vixaa/dashboard?user_id=${user.id}`);
+                const data = await res.json();
+                
+                const isPremium = data.preferences && data.preferences.length > 0; // Simplified for demo
+                // In real app, check user.subscription_type from API
+                
+                const subStatus = document.getElementById('subStatus');
+                const subBadge = document.getElementById('subBadge');
+                const upgradeBtn = document.getElementById('upgradeBtn');
+                const limitMsg = document.getElementById('alertLimitMsg');
 
-        function initIntel() {
-            const bar = document.getElementById('progressBar');
-            const text = document.getElementById('progressText');
-            const label = document.getElementById('bestRouteLabel');
-            const title = document.getElementById('bestRouteTitle');
-            
-            setTimeout(() => {
-                if(bar) bar.style.width = '85%';
-                if(text) text.textContent = '85%';
-                if(label) label.textContent = 'System Optimal';
-                if(title) title.textContent = 'France (TLS) slots verified. High probability corridor.';
-            }, 1000);
+                if (user.subscription_type === 'premium') {
+                    subStatus.innerHTML = '✨ <b>Premium Member</b><br><small>Active until ' + new Date(user.subscription_expiry).toLocaleDateString() + '</small>';
+                    subBadge.style.display = 'inline-block';
+                    upgradeBtn.style.display = 'none';
+                    limitMsg.style.display = 'none';
+                } else {
+                    subStatus.innerHTML = '🆓 <b>Free Tier</b><br><small>Delayed alerts enabled</small>';
+                    upgradeBtn.style.display = 'block';
+                    limitMsg.style.display = 'block';
+                }
+            } catch (e) {}
         }
 
-        async function loadSlots() {
-            const dest = document.getElementById('slotFilter').value;
+        async function loadDashboard() {
             const grid = document.getElementById('slotsGrid');
             try {
-                const r = await fetch(`${API}/api/visa/status?country=GB${dest ? '&visa_type=' + dest : ''}`);
-                const payload = await r.json();
-                const data = (payload.data || []).map(x => ({
-                    dest: x.country, 
-                    status: x.availability_status, 
-                    destination_name: x.city, 
-                    location: x.city, 
-                    provider: x.freshness_label, 
-                    next_slot: x.last_updated ? new Date(x.last_updated) : null,
-                    confidence: 'High',
-                    verified_min: Math.floor(Math.random() * 60) + 1
-                }));
-                
-                if (data.length === 0) {
-                    grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-muted);">No slots found.</p>`;
-                    return;
-                }
+                const res = await fetch(`${API}/api/vixaa/events`);
+                const events = await res.json();
+                grid.innerHTML = events.map(e => `
+                    <div class="card" style="padding: 1rem; border: 1px solid #eee;">
+                        <div style="font-weight: 800;">${e.country} &middot; ${e.center}</div>
+                        <div style="font-size: 1.2rem; color: var(--primary);">${new Date(e.slot_date).toLocaleDateString()}</div>
+                        ${user.subscription_type !== 'premium' ? '<div class="fomo-delay">⏳ This data is delayed by 3 min. <a href="#pricing" style="color:#9a3412; font-weight:700;">Go Premium</a></div>' : '<div style="color:green; font-size:10px; font-weight:700;">⚡ REAL-TIME PRIORITY ACCESS</div>'}
+                    </div>
+                `).join('');
+            } catch (e) {}
+        }
 
-                grid.innerHTML = data.map(slot => {
-                    const diff = Math.floor((new Date() - slot.next_slot) / 60000);
-                    const urgencyClass = diff > 30 ? 'pulse-red' : (diff > 15 ? 'pulse-amber' : '');
-                    
-                    return `
-                        <div class="slot-card" onclick="focusCard(this)">
-                            <div>
-                                <div class="slot-header">
-                                    <span class="slot-flag">${getFlag(slot.dest)}</span>
-                                    <div style="display: flex; align-items: center; gap: 8px;">
-                                        ${urgencyClass ? `<div class="pulse-indicator ${urgencyClass}"></div>` : ''}
-                                        <span class="slot-status status-${slot.status.toLowerCase()}">${slot.status}</span>
-                                    </div>
-                                </div>
-                                <div class="slot-dest">${getCountryName(slot.dest)}</div>
-                                <div class="slot-info">${slot.location} &middot; ${slot.provider}</div>
-                                
-                                <div class="trust-badge">
-                                    <span data-time="${slot.next_slot ? slot.next_slot.toISOString() : ''}">Verified ${slot.verified_min}m ago</span>
-                                    <span>&bull;</span>
-                                    <span style="color: var(--success);">Confidence: ${slot.confidence}</span>
-                                </div>
-                            </div>
+        async function startPayment() {
+            try {
+                // 1. Create Order
+                const res = await fetch(`${API}/api/payments/create-order?user_id=${user.id}&amount=99900`, { method: 'POST' });
+                const order = await res.json();
 
-                            <div style="margin-top: var(--space-6);">
-                                <div class="slot-info" style="margin-bottom: var(--space-2);">
-                                    Availability Check:<br>
-                                    <span class="slot-date">${slot.next_slot ? slot.next_slot.toLocaleTimeString() : 'Check portal'}</span>
-                                </div>
-                                <button class="btn-ghost" style="padding: 0.5rem; font-size: var(--font-sm); width: 100%; border: 1px solid var(--primary-light);" 
-                                    onclick="event.stopPropagation(); selectCountry('${slot.dest}')">
-                                    Continue →
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
+                // 2. Open Razorpay Checkout
+                const options = {
+                    "key": "rzp_test_example", // Replace with your key
+                    "amount": "99900",
+                    "currency": "INR",
+                    "name": "Vixa Intelligence",
+                    "description": "Monthly Premium Subscription",
+                    "order_id": order.id,
+                    "handler": function (response){
+                        alert("Payment successful! Your premium access will be activated within minutes.");
+                        window.location.reload();
+                    },
+                    "prefill": { "email": user.email },
+                    "theme": { "color": "#f59e0b" }
+                };
+                const rzp = new Razorpay(options);
+                rzp.open();
             } catch (e) {
-                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--error); padding: var(--space-8);">Failed to synchronize with availability server.</p>';
+                alert("Payment initialization failed.");
             }
         }
 
-        function updateTimestamps() {
-            document.querySelectorAll('[data-time]').forEach(el => {
-                const time = new Date(el.dataset.time);
-                if (!time) return;
-                const diff = Math.floor((new Date() - time) / 60000);
-                el.textContent = `Verified ${diff}m ago`;
-            });
+        async function subscribeAlert() {
+            const country = document.getElementById('alertCountry').value;
+            const telegramId = document.getElementById('telegramId').value;
+            if(!telegramId) return alert("Enter Telegram ID");
+
+            try {
+                const res = await fetch(`${API}/api/vixaa/alerts`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_id: user.id, country, center: 'London' })
+                });
+                if(res.ok) alert("Alert Set!");
+                else {
+                    const err = await res.json();
+                    alert(err.detail || "Error");
+                }
+            } catch(e) { alert("Error"); }
         }
 
-        setInterval(updateTimestamps, 30000);
-        setInterval(loadSlots, 60000);
+        function logout() { localStorage.clear(); window.location.href = './auth/index.html'; }
 
-        function focusCard(el) {
-            document.querySelectorAll('.slot-card').forEach(c => c.classList.remove('focused'));
-            el.classList.add('focused');
-            document.body.classList.add('has-focus');
-            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-
-        function selectCountry(dest) {
-            document.querySelectorAll('.slot-card').forEach(c => c.classList.remove('focused'));
-            document.body.classList.remove('has-focus');
-            alert('Selection: ' + dest);
-        }
-
-        function getFlag(code) {
-            const flags = { 'FR': '🇫🇷', 'ES': '🇪🇸', 'IT': '🇮🇹', 'DE': '🇩🇪', 'GR': '🇬🇷', 'PT': '🇵🇹', 'CH': '🇨🇭' };
-            return flags[code] || '🇪🇺';
-        }
-
-        function getCountryName(code) {
-            const names = { 'FR': 'France', 'ES': 'Spain', 'IT': 'Italy', 'DE': 'Germany', 'GR': 'Greece', 'PT': 'Portugal', 'CH': 'Switzerland' };
-            return names[code] || code;
-        }
-
-        async function searchCorridors() {
-            const q = document.getElementById('searchQ').value;
-            const list = document.getElementById('corridors');
-            if (!q) return;
-            list.innerHTML = '<p style="text-align: center; padding: 2rem;">Searching...</p>';
-            // Mock search results for now
-            setTimeout(() => {
-                list.innerHTML = `
-                    <li class="card" style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
-                        <div>
-                            <strong>United Kingdom &rarr; France</strong><br>
-                            <small>Paris &middot; Tourist</small>
-                        </div>
-                        <button class="btn-ghost" style="width: auto;" onclick="selectCountry('FR')">Verify &rarr;</button>
-                    </li>
-                `;
-            }, 600);
-        }
-
-        async function loadApplications() {
-            const list = document.getElementById('appsList');
-            list.innerHTML = '<p style="text-align: center; padding: 2rem;">Loading applications...</p>';
-            setTimeout(() => {
-                list.innerHTML = '<p style="text-align: center; padding: 2rem; color: var(--text-muted);">No active applications.</p>';
-            }, 500);
-        }
-
-        // Initial load
-        initIntel();
-        loadSlots();
-        loadApplications();
+        init();
     </script>
 </body>
 </html>

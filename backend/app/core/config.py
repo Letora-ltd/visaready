@@ -25,9 +25,18 @@ class Settings(BaseSettings):
     cors_origins: list[str] = ["*"]
     api_rate_limit_per_minute: int = Field(default=120, alias="API_RATE_LIMIT_PER_MINUTE")
     admin_api_key: str = Field(default="dev-admin-key", alias="ADMIN_API_KEY")
+    
+    # Telegram Bot Settings
+    telegram_bot_token: str = Field(default="", alias="TELEGRAM_BOT_TOKEN")
+    
+    # Razorpay Settings
+    razorpay_key_id: str = Field(default="", alias="RAZORPAY_KEY_ID")
+    razorpay_key_secret: str = Field(default="", alias="RAZORPAY_KEY_SECRET")
 
     class Config:
         env_file = ".env"
+        env_file_encoding = "utf-8"
         extra = "ignore"
+        populate_by_name = True
 
 settings = Settings()
