@@ -1,27 +1,42 @@
 from .session import engine, SessionLocal
 from .base import Base
 from ..models import entities  # noqa
-from ..models.entities import AppointmentStatus, DataSource
+from ..models.entities import AppointmentStatus, DataSource, User
+from ..core.security import get_password_hash
 from datetime import datetime, timezone
+from sqlalchemy import select
 
 def init_db():
     try:
         Base.metadata.create_all(bind=engine)
     except Exception as e:
         print(f"Warning: Could not create tables: {e}")
-        return # Cannot continue if tables don't exist and we can't create them
+        return
     
     db = SessionLocal()
     try:
-        # Check if we have data
+        # 1. Seed Admin User
+        admin_email = "admin@vixa.online"
+        existing_admin = db.scalar(select(User).where(User.email == admin_email))
+        if not existing_admin:
+            admin = User(
+                email=admin_email,
+                name="Vixa Admin",
+                password_hash=get_password_hash("vixa_admin_2026"),
+                role='admin',
+                is_active=True
+            )
+            db.add(admin)
+            db.commit()
+            print("Admin user seeded.")
+
+        # 2. Seed Mock Data
         if db.query(AppointmentStatus).count() == 0:
             try:
-                # Add a mock data source
                 source = DataSource(name="Mock Provider", source_type="mock", active=True)
                 db.add(source)
                 db.commit()
                 
-                # Add some mock slots
                 slots = [
                     AppointmentStatus(country="FR", city="London", visa_type="TOURIST", availability_status="AVAILABLE", freshness_label="Live", country_code="GB", city_slug="london", last_updated=datetime.now(timezone.utc)),
                     AppointmentStatus(country="ES", city="London", visa_type="TOURIST", availability_status="LIMITED", freshness_label="2h ago", country_code="GB", city_slug="london", last_updated=datetime.now(timezone.utc)),
@@ -30,6 +45,7 @@ def init_db():
                 ]
                 db.add_all(slots)
                 db.commit()
+                print("Mock data seeded.")
             except Exception as e:
                 print(f"Warning: Could not seed data: {e}")
                 db.rollback()
