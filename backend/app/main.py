@@ -1,10 +1,11 @@
+import os
+import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .core.config import settings
 from .api import visa, admin, auth, endpoints
 from .database.init_db import init_db
 from .workers.scheduler import start_scheduler
-import logging
 
 app = FastAPI(title="VisaReady API", version="1.0.0")
 
@@ -40,5 +41,3 @@ def on_startup():
             start_scheduler()
         except Exception as e:
             logging.error(f"Scheduler failed to start: {e}")
-
-import os
