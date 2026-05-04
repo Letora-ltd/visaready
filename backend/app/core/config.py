@@ -1,12 +1,24 @@
 import os
+import shutil
 from pydantic_settings import BaseSettings
 from pydantic import Field
 
-# Use relative path for SQLite to ensure it works on Vercel when committed
-# On Vercel, the app root is /var/task
+# Vercel handling for SQLite
+# We copy the pre-seeded DB from the read-only /var/task to the writable /tmp
 base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-db_path = os.path.join(base_dir, "visaready.db")
-default_db = f"sqlite:///{db_path}"
+source_db = os.path.join(base_dir, "visaready.db")
+target_db = "/tmp/visaready.db"
+
+if os.environ.get("VERCEL"):
+    if os.path.exists(source_db) and not os.path.exists(target_db):
+        try:
+            shutil.copy2(source_db, target_db)
+            print(f"Database copied to {target_db}")
+        except Exception as e:
+            print(f"Failed to copy database: {e}")
+    default_db = f"sqlite:///{target_db}"
+else:
+    default_db = f"sqlite:///{source_db}"
 
 class Settings(BaseSettings):
     database_url: str = Field(default=default_db, alias="DATABASE_URL")
