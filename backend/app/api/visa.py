@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from ..database.session import get_db
 from ..services import visa_service
 
-router = APIRouter(prefix='/visa', tags=['visa'])
+router = APIRouter(prefix='/api/visa', tags=['visa'])
 
 @router.get('/routes')
 def routes(db: Session = Depends(get_db)):

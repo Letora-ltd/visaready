@@ -1,11 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
-import os
 from .core.config import settings
 from .api import visa, admin, auth, endpoints
 from .database.init_db import init_db
 from .workers.scheduler import start_scheduler
+import logging
 
 app = FastAPI(title="VisaReady API", version="1.0.0")
 
@@ -27,12 +26,19 @@ app.include_router(endpoints.router)
 def health():
     return {"success": True, "data": {"status": "ok"}}
 
-# Serve Frontend (Must be last to avoid shadowing API)
-frontend_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "frontend")
-app.mount("/", StaticFiles(directory=frontend_path, html=True), name="frontend")
-
 
 @app.on_event("startup")
 def on_startup():
-    init_db()
-    start_scheduler()
+    try:
+        init_db()
+    except Exception as e:
+        logging.error(f"Database initialization failed: {e}")
+    
+    # Only start scheduler if not on Vercel (ephemeral environment)
+    if not os.environ.get("VERCEL"):
+        try:
+            start_scheduler()
+        except Exception as e:
+            logging.error(f"Scheduler failed to start: {e}")
+
+import os

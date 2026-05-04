@@ -6,7 +6,7 @@ from ..models.entities import User
 from ..core.security import create_access_token, get_password_hash, verify_password
 from sqlalchemy import select
 
-router = APIRouter(prefix='/auth', tags=['auth'])
+router = APIRouter(prefix='/api/auth', tags=['auth'])
 
 class SignupIn(BaseModel):
     name: str

@@ -16,10 +16,6 @@
       "destination": "/api/index.py"
     },
     {
-      "source": "/auth/(.*)",
-      "destination": "/api/index.py"
-    },
-    {
       "source": "/(.*)",
       "destination": "/frontend/$1"
     }

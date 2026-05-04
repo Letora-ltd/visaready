@@ -149,7 +149,7 @@
     </div>
 
     <script>
-        const BACKEND = 'http://127.0.0.1:8000';
+        const BACKEND = '';
         const API = BACKEND;
         let token = localStorage.getItem('vr_token') || '';
 
@@ -190,7 +190,7 @@
             const dest = document.getElementById('slotFilter').value;
             const grid = document.getElementById('slotsGrid');
             try {
-                const r = await fetch(`${API}/visa/status?country=GB${dest ? '&visa_type=' + dest : ''}`);
+                const r = await fetch(`${API}/api/visa/status?country=GB${dest ? '&visa_type=' + dest : ''}`);
                 const payload = await r.json();
                 const data = (payload.data || []).map(x => ({
                     dest: x.country, 

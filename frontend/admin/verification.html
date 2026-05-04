@@ -253,7 +253,7 @@
     <div id="toast" class="toast">Successfully verified route.</div>
 
     <script>
-        const BACKEND = 'http://127.0.0.1:8000';
+        const BACKEND = '';
         let tasks = [];
         let currentIdx = -1;
         let selectedStatus = null;
@@ -266,7 +266,7 @@
 
         async function refreshTasks() {
             try {
-                const r = await fetch(`${BACKEND}/admin/tasks`, { headers: getHdr() });
+                const r = await fetch(`${BACKEND}/api/admin/tasks`, { headers: getHdr() });
                 const j = await r.json();
                 tasks = j.data || [];
                 renderTasks();
@@ -384,7 +384,7 @@
 
             // Fetch portal info
             try {
-                const r = await fetch(`${BACKEND}/admin/portal-link?country=${encodeURIComponent(task.country)}&city=${encodeURIComponent(task.city)}&visa_type=${encodeURIComponent(task.visa_type)}`, { headers: getHdr() });
+                const r = await fetch(`${BACKEND}/api/admin/portal-link?country=${encodeURIComponent(task.country)}&city=${encodeURIComponent(task.city)}&visa_type=${encodeURIComponent(task.visa_type)}`, { headers: getHdr() });
                 const j = await r.json();
                 if (j.data) {
                     document.getElementById('portalUrl').value = j.data.portal_url;
@@ -425,7 +425,7 @@
             
             try {
                 // Update availability
-                const res = await fetch(`${BACKEND}/admin/status/manual-update`, {
+                const res = await fetch(`${BACKEND}/api/admin/status/manual-update`, {
                     method: 'POST',
                     headers: getHdr(),
                     body: JSON.stringify({ 
@@ -452,8 +452,6 @@
                     throw new Error(err.detail && typeof err.detail === 'string' ? err.detail : (err.detail && err.detail[0] ? err.detail[0].msg : 'Failed to update'));
                 }
 
-                // Mark as checked (Already handled by manual-update now)
-                
                 showToast('Route verified successfully.');
                 
                 // Continuous Flow

@@ -14,7 +14,7 @@ from ..workers.ingest import run_ingestion
 from ..core.logic import calculate_confidence
 from ..core.security import RoleChecker
 
-router = APIRouter(prefix='/admin', tags=['admin'])
+router = APIRouter(prefix='/api/admin', tags=['admin'])
 admin_only = RoleChecker(['admin'])
 
 

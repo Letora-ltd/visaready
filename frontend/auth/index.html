@@ -250,7 +250,7 @@
     </div>
 
     <script>
-        const BACKEND = 'http://127.0.0.1:8000';
+        const BACKEND = '';
         let currentMode = 'login';
 
         function switchTab(mode) {
@@ -278,7 +278,7 @@
             showLoading(true);
 
             try {
-                const endpoint = currentMode === 'login' ? '/auth/login' : '/auth/register';
+                const endpoint = currentMode === 'login' ? '/api/auth/login' : '/api/auth/register';
                 const body = currentMode === 'login' 
                     ? { email, password } 
                     : { email, password, name };
