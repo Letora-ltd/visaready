@@ -3691,4 +3691,47 @@ body { background:#0b1a2a; color:var(--txt); }
 })();
 </script>
 
+
+<section id="guidedVerifyPanel" style="margin:20px; padding:16px; border:1px solid #ddd; border-radius:12px; display:none;">
+  <h3>Guided Verification</h3>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+    <div>
+      <p><b id="gvProvider"></b></p>
+      <a id="gvPortalBtn" href="#" target="_blank" rel="noopener" class="btn">Open Official Portal</a>
+      <ul id="gvSteps"></ul>
+    </div>
+    <div>
+      <label>Status</label><select id="gvStatus"><option>available</option><option>limited</option><option>none</option></select>
+      <label>Next Available Date</label><input id="gvDate" type="date"/>
+      <label>Notes</label><textarea id="gvNotes"></textarea>
+      <label>Verified By</label><input id="gvBy" placeholder="admin name"/>
+      <button onclick="submitGuidedUpdate()">Submit Update</button>
+      <button onclick="closeGuidedPanel()">Cancel</button>
+      <div id="gvMsg"></div>
+    </div>
+  </div>
+</section>
+<script>
+window.GV_ROUTE=null;
+async function openGuidedVerify(country,city,visaType){
+  const key=(window.token||window.localStorage.getItem('admin_token')||'');
+  const r=await fetch(`${BACKEND}/admin/portal-link?country=${encodeURIComponent(country)}&city=${encodeURIComponent(city)}&visa_type=${encodeURIComponent(visaType)}`,{headers:{'x-admin-key':key}});
+  if(!r.ok){alert('Portal mapping not found');return;}
+  const d=await r.json();
+  GV_ROUTE={country,city,visa_type:visaType};
+  document.getElementById('guidedVerifyPanel').style.display='block';
+  document.getElementById('gvProvider').textContent='Provider: '+d.provider;
+  const btn=document.getElementById('gvPortalBtn'); btn.href=d.portal_url;
+  document.getElementById('gvSteps').innerHTML=(d.instructions||[]).map(x=>`<li>${x}</li>`).join('');
+}
+function closeGuidedPanel(){document.getElementById('guidedVerifyPanel').style.display='none';}
+async function submitGuidedUpdate(){
+  if(!GV_ROUTE) return;
+  const key=(window.token||window.localStorage.getItem('admin_token')||'');
+  const payload={...GV_ROUTE,availability_status:document.getElementById('gvStatus').value,next_available_date:document.getElementById('gvDate').value||null,notes:document.getElementById('gvNotes').value||null,verified_by:document.getElementById('gvBy').value||'admin'};
+  const r=await fetch(`${BACKEND}/admin/update-status`,{method:'POST',headers:{'Content-Type':'application/json','x-admin-key':key},body:JSON.stringify(payload)});
+  document.getElementById('gvMsg').textContent=r.ok?'Updated successfully':'Update failed';
+}
+</script>
+
 </body></html>

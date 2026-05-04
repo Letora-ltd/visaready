@@ -1,4 +1,4 @@
-from sqlalchemy import String, DateTime, Boolean, ForeignKey, Text, Integer, func, Index
+from sqlalchemy import String, DateTime, Boolean, ForeignKey, Text, Integer, func, Index, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 from ..database.base import Base
 
@@ -15,6 +15,21 @@ class VisaRoute(Base):
     city: Mapped[str] = mapped_column(String(120), index=True)
     visa_type: Mapped[str] = mapped_column(String(40), index=True)
     check_interval_minutes: Mapped[int] = mapped_column(Integer, default=30)
+
+class VisaPortal(Base):
+    __tablename__ = 'visa_portals'
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    country: Mapped[str] = mapped_column(String(2), index=True)
+    city: Mapped[str] = mapped_column(String(120), index=True)
+    visa_type: Mapped[str | None] = mapped_column(String(40), nullable=True)
+    provider: Mapped[str] = mapped_column(String(80))
+    portal_url: Mapped[str] = mapped_column(String(500))
+    instructions: Mapped[str] = mapped_column(Text)
+    created_at: Mapped[DateTime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    __table_args__ = (
+        UniqueConstraint('country', 'city', 'visa_type', name='uq_portal_route'),
+        Index('ix_portal_lookup', 'country', 'city', 'visa_type'),
+    )
 
 class DataSource(Base):
     __tablename__ = 'data_sources'
@@ -36,6 +51,7 @@ class AppointmentStatus(Base):
     freshness_label: Mapped[str] = mapped_column(String(40), default='last_known')
     source_type: Mapped[str] = mapped_column(String(20), default='fallback')
     source_id: Mapped[int | None] = mapped_column(ForeignKey('data_sources.id'), nullable=True)
+    verified_by: Mapped[str | None] = mapped_column(String(120), nullable=True)
     last_updated: Mapped[DateTime] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), index=True)
     __table_args__ = (Index('ix_status_lookup', 'country', 'city', 'visa_type'),)
 

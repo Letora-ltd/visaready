@@ -38,6 +38,7 @@ def serialize_status(db: Session, r: AppointmentStatus):
         "notes": r.notes,
         "freshness_label": r.freshness_label,
         "source_type": r.source_type,
+        "verified_by": r.verified_by,
         "last_updated": r.last_updated,
         "is_stale": stale,
         "priority": priority,
@@ -102,13 +103,14 @@ def upsert_status(db: Session, payload: dict, actor: str, source_type: str):
         row.availability_status = payload["availability_status"]
         row.next_available_date = payload.get("next_available_date")
         row.notes = payload.get("notes")
+        row.verified_by = payload.get("verified_by")
         row.freshness_label = "verified" if source_type == "admin" else "last_known"
         row.source_type = source_type
         row.last_updated = datetime.now(timezone.utc)
         newv = serialize_status(db, row)
         db.add(AuditLog(actor=actor, action='update_status', target_key=f'{key_country}:{key_city}:{key_visa}', old_value=json.dumps(old, default=str), new_value=json.dumps(newv, default=str)))
     else:
-        row = AppointmentStatus(country=key_country, city=key_city, visa_type=key_visa, availability_status=payload['availability_status'], next_available_date=payload.get('next_available_date'), notes=payload.get('notes'), source_type=source_type, freshness_label='verified' if source_type=='admin' else 'last_known')
+        row = AppointmentStatus(country=key_country, city=key_city, visa_type=key_visa, availability_status=payload['availability_status'], next_available_date=payload.get('next_available_date'), notes=payload.get('notes'), verified_by=payload.get('verified_by'), source_type=source_type, freshness_label='verified' if source_type=='admin' else 'last_known')
         db.add(row); db.flush()
         db.add(AuditLog(actor=actor, action='create_status', target_key=f'{key_country}:{key_city}:{key_visa}', old_value=None, new_value=json.dumps(serialize_status(db, row), default=str)))
     db.commit()
