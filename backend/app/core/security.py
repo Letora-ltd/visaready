@@ -1,10 +1,11 @@
+import uuid
 from datetime import datetime, timedelta, timezone
 from typing import Any, Union
 from jose import jwt
 from passlib.context import CryptContext
 from fastapi import HTTPException, Security, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 from .config import settings
 from ..database.session import get_db
 from ..models.entities import User
@@ -40,14 +41,14 @@ def decode_jwt(token: str) -> dict:
     except Exception:
         raise HTTPException(status_code=401, detail="Could not validate credentials")
 
-def get_current_user(db: Session = Depends(get_db), auth: HTTPAuthorizationCredentials = Security(security)) -> User:
+async def get_current_user(db: AsyncSession = Depends(get_db), auth: HTTPAuthorizationCredentials = Security(security)) -> User:
     token = auth.credentials
     payload = decode_jwt(token)
     user_id = payload.get("id")
     if not user_id:
         raise HTTPException(status_code=401, detail="Invalid token payload")
     
-    user = db.get(User, user_id)
+    user = await db.get(User, uuid.UUID(user_id) if isinstance(user_id, str) else user_id)
     if not user:
         raise HTTPException(status_code=401, detail="User not found")
     if not user.is_active:
