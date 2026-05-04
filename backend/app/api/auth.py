@@ -51,22 +51,27 @@ async def register(payload: SignupIn, db: AsyncSession = Depends(get_db)):
 
 @router.post('/login')
 async def login(payload: LoginIn, db: AsyncSession = Depends(get_db)):
-    result = await db.execute(select(User).where(User.email == payload.email))
-    user = result.scalar_one_or_none()
-    if not user or not verify_password(payload.password, user.password_hash):
-        raise HTTPException(status_code=401, detail="Invalid email or password")
-    
-    if not user.is_active:
-        raise HTTPException(status_code=403, detail="Account is disabled")
-    
-    token = create_access_token({"sub": user.email, "id": str(user.id), "role": user.role})
-    return {
-        "token": token, 
-        "role": user.role,
-        "user": {
-            "id": str(user.id), 
-            "email": user.email, 
-            "name": user.name,
-            "telegram_chat_id": user.telegram_chat_id
+    try:
+        result = await db.execute(select(User).where(User.email == payload.email))
+        user = result.scalar_one_or_none()
+        if not user or not verify_password(payload.password, user.password_hash):
+            raise HTTPException(status_code=401, detail="Invalid email or password")
+        
+        if not user.is_active:
+            raise HTTPException(status_code=403, detail="Account is disabled")
+        
+        token = create_access_token({"sub": user.email, "id": str(user.id), "role": user.role})
+        return {
+            "token": token, 
+            "role": user.role,
+            "user": {
+                "id": str(user.id), 
+                "email": user.email, 
+                "name": user.name,
+                "telegram_chat_id": user.telegram_chat_id
+            }
         }
-    }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Database or Server Error: {str(e)}")
