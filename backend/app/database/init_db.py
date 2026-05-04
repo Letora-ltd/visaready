@@ -5,8 +5,16 @@ from ..models.entities import AppointmentStatus, DataSource, User
 from ..core.security import get_password_hash
 from datetime import datetime, timezone
 from sqlalchemy import select
+import os
 
 def init_db():
+    # If on Vercel and DB exists, skip initialization to avoid read-only errors
+    # The DB is pre-seeded and committed to the repository
+    db_file = engine.url.database
+    if os.environ.get("VERCEL") and db_file and os.path.exists(db_file):
+        print("Using pre-seeded database on Vercel.")
+        return
+
     try:
         Base.metadata.create_all(bind=engine)
     except Exception as e:
