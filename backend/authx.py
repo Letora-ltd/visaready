@@ -24,6 +24,12 @@ class RefreshIn(BaseModel):
     refresh_token: str
     refresh_token: str
 class LogoutIn(BaseModel):
+    refresh: str
+
+try:
+    from utils import load_json, save_json
+except ImportError:
+    from .utils import load_json, save_json
 
 def _load_reset():
     p = RESET
@@ -68,7 +74,6 @@ class ResetConfirmIn(BaseModel):
     token: str
     new_password: str
     refresh_token: str
-from .utils import load_json, save_json
 
 router = APIRouter()
 DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")

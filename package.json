@@ -1,0 +1,12 @@
+{
+  "name": "vixa-platform",
+  "version": "1.0.0",
+  "scripts": {
+    "dev:frontend": "npx serve -s frontend -p 5173",
+    "dev:backend": "cd backend && python -m uvicorn app:app --reload --port 8000",
+    "dev": "npx concurrently \"npm run dev:frontend\" \"npm run dev:backend\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

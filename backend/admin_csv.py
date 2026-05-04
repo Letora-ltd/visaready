@@ -1,8 +1,10 @@
 from fastapi import APIRouter, Header, HTTPException, UploadFile, File, Response
 import csv, io, json, time
 
-# No import from app.py to avoid circular! Use utils directly.
-from .utils import load_json, save_json, verify_token
+try:
+    from utils import load_json, save_json, verify_token
+except ImportError:
+    from .utils import load_json, save_json, verify_token
 
 router = APIRouter()
 

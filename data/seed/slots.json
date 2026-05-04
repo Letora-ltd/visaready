@@ -1,0 +1,62 @@
+[
+  {
+    "origin": "GB",
+    "dest": "FR",
+    "destination_name": "France",
+    "visa_type": "Schengen (Short-stay)",
+    "status": "Available",
+    "next_slot": "2026-05-15",
+    "location": "London",
+    "provider": "TLScontact"
+  },
+  {
+    "origin": "GB",
+    "dest": "FR",
+    "destination_name": "France",
+    "visa_type": "Schengen (Short-stay)",
+    "status": "Limited",
+    "next_slot": "2026-05-22",
+    "location": "Manchester",
+    "provider": "TLScontact"
+  },
+  {
+    "origin": "GB",
+    "dest": "ES",
+    "destination_name": "Spain",
+    "visa_type": "Schengen (Short-stay)",
+    "status": "Unavailable",
+    "next_slot": null,
+    "location": "London",
+    "provider": "BLS International"
+  },
+  {
+    "origin": "GB",
+    "dest": "IT",
+    "destination_name": "Italy",
+    "visa_type": "Schengen (Short-stay)",
+    "status": "Available",
+    "next_slot": "2026-05-10",
+    "location": "London",
+    "provider": "VFS Global"
+  },
+  {
+    "origin": "GB",
+    "dest": "DE",
+    "destination_name": "Germany",
+    "visa_type": "Schengen (Short-stay)",
+    "status": "Available",
+    "next_slot": "2026-05-12",
+    "location": "London",
+    "provider": "VFS Global"
+  },
+  {
+    "origin": "GB",
+    "dest": "GR",
+    "destination_name": "Greece",
+    "visa_type": "Schengen (Short-stay)",
+    "status": "Available",
+    "next_slot": "2026-05-18",
+    "location": "London",
+    "provider": "GVCW"
+  }
+]

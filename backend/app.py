@@ -4,9 +4,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 try:
-    from .utils import load_json, save_json, add_token, ADMIN_PASSWORD, verify_token
-except Exception:
     from utils import load_json, save_json, add_token, ADMIN_PASSWORD, verify_token
+except ImportError:
+    from .utils import load_json, save_json, add_token, ADMIN_PASSWORD, verify_token
 
 app = FastAPI(title="VisaReady API", version="0.4.0")
 app.add_middleware(
@@ -47,9 +47,9 @@ def get_checklist(origin: str, dest: str, category: str = "TOURIST"):
 
 
 try:
-    from . import user_store
-except Exception:
     import user_store
+except ImportError:
+    from . import user_store
 
 class SignupIn(BaseModel):
     name: str
@@ -107,7 +107,6 @@ def create_app(payload: ApplicationIn, authorization: str | None = Header(defaul
     user = _user(authorization)
     return user_store.add_application(user["id"], payload.model_dump())
 
-
 @app.get("/api/visas/search")
 def visa_search(origin: str, q: str = ""):
     origin = origin.upper()
@@ -116,6 +115,14 @@ def visa_search(origin: str, q: str = ""):
         ql = q.lower()
         corridors = [c for c in corridors if ql in c.get("destination_name", c.get("dest","")).lower() or ql in c.get("dest","").lower()]
     return corridors
+
+@app.get("/api/slots")
+def get_slots(origin: str = "GB", dest: str | None = None):
+    # Mock data for Schengen visa slots
+    slots = load_json("slots.json")
+    if dest:
+        slots = [s for s in slots if s["dest"].upper() == dest.upper()]
+    return slots
 
 @app.get("/api/visas/{origin}/{dest}")
 def visa_detail(origin: str, dest: str):
@@ -188,9 +195,9 @@ def admin_put(payload: PutChecklist, authorization: str | None = Header(default=
 
 # -------- Include CSV router LAST (no circular) --------
 try:
-    from . import admin_csv
-except Exception:
     import admin_csv
+except ImportError:
+    from . import admin_csv
 
 # -------- Duplicate corridor --------
 class DuplicateIn(BaseModel):
@@ -296,17 +303,17 @@ def admin_duplicate_bulk(payload: BulkDuplicateIn, authorization: str | None = H
 app.include_router(admin_csv.router)
 
 try:
-    from . import admin_validate
-except Exception:
     import admin_validate
+except ImportError:
+    from . import admin_validate
 app.include_router(admin_validate.router)
 
 
 # ===== v48 RBAC & Audit (appended) =====
 try:
-    from . import admin_rbac
-except Exception:
     import admin_rbac
+except ImportError:
+    from . import admin_rbac
 from fastapi import Request, Header, HTTPException
 import json as _json
 
@@ -383,13 +390,13 @@ async def rbac_guard(request: Request, call_next):
 
 # ===== v49 AUTHX & RBAC2 (appended) =====
 try:
-    from . import authx
-except Exception:
     import authx
+except ImportError:
+    from . import authx
 try:
-    from . import rbac2
-except Exception:
     import rbac2
+except ImportError:
+    from . import rbac2
 
 from fastapi import Request, Header
 import json as _json
