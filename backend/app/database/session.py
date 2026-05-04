@@ -11,7 +11,13 @@ elif db_url.startswith("postgres://"):
 elif db_url.startswith("sqlite:///"):
     db_url = db_url.replace("sqlite:///", "sqlite+aiosqlite:///", 1)
 
-engine = create_async_engine(db_url, future=True, echo=False)
+engine = create_async_engine(
+    db_url, 
+    future=True, 
+    echo=False,
+    pool_recycle=3600,
+    pool_pre_ping=True
+)
 AsyncSessionLocal = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
 async def get_db():
