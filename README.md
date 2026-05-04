@@ -1,36 +1,55 @@
+# Vixa Platform
 
-# VisaReady — MVP v3
+Production-minded visa-tech starter platform for India/UK outbound travelers.
 
-- Non-AI code, mobile-first, bright deep-blue + lime theme.
-- PayPal Hosted Button integrated (payouts to Monzo via PayPal).
-- Admin panel to edit checklists (login: password from `ADMIN_PASSWORD`, default `admin123`).
-- Frontend fetches `/api/seed` first (live data), falls back to static `/frontend/seed` if backend is not running.
+## Stack
+- **Backend:** FastAPI (Python), JSON persistence for local/dev, REST APIs.
+- **Frontend:** Static HTML/CSS/JS app with responsive UX and API integration.
+- **Data:** Seeded corridor/checklist datasets under `data/seed`.
 
-## Run backend
-```
+## Implemented capabilities
+- Public landing + visa discovery search
+- User signup/login + authenticated session token
+- Application draft creation + submission status updates
+- Document vault behavior (attach document names per application)
+- Payment-ready architecture (`/api/payments/intent` mock adapter)
+- Tracking dashboard for user applications
+- Legal + security pages
+- Admin checklist tooling preserved from existing repo
+
+## Run locally
+### 1) Backend
+```bash
 cd backend
-python -m venv .venv && source .venv/bin/activate
+python -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
-export ADMIN_PASSWORD="change_me"
+cp .env.example .env
 uvicorn app:app --reload --port 8000
 ```
 
-## Run frontend (static server)
-```
+### 2) Frontend
+```bash
 cd frontend
 python -m http.server 5173
-open http://localhost:5173
 ```
+Open `http://localhost:5173`.
 
-## Admin panel
-- Visit `http://localhost:5173/admin/`
-- Login with your password (`ADMIN_PASSWORD`).
-- Add/modify checklists via JSON editor. Keys are like `IN->TR::TOURIST`.
+## Core APIs
+- `POST /auth/signup`
+- `POST /auth/login`
+- `GET /auth/me`
+- `GET /api/visas/search`
+- `GET /api/visas/{origin}/{dest}`
+- `POST /api/applications`
+- `GET /api/applications`
+- `POST /api/applications/{app_id}/submit`
+- `POST /api/documents/upload`
+- `POST /api/payments/intent`
 
-## Deploy
-- Backend: Railway/Render (Start: `uvicorn app:app --host 0.0.0.0 --port 8000`)
-- Frontend: Vercel/Netlify/Cloudflare Pages (static). For live updates, point frontend to backend domain (works automatically via `/api/seed`).
-
-## Seeds
-- 30 original corridors + 15 extra countries with IN<->Country corridors added.
-- Sample checklists (GB->US::TOURIST, IN->GB::TOURIST, IN->TR::TOURIST) include official source links.
+## Notes for production hardening
+- Replace JSON file persistence with PostgreSQL.
+- Replace in-memory sessions with signed JWT + refresh token table/redis.
+- Integrate payment gateway (Stripe/Razorpay) into payment intent adapter.
+- Add object storage (S3/GCS) for actual binary document uploads.
+- Configure reverse proxy + TLS + WAF and structured logging exports.

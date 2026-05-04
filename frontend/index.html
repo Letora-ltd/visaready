@@ -1,134 +1,29 @@
-<!doctype html><html lang="en"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>VisaReady — Visa Checklist in Minutes</title>
-<meta name="description" content="Know your visa paperwork in minutes. Clean checklists with official sources, fees, and processing times.">
-<link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="./style.css" />
-<script src="https://www.paypal.com/sdk/js?client-id=BAAaLP6bvE3zFkJCwvDI2TrL4TphTAtLGk4ZQQ9Nm4dUcyfLKHRggU48eEnsfipQePFMKVBe48J0SXl9u0&components=hosted-buttons&disable-funding=venmo&currency=GBP" crossorigin="anonymous" async></script>
-</head><body>
-<header class="header"><div class="logo">VisaReady</div><div class="tagline">Know your visa paperwork in 3 minutes — with official sources and fresh updates.</div></header>
-<main class="container">
-<section class="card">
-<div class="kicker">Step 1</div><h2 class="h2">Choose your travel corridor</h2>
-<div class="grid">
-<div><div class="label">Your nationality</div><select id="origin" class="select"><option value="">Select origin</option></select></div>
-<div><div class="label">Destination</div><select id="dest" class="select"><option value="">Select destination</option></select></div>
-<div><div class="label">Purpose</div><select id="purpose" class="select">
-<option value="TOURIST">Tourist</option><option value="STUDENT">Student</option><option value="WORK">Work</option><option value="FAMILY">Family</option><option value="TRANSIT">Transit</option></select></div>
-</div>
-<div style="margin-top:12px;"><button class="btn" id="showChecklistBtn">Show checklist</button></div>
+<!doctype html><html><head><meta charset='UTF-8'/><meta name='viewport' content='width=device-width,initial-scale=1'/><title>Vixa - Smart Visa Platform</title><link rel='stylesheet' href='/style.css'/></head>
+<body>
+<header class='nav'><div><h1>VIXA</h1><small>Visa support for UK & India travelers</small></div><nav><a href='#discover'>Discover</a><a href='#apply'>Apply</a><a href='#track'>Track</a><a href='/legal/security.html'>Security</a></nav></header>
+<main class='container'>
+<section class='hero'><h2>Visa applications, simplified.</h2><p>Search corridors, create an account, submit documents, and track application status in one place.</p></section>
+<section id='discover' class='card'><h3>Visa discovery</h3><div class='row'><select id='searchOrigin'><option value='IN'>India</option><option value='GB'>United Kingdom</option></select><input id='searchQ' placeholder='Destination or code'/><button onclick='searchCorridors()'>Search</button></div><ul id='corridors'></ul></section>
+<section class='grid' id='apply'>
+<div class='card'><h3>Account</h3><input id='name' placeholder='Name'><input id='email' placeholder='Email'><input id='password' type='password' placeholder='Password'><select id='country_code'><option value='IN'>India</option><option value='GB'>United Kingdom</option></select><div class='row'><button onclick='signup()'>Sign up</button><button class='ghost' onclick='login()'>Login</button></div><p id='authStatus'></p></div>
+<div class='card'><h3>Application wizard</h3><input id='origin' placeholder='Origin code'><input id='destination' placeholder='Destination code'><input id='travelDate' type='date'><button onclick='createApplication()'>Create draft</button><div class='row'><input id='docName' placeholder='Document name'><button class='ghost' onclick='uploadDocument()'>Upload doc</button></div><button class='ghost' onclick='submitApplication()'>Submit latest app</button><button class='ghost' onclick='createPaymentIntent()'>Create payment intent</button></div>
 </section>
-
-<section class="card" id="results" style="display:none;">
-<div class="kicker">Your results</div><h2 class="h2" id="corridorTitle">Checklist</h2>
-<div class="badge" id="verifiedBadge">Last verified: <span id="verifiedDate" style="margin-left:6px;">—</span></div><hr/>
-<div id="checklist"></div><hr/>
-<div><div class="kicker">Fees & processing time</div><div id="fees"></div><div id="ptime" class="small" style="margin-top:6px;"></div></div>
-<div style="margin-top:10px"><div class="kicker">Official sources</div><ul id="sources" class="small"></ul></div>
-</section>
-
-<section class="card">
-<div class="kicker">Upgrade</div><h2 class="h2">Get PDF + Email Pack</h2>
-<p>Download your checklist as a polished PDF and receive the email pack (templates + appointment links).</p>
-<div id="paypal-container-F8A5EQ5T9D4WL"></div>
-<p class="small">Payment handled by PayPal. Instant withdrawal to your Monzo Business is available in PayPal (fees apply).</p>
-</section>
-
-<section class="card">
-<div class="kicker">About sources</div>
-<p>We link to official government/embassy sites, visa centers, and airline advisories. Each checklist shows a source badge and the last verified date.</p>
-</section>
+<section id='track' class='card'><h3>Tracking dashboard</h3><button onclick='loadApplications()'>Refresh</button><ul id='apps'></ul></section>
+<section class='card'><h3>Trust center</h3><p>Read our <a href='/legal/privacy.html'>Privacy</a>, <a href='/legal/terms.html'>Terms</a>, <a href='/legal/refund.html'>Refund policy</a>, and <a href='/legal/cookies.html'>Cookies policy</a>.</p></section>
 </main>
-
-<footer class="footer">
-© 2025 VisaReady • Guidance only — always verify with official sources.<br>
-<span class="linkbar"><a href="./legal/terms.html">Terms</a> • <a href="./legal/privacy.html">Privacy</a> • <a href="./legal/cookies.html">Cookies</a> • <a href="./legal/refund.html">Refunds</a> • <a href="./admin/">Admin</a></span>
-</footer>
-
 <script>
-  const BACKEND='http://127.0.0.1:8000';
-document.addEventListener("DOMContentLoaded", async () => {
-  const originSel = document.getElementById("origin");
-  const destSel = document.getElementById("dest");
-  const purposeSel = document.getElementById("purpose");
-  const btn = document.getElementById("showChecklistBtn");
-  const results = document.getElementById("results");
-  const title = document.getElementById("corridorTitle");
-  const checklistEl = document.getElementById("checklist");
-  const verifiedDate = document.getElementById("verifiedDate");
-  const feesEl = document.getElementById("fees");
-  const ptimeEl = document.getElementById("ptime");
-  const sourcesEl = document.getElementById("sources");
-
-  async function loadSeed() {
-    // Try backend first
-    try {
-      const seed = await fetch(`${BACKEND}/api/seed`).then(r => r.json());
-      return seed;
-    } catch (e) {
-      // Fallback to static
-      const countries = await fetch("./seed/countries.json").then(r => r.json());
-      const corridors = await fetch("./seed/corridors.json").then(r => r.json());
-      const checklists = await fetch("./seed/checklists.json").then(r => r.json());
-      return { countries, corridors, checklists };
-    }
-  }
-
-  const seed = await loadSeed();
-  const countries = seed.countries;
-  const corridors = seed.corridors;
-  const checklists = seed.checklists;
-
-  countries.forEach(c => {
-    const o1 = document.createElement("option"); o1.value = c.iso2; o1.textContent = c.name; originSel.appendChild(o1);
-    const o2 = document.createElement("option"); o2.value = c.iso2; o2.textContent = c.name; destSel.appendChild(o2);
-  });
-
-  btn.addEventListener("click", () => {
-    const origin = originSel.value;
-    const dest = destSel.value;
-    const purpose = purposeSel.value;
-    checklistEl.innerHTML = ""; feesEl.textContent = ""; ptimeEl.textContent = ""; sourcesEl.innerHTML = "";
-    if(!origin || !dest) { alert("Please select origin and destination."); return; }
-
-    const key = origin + "->" + dest;
-    const corridor = corridors.find(c => c.key === key);
-    if(!corridor) { alert("Corridor not found in seed. We'll add it soon."); return; }
-
-    const clKey = key + "::" + purpose;
-    const cl = checklists[clKey];
-    if(!cl) { alert("No checklist yet for this purpose. We'll add it soon."); return; }
-
-    title.textContent = corridor.origin_name + " → " + corridor.dest_name + " — " + purpose + " checklist";
-    verifiedDate.textContent = cl.last_verified || "—";
-
-    cl.items.forEach((item, i) => {
-      const row = document.createElement("div");
-      row.className = "step";
-      row.innerHTML = '<div class="num">' + (i+1) + '</div><div><strong>' + item.title + '</strong><br><span class="small">' + item.details + '</span></div>';
-      checklistEl.appendChild(row);
-    });
-    if(cl.fees) { feesEl.textContent = "Approx. fee: " + cl.fees; }
-    if(cl.processing) { ptimeEl.textContent = "Typical processing: " + cl.processing; }
-    if(Array.isArray(cl.sources)) {
-      cl.sources.forEach(s => {
-        const li = document.createElement("li");
-        li.innerHTML = '<a href="'+s.url+'" target="_blank" rel="noopener">'+(s.label||s.url)+'</a>';
-        sourcesEl.appendChild(li);
-      });
-    }
-    results.style.display = "block"; window.scrollTo({ top: results.offsetTop - 12, behavior: 'smooth' });
-  });
-
-  function renderHosted() {
-    if (window.paypal && paypal.HostedButtons) {
-      paypal.HostedButtons({ hostedButtonId: "F8A5EQ5T9D4WL" }).render("#paypal-container-F8A5EQ5T9D4WL");
-      return true;
-    }
-    return false;
-  }
-  if(!renderHosted()) {
-    const iv = setInterval(() => { if(renderHosted()) clearInterval(iv); }, 300);
-  }
-});
+const API=(location.hostname==='localhost'&&location.port==='5173')?'http://localhost:8000':'';
+let token=localStorage.getItem('vixa_token')||''; let latestAppId='';
+const hdr=()=>token?{'Authorization':'Bearer '+token}:{};
+function text(id,t){document.getElementById(id).textContent=t}
+async function signup(){const r=await fetch(API+'/auth/signup',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name.value,email:email.value,password:password.value,country_code:country_code.value})});const d=await r.json();if(!r.ok)return text('authStatus',d.detail||'Signup failed');token=d.token;localStorage.setItem('vixa_token',token);text('authStatus','Signed in');loadApplications();}
+async function login(){const r=await fetch(API+'/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email.value,password:password.value})});const d=await r.json();if(!r.ok)return text('authStatus',d.detail||'Login failed');token=d.token;localStorage.setItem('vixa_token',token);text('authStatus','Welcome');loadApplications();}
+async function searchCorridors(){const r=await fetch(API+`/api/visas/search?origin=${searchOrigin.value}&q=${encodeURIComponent(searchQ.value)}`);const d=await r.json();corridors.innerHTML='';d.slice(0,20).forEach(c=>{const li=document.createElement('li');li.textContent=`${c.origin} → ${c.dest} | ${c.visa_type||'Tourist'} | ${c.processing||'Processing varies'}`;corridors.appendChild(li);});}
+async function createApplication(){if(!token)return alert('Login required');const r=await fetch(API+'/api/applications',{method:'POST',headers:{...hdr(),'Content-Type':'application/json'},body:JSON.stringify({origin:origin.value,destination:destination.value,visa_type:'TOURIST',travel_date:travelDate.value,documents:[]})});const d=await r.json();if(d.id)latestAppId=d.id;loadApplications();}
+async function uploadDocument(){if(!latestAppId)return alert('Create app first');const r=await fetch(API+'/api/documents/upload',{method:'POST',headers:{...hdr(),'Content-Type':'application/json'},body:JSON.stringify({application_id:latestAppId,name:docName.value||'Passport'})});await r.json();loadApplications();}
+async function submitApplication(){if(!latestAppId)return;await fetch(API+`/api/applications/${latestAppId}/submit`,{method:'POST',headers:hdr()});loadApplications();}
+async function createPaymentIntent(){if(!latestAppId)return;const r=await fetch(API+'/api/payments/intent',{method:'POST',headers:{...hdr(),'Content-Type':'application/json'},body:JSON.stringify({application_id:latestAppId})});const d=await r.json();alert('Payment intent: '+(d.id||d.error));loadApplications();}
+async function loadApplications(){if(!token)return;const r=await fetch(API+'/api/applications',{headers:hdr()});const d=await r.json();apps.innerHTML='';d.forEach(a=>{latestAppId=a.id;const li=document.createElement('li');li.textContent=`${a.id} | ${a.origin}→${a.destination} | ${a.status} | Docs: ${(a.documents||[]).join(', ')}`;apps.appendChild(li);});}
+searchCorridors();loadApplications();
 </script>
 </body></html>
