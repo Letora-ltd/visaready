@@ -11,14 +11,14 @@ from .database.init_db import init_db
 from .workers.scheduler import start_scheduler
 
 # Initialize logging
-# setup_logging()
+setup_logging()
 
 app = FastAPI(title="Vixa Visa Intelligence API")
 # app.include_router(debug.router)
 
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
-    # logger.error(f"Global Error: {str(exc)}", exc_info=True)
+    logger.error(f"Global Error: {str(exc)}", exc_info=True)
     return JSONResponse(
         status_code=500,
         content={"detail": "An internal server error occurred. Our engineers have been notified."},
@@ -64,22 +64,28 @@ app.add_middleware(
 
 # API Routes
 # app.include_router(visa.router)
-# app.include_router(admin.router)
+app.include_router(admin.router)
 app.include_router(auth.router)
 # app.include_router(endpoints.router)
-# app.include_router(vixaa.router)
+app.include_router(vixaa.router)
 # app.include_router(admin_france.router)
 # app.include_router(payments.router)
 # app.include_router(bot.router)
 
 @app.get('/api/health')
 def health():
-    return {"success": True, "data": {"status": "skeleton-mode"}}
+    return {"success": True, "data": {"status": "ok"}}
 
 @app.on_event("startup")
 async def on_startup():
-    # try:
-    #     await init_db()
-    # except Exception as e:
-    #     logging.error(f"Database initialization failed: {e}")
-    pass
+    try:
+        await init_db()
+    except Exception as e:
+        print(f"Database initialization failed: {e}")
+    
+    # Only start scheduler if not on Vercel
+    if not os.environ.get("VERCEL"):
+        try:
+            await start_scheduler()
+        except Exception as e:
+            print(f"Scheduler failed to start: {e}")
