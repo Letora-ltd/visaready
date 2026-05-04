@@ -6,6 +6,9 @@ from ..models.entities import User
 from ..core.security import create_access_token, get_password_hash, verify_password
 from sqlalchemy import select
 
+from ..core.logging import logger
+import logging
+
 router = APIRouter(prefix='/api/auth', tags=['auth'])
 
 class SignupIn(BaseModel):
@@ -20,34 +23,40 @@ class LoginIn(BaseModel):
 
 @router.post('/register')
 async def register(payload: SignupIn, db: AsyncSession = Depends(get_db)):
-    result = await db.execute(select(User).where(User.email == payload.email))
-    existing = result.scalar_one_or_none()
-    if existing:
-        raise HTTPException(status_code=409, detail="Email already registered")
-    
-    user = User(
-        email=payload.email,
-        name=payload.name,
-        telegram_chat_id=payload.telegram_chat_id,
-        password_hash=get_password_hash(payload.password),
-        role='user',
-        is_active=True
-    )
-    db.add(user)
-    await db.commit()
-    await db.refresh(user)
-    
-    token = create_access_token({"sub": user.email, "id": str(user.id), "role": user.role})
-    return {
-        "token": token, 
-        "role": user.role,
-        "user": {
-            "id": str(user.id), 
-            "email": user.email, 
-            "name": user.name,
-            "telegram_chat_id": user.telegram_chat_id
+    try:
+        result = await db.execute(select(User).where(User.email == payload.email))
+        existing = result.scalar_one_or_none()
+        if existing:
+            raise HTTPException(status_code=409, detail="Email already registered")
+        
+        user = User(
+            email=payload.email,
+            name=payload.name,
+            telegram_chat_id=payload.telegram_chat_id,
+            password_hash=get_password_hash(payload.password),
+            role='user',
+            is_active=True
+        )
+        db.add(user)
+        await db.commit()
+        await db.refresh(user)
+        
+        token = create_access_token({"sub": user.email, "id": str(user.id), "role": user.role})
+        return {
+            "token": token, 
+            "role": user.role,
+            "user": {
+                "id": str(user.id), 
+                "email": user.email, 
+                "name": user.name,
+                "telegram_chat_id": user.telegram_chat_id
+            }
         }
-    }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Registration Error: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Registration failed: {str(e)}")
 
 @router.post('/login')
 async def login(payload: LoginIn, db: AsyncSession = Depends(get_db)):
@@ -74,4 +83,5 @@ async def login(payload: LoginIn, db: AsyncSession = Depends(get_db)):
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail="Authentication server error. Please try again later.")
+        logger.error(f"Login Error: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Login failed: {str(e)}")

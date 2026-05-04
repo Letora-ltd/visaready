@@ -12,6 +12,9 @@ from ..schemas.vixaa import (
 )
 from ..services.reporting_service import process_slot_report
 from ..services.pattern_service import get_recommendation
+from ..core.logging import logger
+import logging
+import uuid
 
 router = APIRouter(prefix="/api/vixaa", tags=["vixaa"])
 
@@ -39,51 +42,54 @@ async def get_history(country: str, center: str, db: AsyncSession = Depends(get_
         "history": [HistoryItem(date=h.date, total_events=h.total_events, avg_confidence=h.avg_confidence) for h in history]
     }
 
-import uuid
 @router.get("/dashboard", response_model=DashboardRead)
 async def get_dashboard(user_id: str, db: AsyncSession = Depends(get_db)):
     try:
         u_id = uuid.UUID(user_id) if isinstance(user_id, str) else user_id
     except ValueError:
         raise HTTPException(status_code=400, detail="Invalid user ID format")
-        
-    # 1. Preferences
-    pref_stmt = select(AlertPreference).where(AlertPreference.user_id == u_id)
-    pref_res = await db.execute(pref_stmt)
-    prefs = pref_res.scalars().all()
-    
-    # 2. Recent Events
-    event_stmt = select(SlotEvent).order_by(desc(SlotEvent.last_updated)).limit(5)
-    event_res = await db.execute(event_stmt)
-    recent_events = event_res.scalars().all()
-    
-    # 3. Recommendations (for first preference if exists)
-    recs = []
-    history_summary = None
-    if prefs:
-        p = prefs[0]
-        rec = await get_recommendation(db, p.country, p.center)
-        recs.append(rec)
-        
-        # History for first pref
-        h_stmt = select(SlotHistory).where(
-            and_(SlotHistory.country == p.country, SlotHistory.center == p.center)
-        ).order_by(desc(SlotHistory.date)).limit(7)
-        h_res = await db.execute(h_stmt)
-        h_data = h_res.scalars().all()
-        if h_data:
-            history_summary = {
-                "country": p.country,
-                "center": p.center,
-                "history": [HistoryItem(date=h.date, total_events=h.total_events, avg_confidence=h.avg_confidence) for h in reversed(h_data)]
-            }
 
-    return {
-        "preferences": prefs,
-        "recent_events": recent_events,
-        "recommendations": recs,
-        "history_summary": history_summary
-    }
+    try:
+        # 1. Preferences
+        pref_stmt = select(AlertPreference).where(AlertPreference.user_id == u_id)
+        pref_res = await db.execute(pref_stmt)
+        prefs = pref_res.scalars().all()
+        
+        # 2. Recent Events
+        event_stmt = select(SlotEvent).order_by(desc(SlotEvent.last_updated)).limit(5)
+        event_res = await db.execute(event_stmt)
+        recent_events = event_res.scalars().all()
+        
+        # 3. Recommendations (for first preference if exists)
+        recs = []
+        history_summary = None
+        if prefs:
+            p = prefs[0]
+            rec = await get_recommendation(db, p.country, p.center)
+            recs.append(rec)
+            
+            # History for first pref
+            h_stmt = select(SlotHistory).where(
+                and_(SlotHistory.country == p.country, SlotHistory.center == p.center)
+            ).order_by(desc(SlotHistory.date)).limit(7)
+            h_res = await db.execute(h_stmt)
+            h_data = h_res.scalars().all()
+            if h_data:
+                history_summary = {
+                    "country": p.country,
+                    "center": p.center,
+                    "history": [HistoryItem(date=h.date, total_events=h.total_events, avg_confidence=h.avg_confidence) for h in reversed(h_data)]
+                }
+
+        return {
+            "preferences": prefs,
+            "recent_events": recent_events,
+            "recommendations": recs,
+            "history_summary": history_summary
+        }
+    except Exception as e:
+        logger.error(f"Dashboard Error: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Dashboard failed: {str(e)}")
 
 @router.post("/reports/submit")
 async def submit_report(report_in: SlotReportCreate, user_id: str, db: AsyncSession = Depends(get_db)):

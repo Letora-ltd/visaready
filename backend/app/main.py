@@ -6,7 +6,7 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from .core.config import settings
 from .core.logging import setup_logging, logger
-from .api import visa, admin, auth, endpoints, vixaa, admin_france, payments, bot
+from .api import visa, admin, auth, endpoints, vixaa, admin_france, payments, bot, debug
 from .database.init_db import init_db
 from .workers.scheduler import start_scheduler
 
@@ -14,6 +14,7 @@ from .workers.scheduler import start_scheduler
 setup_logging()
 
 app = FastAPI(title="Vixa Visa Intelligence API")
+app.include_router(debug.router)
 
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):

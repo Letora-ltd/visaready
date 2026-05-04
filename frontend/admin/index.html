@@ -221,7 +221,7 @@
 
 </main>
 
-<script> const BACKEND = 'http://127.0.0.1:8000'; </script>
+<script> const BACKEND = ''; </script>
 <script>
 let token = null;
 
@@ -665,7 +665,7 @@ function downloadTextFile(filename, text){
   // If you don’t already have BACKEND at top, this guard keeps things safe.
   if (typeof BACKEND === 'undefined') {
     const s = document.createElement('script');
-    s.innerHTML = "const BACKEND='http://127.0.0.1:8000';";
+    s.innerHTML = "const BACKEND='';";
     document.head.appendChild(s);
   }
 
