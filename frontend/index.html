@@ -140,8 +140,9 @@
             const dest = document.getElementById('slotFilter').value;
             const grid = document.getElementById('slotsGrid');
             try {
-                const r = await fetch(`${API}/api/slots?origin=GB${dest ? '&dest=' + dest : ''}`);
-                const data = await r.json();
+                const r = await fetch(`${API}/visa/status?country=GB${dest ? '&visa_type=' + dest : ''}`);
+                const payload = await r.json();
+                const data = (payload.data || []).map(x => ({dest: x.country, status: x.availability_status, destination_name: x.country, location: x.city, provider: x.freshness_label, next_slot: x.last_updated}));
                 
                 if (data.length === 0) {
                     grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-light);">No availability data found for the selected filter.</p>';
