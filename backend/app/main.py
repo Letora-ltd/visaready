@@ -8,6 +8,7 @@ from .database.init_db import init_db
 from .workers.scheduler import start_scheduler
 
 app = FastAPI(title="VisaReady API", version="1.0.0")
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins,
@@ -16,18 +17,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# API Routes
 app.include_router(visa.router)
 app.include_router(admin.router)
 app.include_router(auth.router)
 app.include_router(endpoints.router)
 
-# Serve Frontend
-frontend_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "frontend")
-app.mount("/", StaticFiles(directory=frontend_path, html=True), name="frontend")
-
 @app.get('/health')
 def health():
     return {"success": True, "data": {"status": "ok"}}
+
+# Serve Frontend (Must be last to avoid shadowing API)
+frontend_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "frontend")
+app.mount("/", StaticFiles(directory=frontend_path, html=True), name="frontend")
 
 
 @app.on_event("startup")
