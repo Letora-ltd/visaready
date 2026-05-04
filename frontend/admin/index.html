@@ -221,7 +221,7 @@
 
 </main>
 
-<script> const BACKEND = ''; </script>
+<script> const BACKEND = '/api'; </script>
 <script>
 let token = null;
 
@@ -665,7 +665,7 @@ function downloadTextFile(filename, text){
   // If you don’t already have BACKEND at top, this guard keeps things safe.
   if (typeof BACKEND === 'undefined') {
     const s = document.createElement('script');
-    s.innerHTML = "const BACKEND='';";
+    s.innerHTML = "const BACKEND='/api';";
     document.head.appendChild(s);
   }
 
