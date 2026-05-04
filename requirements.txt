@@ -16,5 +16,6 @@ httpx==0.27.0
 razorpay==1.4.1
 python-dotenv==1.0.1
 setuptools<70
-psycopg2==2.9.9
 psycopg2-binary==2.9.9
+python-multipart==0.0.12
+python-json-logger==2.0.7
