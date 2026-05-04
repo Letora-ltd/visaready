@@ -1,134 +1,61 @@
-<!doctype html><html lang="en"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>VisaReady — Visa Checklist in Minutes</title>
-<meta name="description" content="Know your visa paperwork in minutes. Clean checklists with official sources, fees, and processing times.">
-<link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="./style.css" />
-<script src="https://www.paypal.com/sdk/js?client-id=BAAaLP6bvE3zFkJCwvDI2TrL4TphTAtLGk4ZQQ9Nm4dUcyfLKHRggU48eEnsfipQePFMKVBe48J0SXl9u0&components=hosted-buttons&disable-funding=venmo&currency=GBP" crossorigin="anonymous" async></script>
-</head><body>
-<header class="header"><div class="logo">VisaReady</div><div class="tagline">Know your visa paperwork in 3 minutes — with official sources and fresh updates.</div></header>
-<main class="container">
-<section class="card">
-<div class="kicker">Step 1</div><h2 class="h2">Choose your travel corridor</h2>
-<div class="grid">
-<div><div class="label">Your nationality</div><select id="origin" class="select"><option value="">Select origin</option></select></div>
-<div><div class="label">Destination</div><select id="dest" class="select"><option value="">Select destination</option></select></div>
-<div><div class="label">Purpose</div><select id="purpose" class="select">
-<option value="TOURIST">Tourist</option><option value="STUDENT">Student</option><option value="WORK">Work</option><option value="FAMILY">Family</option><option value="TRANSIT">Transit</option></select></div>
-</div>
-<div style="margin-top:12px;"><button class="btn" id="showChecklistBtn">Show checklist</button></div>
-</section>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vixa • Modern Visa Platform</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">VIXA</div>
+    <nav>
+      <a href="#discover">Discover</a><a href="#slots">Realtime Slots</a><a href="#wizard">Apply</a><a href="#dashboard">Dashboard</a>
+    </nav>
+  </header>
+  <main class="shell">
+    <section class="hero"><h1>Visa applications with realtime slot intelligence</h1><p>Built for India and UK outbound travelers. Find requirements, plan timelines, and track each step.</p></section>
+    <section class="panel" id="discover"><h2>Discover visas</h2><div class="row"><select id="origin"><option value="IN">India</option><option value="GB">United Kingdom</option></select><input id="query" placeholder="Search destination e.g. UAE"><button onclick="search()">Search</button></div><div id="results" class="cards"></div></section>
+    <section class="panel" id="slots"><h2>Realtime slot availability</h2><div class="row"><input id="slotOrigin" value="IN"><input id="slotDest" value="AE"><button onclick="loadSlots()">Check slots</button></div><div id="slotCards" class="cards"></div></section>
+    <section class="grid">
+      <section class="panel"><h2>Account</h2><input id="name" placeholder="Full name"><input id="email" placeholder="Email"><input id="password" type="password" placeholder="Password (8+ chars)"><select id="country"><option value="IN">India</option><option value="GB">United Kingdom</option></select><div class="row"><button onclick="signup()">Create account</button><button class="secondary" onclick="login()">Sign in</button></div><p id="authMsg" class="muted"></p></section>
+      <section class="panel" id="wizard"><h2>Application wizard</h2><div class="step">1) Choose route</div><div class="row"><input id="appOrigin" value="IN"><input id="appDest" value="AE"></div><div class="step">2) Select travel date</div><input id="travelDate" type="date"><div class="step">3) Create draft and upload docs</div><button onclick="createApp()">Create draft</button><div class="row"><input id="doc" placeholder="Document name"><button class="secondary" onclick="attachDoc()">Attach</button></div><div class="step">4) Payment + submit</div><div class="row"><button class="secondary" onclick="intent()">Create payment intent</button><button onclick="submit()">Submit</button></div></section>
+    </section>
+    <section class="panel" id="dashboard"><h2>My applications</h2><button class="secondary" onclick="loadApps()">Refresh</button><div id="apps" class="cards"></div></section>
+  </main>
+  <script>
+    const API = location.hostname === 'localhost' ? 'http://localhost:8000' : '';
+    let token = localStorage.getItem('vixa_token') || '';
+    let currentApp = '';
+    const headers = () => token ? {Authorization: 'Bearer ' + token} : {};
 
-<section class="card" id="results" style="display:none;">
-<div class="kicker">Your results</div><h2 class="h2" id="corridorTitle">Checklist</h2>
-<div class="badge" id="verifiedBadge">Last verified: <span id="verifiedDate" style="margin-left:6px;">—</span></div><hr/>
-<div id="checklist"></div><hr/>
-<div><div class="kicker">Fees & processing time</div><div id="fees"></div><div id="ptime" class="small" style="margin-top:6px;"></div></div>
-<div style="margin-top:10px"><div class="kicker">Official sources</div><ul id="sources" class="small"></ul></div>
-</section>
-
-<section class="card">
-<div class="kicker">Upgrade</div><h2 class="h2">Get PDF + Email Pack</h2>
-<p>Download your checklist as a polished PDF and receive the email pack (templates + appointment links).</p>
-<div id="paypal-container-F8A5EQ5T9D4WL"></div>
-<p class="small">Payment handled by PayPal. Instant withdrawal to your Monzo Business is available in PayPal (fees apply).</p>
-</section>
-
-<section class="card">
-<div class="kicker">About sources</div>
-<p>We link to official government/embassy sites, visa centers, and airline advisories. Each checklist shows a source badge and the last verified date.</p>
-</section>
-</main>
-
-<footer class="footer">
-© 2025 VisaReady • Guidance only — always verify with official sources.<br>
-<span class="linkbar"><a href="./legal/terms.html">Terms</a> • <a href="./legal/privacy.html">Privacy</a> • <a href="./legal/cookies.html">Cookies</a> • <a href="./legal/refund.html">Refunds</a> • <a href="./admin/">Admin</a></span>
-</footer>
-
-<script>
-  const BACKEND='http://127.0.0.1:8000';
-document.addEventListener("DOMContentLoaded", async () => {
-  const originSel = document.getElementById("origin");
-  const destSel = document.getElementById("dest");
-  const purposeSel = document.getElementById("purpose");
-  const btn = document.getElementById("showChecklistBtn");
-  const results = document.getElementById("results");
-  const title = document.getElementById("corridorTitle");
-  const checklistEl = document.getElementById("checklist");
-  const verifiedDate = document.getElementById("verifiedDate");
-  const feesEl = document.getElementById("fees");
-  const ptimeEl = document.getElementById("ptime");
-  const sourcesEl = document.getElementById("sources");
-
-  async function loadSeed() {
-    // Try backend first
-    try {
-      const seed = await fetch(`${BACKEND}/api/seed`).then(r => r.json());
-      return seed;
-    } catch (e) {
-      // Fallback to static
-      const countries = await fetch("./seed/countries.json").then(r => r.json());
-      const corridors = await fetch("./seed/corridors.json").then(r => r.json());
-      const checklists = await fetch("./seed/checklists.json").then(r => r.json());
-      return { countries, corridors, checklists };
+    async function search(){
+      const res = await fetch(`${API}/api/visas/search?origin=${origin.value}&q=${encodeURIComponent(query.value)}`);
+      const data = await res.json();
+      results.innerHTML = data.slice(0,18).map(v=>`<article class='card'><h3>${v.origin} → ${v.dest}</h3><p>${v.processing || 'Processing time varies'}</p></article>`).join('') || '<p class="muted">No routes found.</p>';
     }
-  }
-
-  const seed = await loadSeed();
-  const countries = seed.countries;
-  const corridors = seed.corridors;
-  const checklists = seed.checklists;
-
-  countries.forEach(c => {
-    const o1 = document.createElement("option"); o1.value = c.iso2; o1.textContent = c.name; originSel.appendChild(o1);
-    const o2 = document.createElement("option"); o2.value = c.iso2; o2.textContent = c.name; destSel.appendChild(o2);
-  });
-
-  btn.addEventListener("click", () => {
-    const origin = originSel.value;
-    const dest = destSel.value;
-    const purpose = purposeSel.value;
-    checklistEl.innerHTML = ""; feesEl.textContent = ""; ptimeEl.textContent = ""; sourcesEl.innerHTML = "";
-    if(!origin || !dest) { alert("Please select origin and destination."); return; }
-
-    const key = origin + "->" + dest;
-    const corridor = corridors.find(c => c.key === key);
-    if(!corridor) { alert("Corridor not found in seed. We'll add it soon."); return; }
-
-    const clKey = key + "::" + purpose;
-    const cl = checklists[clKey];
-    if(!cl) { alert("No checklist yet for this purpose. We'll add it soon."); return; }
-
-    title.textContent = corridor.origin_name + " → " + corridor.dest_name + " — " + purpose + " checklist";
-    verifiedDate.textContent = cl.last_verified || "—";
-
-    cl.items.forEach((item, i) => {
-      const row = document.createElement("div");
-      row.className = "step";
-      row.innerHTML = '<div class="num">' + (i+1) + '</div><div><strong>' + item.title + '</strong><br><span class="small">' + item.details + '</span></div>';
-      checklistEl.appendChild(row);
-    });
-    if(cl.fees) { feesEl.textContent = "Approx. fee: " + cl.fees; }
-    if(cl.processing) { ptimeEl.textContent = "Typical processing: " + cl.processing; }
-    if(Array.isArray(cl.sources)) {
-      cl.sources.forEach(s => {
-        const li = document.createElement("li");
-        li.innerHTML = '<a href="'+s.url+'" target="_blank" rel="noopener">'+(s.label||s.url)+'</a>';
-        sourcesEl.appendChild(li);
-      });
+    async function loadSlots(){
+      const res = await fetch(`${API}/api/slots/realtime?origin=${slotOrigin.value}&dest=${slotDest.value}`);
+      const data = await res.json();
+      slotCards.innerHTML = data.slots.map(s=>`<article class='card'><h3>${s.date}</h3><p>Availability: <strong>${s.availability}</strong></p><p>Estimated processing: ${s.eta_days} days</p></article>`).join('');
     }
-    results.style.display = "block"; window.scrollTo({ top: results.offsetTop - 12, behavior: 'smooth' });
-  });
-
-  function renderHosted() {
-    if (window.paypal && paypal.HostedButtons) {
-      paypal.HostedButtons({ hostedButtonId: "F8A5EQ5T9D4WL" }).render("#paypal-container-F8A5EQ5T9D4WL");
-      return true;
+    async function signup(){
+      const res = await fetch(`${API}/auth/signup`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name.value,email:email.value,password:password.value,country_code:country.value})});
+      const d = await res.json(); if(!res.ok){authMsg.textContent=d.detail;return;} token=d.token; localStorage.setItem('vixa_token',token); authMsg.textContent='Account created'; loadApps();
     }
-    return false;
-  }
-  if(!renderHosted()) {
-    const iv = setInterval(() => { if(renderHosted()) clearInterval(iv); }, 300);
-  }
-});
-</script>
-</body></html>
+    async function login(){
+      const res = await fetch(`${API}/auth/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email.value,password:password.value})});
+      const d = await res.json(); if(!res.ok){authMsg.textContent=d.detail;return;} token=d.token; localStorage.setItem('vixa_token',token); authMsg.textContent='Signed in'; loadApps();
+    }
+    async function createApp(){
+      const res = await fetch(`${API}/api/applications`,{method:'POST',headers:{...headers(),'Content-Type':'application/json'},body:JSON.stringify({origin:appOrigin.value,destination:appDest.value,travel_date:travelDate.value,visa_type:'TOURIST'})});
+      const d = await res.json(); currentApp=d.id || ''; loadApps();
+    }
+    async function attachDoc(){if(!currentApp) return alert('Create app first'); await fetch(`${API}/api/documents/upload`,{method:'POST',headers:{...headers(),'Content-Type':'application/json'},body:JSON.stringify({application_id:currentApp,name:doc.value||'Passport'})}); loadApps();}
+    async function intent(){if(!currentApp) return alert('Create app first'); const r=await fetch(`${API}/api/payments/intent`,{method:'POST',headers:{...headers(),'Content-Type':'application/json'},body:JSON.stringify({application_id:currentApp})}); const d=await r.json(); alert(d.id?`Payment intent: ${d.id}`:d.detail||d.error);}
+    async function submit(){if(!currentApp) return; await fetch(`${API}/api/applications/${currentApp}/submit`,{method:'POST',headers:headers()}); loadApps();}
+    async function loadApps(){if(!token){apps.innerHTML='<p class="muted">Sign in to view your dashboard.</p>';return;} const res=await fetch(`${API}/api/applications`,{headers:headers()}); const d=await res.json(); apps.innerHTML=d.map(a=>`<article class='card'><h3>${a.id}</h3><p>${a.origin} → ${a.destination}</p><p>Status: <strong>${a.status}</strong></p><p>Docs: ${(a.documents||[]).join(', ') || 'None'}</p></article>`).join(''); if(d[0]) currentApp=d[0].id;}
+    search(); loadSlots(); loadApps();
+  </script>
+</body>
+</html>

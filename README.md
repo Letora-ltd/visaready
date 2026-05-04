@@ -1,36 +1,47 @@
+# Vixa
 
-# VisaReady — MVP v3
+Vixa is a visa-tech web application with a modern UX, realtime slot visibility simulation, account management, and an end-to-end visa application flow.
 
-- Non-AI code, mobile-first, bright deep-blue + lime theme.
-- PayPal Hosted Button integrated (payouts to Monzo via PayPal).
-- Admin panel to edit checklists (login: password from `ADMIN_PASSWORD`, default `admin123`).
-- Frontend fetches `/api/seed` first (live data), falls back to static `/frontend/seed` if backend is not running.
+## Highlights
+- Visa corridor discovery by origin country (IN/GB focus)
+- Realtime slot availability API (deterministic daily simulation for local/dev)
+- Account signup/login with session auth
+- Multi-step application wizard (draft → documents → payment intent → submit)
+- User dashboard with status tracking
+- Legal pages and security page
 
-## Run backend
-```
+## Local run
+```bash
 cd backend
-python -m venv .venv && source .venv/bin/activate
+python -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
-export ADMIN_PASSWORD="change_me"
 uvicorn app:app --reload --port 8000
 ```
 
-## Run frontend (static server)
-```
+```bash
 cd frontend
 python -m http.server 5173
-open http://localhost:5173
 ```
 
-## Admin panel
-- Visit `http://localhost:5173/admin/`
-- Login with your password (`ADMIN_PASSWORD`).
-- Add/modify checklists via JSON editor. Keys are like `IN->TR::TOURIST`.
+Then open http://localhost:5173
 
-## Deploy
-- Backend: Railway/Render (Start: `uvicorn app:app --host 0.0.0.0 --port 8000`)
-- Frontend: Vercel/Netlify/Cloudflare Pages (static). For live updates, point frontend to backend domain (works automatically via `/api/seed`).
+## Key APIs
+- `GET /api/visas/search`
+- `GET /api/visas/{origin}/{dest}`
+- `GET /api/slots/realtime?origin=IN&dest=AE`
+- `POST /auth/signup`
+- `POST /auth/login`
+- `GET /auth/me`
+- `POST /api/applications`
+- `GET /api/applications`
+- `POST /api/documents/upload`
+- `POST /api/payments/intent`
+- `POST /api/applications/{app_id}/submit`
 
-## Seeds
-- 30 original corridors + 15 extra countries with IN<->Country corridors added.
-- Sample checklists (GB->US::TOURIST, IN->GB::TOURIST, IN->TR::TOURIST) include official source links.
+## Notes
+- Slot availability is simulated but shaped as a production API contract.
+- Document upload currently stores metadata only for dev portability.
+
+## Production deployment
+See `DEPLOYMENT.md` for GoDaddy domain setup (`vixaa.online`) with Vercel + Render.
