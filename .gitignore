@@ -12,3 +12,8 @@ node_modules/
 
 # Secrets (don’t commit .env files)
 *.env
+
+# Local Databases
+backend/*.db
+backend/*.sqlite3
+visaready.db
