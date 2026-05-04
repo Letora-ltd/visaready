@@ -1,4 +1,4 @@
-from sqlalchemy import String, DateTime, Boolean, ForeignKey, Text, Integer, func, Index
+from sqlalchemy import String, DateTime, Boolean, ForeignKey, Text, Integer, func, Index, JSON
 from sqlalchemy.orm import Mapped, mapped_column
 from ..database.base import Base
 
@@ -31,7 +31,11 @@ class AppointmentStatus(Base):
     visa_type: Mapped[str] = mapped_column(String(40), index=True)
     availability_status: Mapped[str] = mapped_column(String(40))
     freshness_label: Mapped[str] = mapped_column(String(40), default='last_known')
+    country_code: Mapped[str | None] = mapped_column(String(2), index=True, nullable=True)
+    city_slug: Mapped[str | None] = mapped_column(String(120), index=True, nullable=True)
     source_id: Mapped[int | None] = mapped_column(ForeignKey('data_sources.id'), nullable=True)
+    verified_by: Mapped[str | None] = mapped_column(String(120), nullable=True)
+    last_checked: Mapped[DateTime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     last_updated: Mapped[DateTime] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), index=True)
     __table_args__ = (Index('ix_status_lookup', 'country', 'city', 'visa_type'),)
 
@@ -43,3 +47,18 @@ class UpdateLog(Base):
     records_upserted: Mapped[int] = mapped_column(Integer, default=0)
     error_summary: Mapped[str | None] = mapped_column(Text, nullable=True)
     created_at: Mapped[DateTime] = mapped_column(DateTime(timezone=True), server_default=func.now(), index=True)
+
+
+class PortalMapping(Base):
+    __tablename__ = 'portal_mappings'
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    country: Mapped[str] = mapped_column(String(120), index=True)
+    city: Mapped[str] = mapped_column(String(120), index=True)
+    visa_type: Mapped[str] = mapped_column(String(40), index=True)
+    country_code: Mapped[str] = mapped_column(String(2), index=True)
+    city_slug: Mapped[str] = mapped_column(String(120), index=True)
+    provider: Mapped[str] = mapped_column(String(120))
+    portal_url: Mapped[str] = mapped_column(String(500))
+    instructions: Mapped[list | None] = mapped_column(JSON, nullable=True)
+    portal_status: Mapped[str] = mapped_column(String(20), default='reachable')
+    last_health_checked: Mapped[DateTime | None] = mapped_column(DateTime(timezone=True), nullable=True)
