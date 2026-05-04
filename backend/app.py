@@ -3,7 +3,10 @@ from fastapi import FastAPI, HTTPException, Header
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-from .utils import load_json, save_json, add_token, ADMIN_PASSWORD, verify_token
+try:
+    from .utils import load_json, save_json, add_token, ADMIN_PASSWORD, verify_token
+except Exception:
+    from utils import load_json, save_json, add_token, ADMIN_PASSWORD, verify_token
 
 app = FastAPI(title="VisaReady API", version="0.4.0")
 app.add_middleware(
@@ -41,6 +44,110 @@ def get_checklist(origin: str, dest: str, category: str = "TOURIST"):
     if key not in data:
         raise HTTPException(404, "Checklist not found.")
     return data[key]
+
+
+try:
+    from . import user_store
+except Exception:
+    import user_store
+
+class SignupIn(BaseModel):
+    name: str
+    email: str
+    password: str
+    country_code: str
+
+class LoginUserIn(BaseModel):
+    email: str
+    password: str
+
+class ApplicationIn(BaseModel):
+    origin: str
+    destination: str
+    visa_type: str = "TOURIST"
+    travel_date: str = ""
+    documents: list[str] = []
+
+@app.post("/auth/signup")
+def signup(payload: SignupIn):
+    created = user_store.create_user(payload.name, payload.email, payload.password, payload.country_code)
+    if not created:
+        raise HTTPException(409, "User already exists")
+    token = user_store.new_session(created["id"])
+    return {"token": token, "user": created}
+
+@app.post("/auth/login")
+def login_user(payload: LoginUserIn):
+    user = user_store.login(payload.email, payload.password)
+    if not user:
+        raise HTTPException(401, "Invalid credentials")
+    token = user_store.new_session(user["id"])
+    return {"token": token, "user": user}
+
+def _user(authorization: str | None):
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(401, "Missing token")
+    token = authorization.split(" ",1)[1]
+    user = user_store.get_user_by_token(token)
+    if not user:
+        raise HTTPException(401, "Invalid token")
+    return user
+
+@app.get("/auth/me")
+def auth_me(authorization: str | None = Header(default=None)):
+    return _user(authorization)
+
+@app.get("/api/applications")
+def get_apps(authorization: str | None = Header(default=None)):
+    user = _user(authorization)
+    return user_store.list_applications(user["id"])
+
+@app.post("/api/applications")
+def create_app(payload: ApplicationIn, authorization: str | None = Header(default=None)):
+    user = _user(authorization)
+    return user_store.add_application(user["id"], payload.model_dump())
+
+
+@app.get("/api/visas/search")
+def visa_search(origin: str, q: str = ""):
+    origin = origin.upper()
+    corridors = [c for c in load_json("corridors.json") if c.get("origin","").upper() == origin]
+    if q:
+        ql = q.lower()
+        corridors = [c for c in corridors if ql in c.get("destination_name", c.get("dest","")).lower() or ql in c.get("dest","").lower()]
+    return corridors
+
+@app.get("/api/visas/{origin}/{dest}")
+def visa_detail(origin: str, dest: str):
+    key = f"{origin.upper()}->{dest.upper()}::TOURIST"
+    checklists = load_json("checklists.json")
+    corridor = next((c for c in load_json("corridors.json") if c.get("origin","").upper()==origin.upper() and c.get("dest","").upper()==dest.upper()), None)
+    if not corridor:
+        raise HTTPException(404, "Corridor not found")
+    return {"corridor": corridor, "checklist": checklists.get(key)}
+
+class DocUploadIn(BaseModel):
+    application_id: str
+    name: str
+    content_base64: str = ""
+
+@app.post("/api/documents/upload")
+def upload_document(payload: DocUploadIn, authorization: str | None = Header(default=None)):
+    user = _user(authorization)
+    return user_store.attach_document(user["id"], payload.application_id, payload.name)
+
+class PaymentIntentIn(BaseModel):
+    application_id: str
+
+@app.post("/api/payments/intent")
+def payment_intent(payload: PaymentIntentIn, authorization: str | None = Header(default=None)):
+    user = _user(authorization)
+    return user_store.create_payment_intent(user["id"], payload.application_id)
+
+@app.post("/api/applications/{app_id}/submit")
+def submit_application(app_id: str, authorization: str | None = Header(default=None)):
+    user = _user(authorization)
+    return user_store.update_status(user["id"], app_id, "SUBMITTED")
 
 # -------- Admin auth helpers --------
 class LoginIn(BaseModel):
