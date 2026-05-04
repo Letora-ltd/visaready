@@ -7,20 +7,24 @@ class ProviderRecord:
     city: str
     visa_type: str
     availability_status: str
+    next_available_date: str | None = None
+    notes: str | None = None
     freshness_label: str = 'last_known'
 
 class DataProvider(Protocol):
     name: str
+    source_type: str
     def fetch_statuses(self) -> list[ProviderRecord]: ...
 
 class MockProvider:
     name = 'mock_provider'
+    source_type = 'fallback'
     def fetch_statuses(self) -> list[ProviderRecord]:
-        return [ProviderRecord(country='FR', city='Paris', visa_type='TOURIST', availability_status='LIMITED')]
+        return [ProviderRecord(country='GB', city='London', visa_type='TOURIST', availability_status='LIMITED', notes='seed fallback')]
 
-class ManualProvider:
-    name = 'manual_provider'
-    def __init__(self, rows: list[dict]):
-        self.rows = rows
+class SafePublicProvider:
+    name = 'safe_public_provider'
+    source_type = 'automated'
     def fetch_statuses(self) -> list[ProviderRecord]:
-        return [ProviderRecord(**r) for r in self.rows]
+        # Placeholder for public endpoint ingestion only (no captcha/login bypass)
+        return []
