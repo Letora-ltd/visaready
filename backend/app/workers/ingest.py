@@ -3,6 +3,9 @@ from sqlalchemy.orm import Session
 from ..integrations.providers import MockProvider
 from ..models.entities import AppointmentStatus, UpdateLog
 
+def _city_slug(city: str) -> str:
+    return '-'.join((city or '').strip().lower().split())
+
 def run_ingestion(db: Session, provider_name: str = 'mock'):
     provider = MockProvider()
     records = provider.fetch_statuses()
@@ -17,8 +20,13 @@ def run_ingestion(db: Session, provider_name: str = 'mock'):
             if row:
                 row.availability_status = rec.availability_status
                 row.freshness_label = rec.freshness_label
+                row.country_code = rec.country
+                row.city_slug = _city_slug(rec.city)
             else:
-                db.add(AppointmentStatus(**rec.__dict__))
+                payload = rec.__dict__.copy()
+                payload['country_code'] = rec.country
+                payload['city_slug'] = _city_slug(rec.city)
+                db.add(AppointmentStatus(**payload))
             upserted += 1
         db.add(UpdateLog(provider=provider.name, status='success', records_upserted=upserted))
         db.commit()
