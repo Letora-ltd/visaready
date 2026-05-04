@@ -1,13 +1,114 @@
-<!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><link rel='stylesheet' href='../style.css'><title>Verification Console</title></head><body><main class='container'><section class='card'><h2 class='h2'>Verification Session</h2><div class='grid'><div><div class='label'>Admin API Key</div><input id='apiKey'></div><div><div class='label'>Verified By</div><input id='verifiedBy' placeholder='admin@company'></div></div><button class='btn' id='startBtn'>Start Verification Session</button><span id='toast' class='small'></span></section><section class='card'><h3 class='h2'>Verification Context</h3><div id='ctx'></div><button class='btn' id='copyCtx'>Copy Context</button><button class='btn' id='openPortal'>Open Official Portal</button><button class='btn' id='markChecked'>Mark as Checked</button><div style='margin-top:8px'><button class='btn status' data-v='AVAILABLE'>Available</button><button class='btn status' data-v='LIMITED'>Limited</button><button class='btn status' data-v='NONE'>None</button></div><div id='freshness' class='small' style='margin-top:8px'></div><ol id='instructions'></ol></section><section class='card'><h3 class='h2'>Portal Mapping Admin</h3><div class='grid'><input id='m_country' placeholder='Country'><input id='m_city' placeholder='City'><input id='m_visa' placeholder='Visa type'><input id='m_provider' placeholder='Provider'><input id='m_url' placeholder='Portal URL'><textarea id='m_steps' placeholder='One step per line'></textarea></div><button class='btn' id='createMap'>Create Mapping</button></section></main><script>
-const BACKEND='http://127.0.0.1:8000'; let tasks=[],idx=0,current=null,timer=null;
-function hdr(){return {'x-admin-key':document.getElementById('apiKey').value};}
-async function loadTasks(){const r=await fetch(`${BACKEND}/admin/tasks`,{headers:hdr()});const j=await r.json();tasks=j.data||[];idx=0;await loadCurrent();}
-async function loadCurrent(){current=tasks[idx]; if(!current){document.getElementById('ctx').textContent='Done';return;} const ctx=`${current.country} - ${current.city} - ${current.visa_type}`;document.getElementById('ctx').textContent=ctx;document.getElementById('copyCtx').onclick=()=>navigator.clipboard.writeText(ctx);
-const p=await fetch(`${BACKEND}/admin/portal-link?country=${encodeURIComponent(current.country)}&city=${encodeURIComponent(current.city)}&visa_type=${encodeURIComponent(current.visa_type)}`,{headers:hdr()}); const pj=await p.json(); if(pj.data){document.getElementById('openPortal').onclick=()=>window.open(pj.data.portal_url,'_blank','noopener');const ol=document.getElementById('instructions');ol.innerHTML='';(pj.data.instructions||[]).forEach(s=>{const li=document.createElement('li');li.textContent=s;ol.appendChild(li);});}
-paintFreshness(); clearInterval(timer); timer=setInterval(paintFreshness,30000);}
-function paintFreshness(){if(!current)return; const d=(Date.now()-new Date(current.last_updated).getTime())/60000; let color='green',label='fresh'; if(d>=10){color='goldenrod';label='aging';} if(d>30){color='red';label='STALE';} const el=document.getElementById('freshness');el.style.color=color;el.textContent=`${Math.floor(d)} min since update (${label})`;}
-document.querySelectorAll('.status').forEach(b=>b.onclick=async()=>{const v=b.dataset.v;document.querySelectorAll('.status').forEach(x=>x.style.outline='none');b.style.outline='3px solid #333';await fetch(`${BACKEND}/admin/update`,{method:'POST',headers:{...hdr(),'Content-Type':'application/json'},body:JSON.stringify({provider:'mock'})});document.getElementById('toast').textContent=`Set ${v}`;});
-document.getElementById('markChecked').onclick=async()=>{await fetch(`${BACKEND}/admin/status/${current.id}/check?verified_by=${encodeURIComponent(document.getElementById('verifiedBy').value)}`,{method:'POST',headers:hdr()});document.getElementById('toast').textContent='Checked';idx++;loadCurrent();};
-document.getElementById('startBtn').onclick=loadTasks;
-document.getElementById('createMap').onclick=async()=>{const steps=document.getElementById('m_steps').value.split('\n').map(s=>s.trim()).filter(Boolean);await fetch(`${BACKEND}/admin/portal`,{method:'POST',headers:{...hdr(),'Content-Type':'application/json'},body:JSON.stringify({country:m_country.value,city:m_city.value,visa_type:m_visa.value,provider:m_provider.value,portal_url:m_url.value,instructions:steps})});document.getElementById('toast').textContent='Mapping saved';};
-</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Verification Dashboard</title>
+  <style>
+    :root {
+      --bg:#f3f5f8; --surface:#ffffffcc; --panel:#ffffff;
+      --text:#111827; --sub:#6b7280; --muted:#9ca3af;
+      --ok:#3f7f58; --warn:#b47a2e; --bad:#9b3a3a;
+      --line:#e5e7eb; --shadow:0 8px 24px rgba(17,24,39,.08);
+      --space-1:8px; --space-2:16px; --space-3:24px; --space-4:32px;
+      --r:16px;
+    }
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font:400 16px/1.5 Inter,system-ui,Segoe UI,Arial}
+    .wrap{max-width:1200px;margin:0 auto;padding:var(--space-4) var(--space-3)}
+    .title{font-size:32px;font-weight:700;margin:0 0 var(--space-2)} .section{font-size:24px;font-weight:600;margin:0}
+    .meta{font-size:14px;color:var(--sub)} .small{font-size:14px;color:var(--muted)}
+    .panel{background:var(--panel);border-radius:var(--r);padding:var(--space-3);box-shadow:var(--shadow)}
+    .row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-2)} @media (max-width:900px){.row{grid-template-columns:1fr}}
+    .input,.btn{height:44px;border-radius:12px} .input{border:1px solid var(--line);padding:0 12px;width:100%}
+    .btn{border:1px solid transparent;padding:0 14px;background:#111827;color:#fff;font-weight:600;cursor:pointer;transition:.22s ease}
+    .btn:hover{transform:scale(1.01);box-shadow:0 8px 18px rgba(17,24,39,.2)} .btn:active{transform:scale(.995)} .btn.secondary{background:#fff;color:#111827;border-color:var(--line)}
+    .stats{display:flex;gap:var(--space-2);margin-top:var(--space-2);align-items:center;flex-wrap:wrap}
+    .chip{background:#f9fafb;border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:14px}
+    .progress{height:8px;background:#e5e7eb;border-radius:999px;flex:1;min-width:180px}.bar{height:100%;width:0;background:#111827;border-radius:inherit;transition:.25s ease}
+    .cards-wrap{margin-top:var(--space-3);position:relative}.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--space-2)}
+    .cards-wrap.focus .card:not(.active){opacity:.45;filter:saturate(.7)}
+    .card{background:var(--surface);backdrop-filter:blur(8px);border-radius:var(--r);padding:var(--space-2);box-shadow:var(--shadow);transition:.24s ease;position:relative}
+    .card:hover{transform:scale(1.012);box-shadow:0 14px 30px rgba(17,24,39,.12)} .card.active{outline:2px solid #374151;background:#fff}
+    .card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:var(--space-2)} .location{font-size:16px;font-weight:600}
+    .availability{font-size:24px;font-weight:600;margin-bottom:var(--space-1)} .fresh{color:var(--ok)} .aging{color:var(--warn)} .stale{color:var(--bad)}
+    .card-bottom{display:flex;justify-content:space-between;align-items:flex-end;gap:var(--space-2);margin-top:var(--space-2)}
+    .actions{display:flex;gap:var(--space-1);flex-wrap:wrap}
+    .toast{position:fixed;right:var(--space-2);bottom:var(--space-2);display:grid;gap:var(--space-1);z-index:20}
+    .toast-item{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14px;box-shadow:var(--shadow)}
+    .shimmer{height:180px;border-radius:var(--r);background:linear-gradient(110deg,#eef2f7 8%,#fff 18%,#eef2f7 33%);background-size:200% 100%;animation:s 1.1s linear infinite}
+    @keyframes s{to{background-position:-200% 0}}
+    .empty{padding:48px 24px;text-align:center;background:#fff;border:1px dashed #d1d5db;border-radius:var(--r)}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <h1 class="title">Verification Dashboard</h1>
+    <section class="panel">
+      <h2 class="section">Session Setup</h2>
+      <p class="meta">Manual verification only. No automation, no scraping.</p>
+      <div class="row" style="margin-top:16px">
+        <div><div class="small">Admin API Key</div><input id="apiKey" class="input" /></div>
+        <div><div class="small">Verified By</div><input id="verifiedBy" class="input" placeholder="admin@company.com" /></div>
+        <div style="display:flex;align-items:end"><button id="startBtn" class="btn" style="width:100%">Start verification session</button></div>
+      </div>
+      <div class="stats">
+        <div class="chip">Completed: <b id="completed">0</b></div>
+        <div class="chip">Remaining: <b id="remaining">0</b></div>
+        <div class="progress"><div id="bar" class="bar"></div></div>
+      </div>
+    </section>
+
+    <section class="cards-wrap" id="cardsWrap">
+      <div id="loading" class="cards" style="display:none;margin-bottom:16px"><div class="shimmer"></div><div class="shimmer"></div><div class="shimmer"></div></div>
+      <div id="emptyState" class="empty" style="display:none">
+        <h3 class="section" style="font-size:24px;margin-bottom:8px">No recent updates — everything is up to date ✔</h3>
+        <p class="meta">You can start a new session at any time to re-check high-priority routes.</p>
+      </div>
+      <div id="cards" class="cards"></div>
+    </section>
+  </main>
+  <div id="toasts" class="toast"></div>
+
+<script>
+const BACKEND='http://127.0.0.1:8000';
+let tasks=[],activeIndex=0,refreshTimer=null;
+const flags={FR:'🇫🇷',DE:'🇩🇪',IN:'🇮🇳',US:'🇺🇸',GB:'🇬🇧',IT:'🇮🇹',ES:'🇪🇸',NL:'🇳🇱'};
+const hdr=()=>({'x-admin-key':apiKey.value});
+
+function toast(msg, ok=true){const el=document.createElement('div');el.className='toast-item';el.textContent=msg;el.style.borderColor=ok?'#d1fae5':'#fecaca';toasts.appendChild(el);setTimeout(()=>el.remove(),2200)}
+
+function getFreshness(last){const min=Math.max(0,Math.floor((Date.now()-new Date(last).getTime())/60000));if(min<10)return{cls:'fresh',label:'Fresh',mins:min};if(min<=30)return{cls:'aging',label:'Aging',mins:min};return{cls:'stale',label:'Stale',mins:min};}
+
+function render(){cards.innerHTML='';cardsWrap.classList.toggle('focus',tasks.length>0);if(!tasks.length){emptyState.style.display='block';cardsWrap.classList.remove('focus');}else{emptyState.style.display='none';}
+  tasks.forEach((t,i)=>{const f=getFreshness(t.last_updated);const card=document.createElement('article');card.className='card'+(i===activeIndex?' active':'');
+    card.innerHTML=`<div class='card-top'><div><div class='location'>${flags[t.country]||'🌍'} ${t.country} · ${t.city}</div><div class='small'>${t.visa_type}</div></div><div class='small ${f.cls}'>${f.label}</div></div>
+      <div class='availability ${f.cls}'>${t.availability_status||'Unknown'}</div>
+      <div class='meta'>Verified ${f.mins} minutes ago · Confidence: High</div>
+      <div class='card-bottom'><div class='small'>Last checked: ${t.last_checked?new Date(t.last_checked).toLocaleString():'—'}</div>
+      <div class='actions'><button class='btn secondary' data-open='${i}'>Check availability →</button><button class='btn' data-verify='${i}'>Verify →</button></div></div>`;
+    cards.appendChild(card);
+  });
+  completed.textContent=activeIndex;remaining.textContent=Math.max(0,tasks.length-activeIndex);
+  bar.style.width=tasks.length?`${(activeIndex/tasks.length)*100}%`:'0%';
+}
+
+async function loadSession(){loading.style.display='grid';emptyState.style.display='none';cards.innerHTML='';
+  try{const r=await fetch(`${BACKEND}/admin/tasks`,{headers:hdr()});const j=await r.json();tasks=Array.isArray(j.data)?j.data:[];activeIndex=0;render();toast('Session loaded');}
+  catch(e){tasks=[];render();toast('Unable to load tasks',false)}
+  finally{loading.style.display='none';}
+}
+
+async function openPortal(i){const t=tasks[i];const q=`country=${encodeURIComponent(t.country)}&city=${encodeURIComponent(t.city)}&visa_type=${encodeURIComponent(t.visa_type)}`;
+  const r=await fetch(`${BACKEND}/admin/portal-link?${q}`,{headers:hdr()});const j=await r.json();if(j.data?.portal_url){window.open(j.data.portal_url,'_blank','noopener');toast('Portal opened in new tab');}else{toast(j.message||'No portal mapping found',false);}}
+
+async function verifyTask(i){const t=tasks[i];
+  try{await fetch(`${BACKEND}/admin/status/${t.id}/check?verified_by=${encodeURIComponent(verifiedBy.value)}`,{method:'POST',headers:hdr()});activeIndex=Math.min(i+1,tasks.length);render();document.querySelectorAll('.card')[activeIndex]?.scrollIntoView({behavior:'smooth',block:'center'});toast('Verification recorded');}
+  catch(e){toast('Verification failed',false)}
+}
+
+cards.addEventListener('click',(e)=>{const open=e.target.dataset.open,verify=e.target.dataset.verify;if(open!==undefined){activeIndex=Number(open);render();openPortal(Number(open));}if(verify!==undefined){activeIndex=Number(verify);render();verifyTask(Number(verify));}});
+startBtn.addEventListener('click',loadSession);
+refreshTimer=setInterval(()=>{if(tasks.length)render();},5000);
+</script>
+</body>
+</html>
