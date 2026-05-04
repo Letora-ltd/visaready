@@ -74,4 +74,4 @@ async def login(payload: LoginIn, db: AsyncSession = Depends(get_db)):
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Database or Server Error: {str(e)}")
+        raise HTTPException(status_code=500, detail="Authentication server error. Please try again later.")
