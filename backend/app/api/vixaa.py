@@ -39,10 +39,16 @@ async def get_history(country: str, center: str, db: AsyncSession = Depends(get_
         "history": [HistoryItem(date=h.date, total_events=h.total_events, avg_confidence=h.avg_confidence) for h in history]
     }
 
+import uuid
 @router.get("/dashboard", response_model=DashboardRead)
 async def get_dashboard(user_id: str, db: AsyncSession = Depends(get_db)):
+    try:
+        u_id = uuid.UUID(user_id) if isinstance(user_id, str) else user_id
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid user ID format")
+        
     # 1. Preferences
-    pref_stmt = select(AlertPreference).where(AlertPreference.user_id == user_id)
+    pref_stmt = select(AlertPreference).where(AlertPreference.user_id == u_id)
     pref_res = await db.execute(pref_stmt)
     prefs = pref_res.scalars().all()
     

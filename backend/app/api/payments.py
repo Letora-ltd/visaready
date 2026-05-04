@@ -1,5 +1,6 @@
 import json
 import logging
+from ..core.logging import logger
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
@@ -62,6 +63,10 @@ async def razorpay_webhook(request: Request, db: AsyncSession = Depends(get_db))
         payment = res.scalar_one_or_none()
         
         if payment:
+            if payment.status == "completed":
+                logger.info(f"Payment {order_id} already processed. Skipping.")
+                return {"status": "ok"}
+
             payment.status = "completed"
             payment.payment_id = payment_id
             

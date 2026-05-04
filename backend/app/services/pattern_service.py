@@ -1,5 +1,5 @@
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from sqlalchemy import select, func, and_
 from sqlalchemy.ext.asyncio import AsyncSession
 from ..models.entities import SlotEvent, SlotHistory, SlotPattern
@@ -11,7 +11,7 @@ async def analyze_and_update_patterns(db: AsyncSession):
     logging.info("Starting Pattern Detection Engine...")
     
     # 1. Aggregate Slot History (Last 24h)
-    yesterday = datetime.utcnow() - timedelta(days=1)
+    yesterday = datetime.now(timezone.utc) - timedelta(days=1)
     
     # Group by country, center to update history
     history_stmt = select(
@@ -98,7 +98,7 @@ async def get_recommendation(db: AsyncSession, country: str, center: str):
             "recommendation_message": "Not enough data yet. Keep reporting!"
         }
     
-    current_hour = datetime.utcnow().hour
+    current_hour = datetime.now(timezone.utc).hour
     start_hour = int(pattern.peak_start_time.split(':')[0])
     end_hour = int(pattern.peak_end_time.split(':')[0])
     

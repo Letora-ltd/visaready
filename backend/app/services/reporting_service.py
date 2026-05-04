@@ -27,6 +27,9 @@ def calculate_report_score(user: User, report_data: dict, has_duplicate: bool, m
     if matches_pattern: score += 10
     return score
 
+from ..core.logging import logger
+from ..services.subscription_service import is_premium
+
 async def process_slot_report(db: AsyncSession, user: User, report_in: dict):
     """
     Main logic for handling a slot report submission (Async).
@@ -36,14 +39,21 @@ async def process_slot_report(db: AsyncSession, user: User, report_in: dict):
         report_in['slot_date'], report_in['slot_time']
     )
     
+    # 0. Idempotency: User cannot report the same fingerprint twice
+    existing_report_res = await db.execute(select(SlotReport).where(
+        and_(SlotReport.user_id == user.id, SlotReport.fingerprint_hash == fingerprint)
+    ))
+    if existing_report_res.scalar_one_or_none():
+        return {"status": "error", "message": "You have already reported this slot."}
+
     if user.account_status == 'shadow_banned':
         status, score = 'rejected', 0
     else:
-        # Anti-Spam
+        # Anti-Spam: Max 5 reports per 5 minutes
         recent_res = await db.execute(select(SlotReport).where(
             and_(SlotReport.user_id == user.id, SlotReport.reported_at > datetime.utcnow() - timedelta(minutes=5))
         ))
-        if len(recent_res.scalars().all()) > 5:
+        if len(recent_res.scalars().all()) >= 5:
             return {"status": "error", "message": "Too many reports. Please wait."}
 
         # Consensus check
@@ -67,10 +77,12 @@ async def process_slot_report(db: AsyncSession, user: User, report_in: dict):
     if status == 'valid':
         user.reports_accepted += 1
         user.trust_score += 10
+        logger.info(f"Valid report from user {user.id} for {report_in['country']}. Score: {score}")
     elif status == 'rejected':
         user.reports_rejected += 1
         user.trust_score -= 15
         if user.trust_score < -50: user.account_status = 'shadow_banned'
+        logger.warning(f"Rejected report from user {user.id}. Trust Score dropped to {user.trust_score}")
             
     if status == 'valid':
         event_res = await db.execute(select(SlotEvent).where(SlotEvent.fingerprint_hash == fingerprint))
@@ -96,6 +108,11 @@ async def process_slot_report(db: AsyncSession, user: User, report_in: dict):
     return {"status": status, "score": score, "report_id": str(report.id)}
 
 async def trigger_event_alerts(db: AsyncSession, event: SlotEvent):
+    from ..services.telegram_service import send_telegram_message
+    from ..services.slot_lifecycle_service import slot_lifecycle # For background task scheduling if needed
+    from ..workers.scheduler import scheduler
+
+    # Find users with matching preferences
     alert_res = await db.execute(select(User).join(AlertPreference).where(
         and_(AlertPreference.country == event.country, AlertPreference.center == event.center, User.telegram_chat_id != None)
     ))
@@ -111,4 +128,16 @@ async def trigger_event_alerts(db: AsyncSession, event: SlotEvent):
             f"⏰ <b>Window:</b> {event.time_window}\n\n"
             f"Verified by {event.sources_count} users."
         )
-        send_telegram_message(user.telegram_chat_id, message)
+
+        # Priority Gating
+        if is_premium(user):
+            send_telegram_message(user.telegram_chat_id, message)
+        else:
+            # Delay for free users: 3 minutes
+            delay_msg = message + "\n\n⚡ <i>Upgrade to Premium for instant alerts!</i>"
+            scheduler.add_job(
+                send_telegram_message,
+                'date',
+                run_date=datetime.now() + timedelta(minutes=3),
+                args=[user.telegram_chat_id, delay_msg]
+            )

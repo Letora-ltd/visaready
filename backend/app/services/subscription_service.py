@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from ..models.entities import User
 
 def is_premium(user: User) -> bool:
@@ -14,4 +14,9 @@ def is_premium(user: User) -> bool:
     if not user.subscription_expiry:
         return False
         
-    return user.subscription_expiry > datetime.utcnow()
+    # Ensure both are timezone aware for comparison
+    expiry = user.subscription_expiry
+    if expiry.tzinfo is None:
+        expiry = expiry.replace(tzinfo=timezone.utc)
+        
+    return expiry > datetime.now(timezone.utc)
