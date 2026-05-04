@@ -2,10 +2,11 @@ import os
 from pydantic_settings import BaseSettings
 from pydantic import Field
 
-# Use /tmp for SQLite on Vercel to allow writes (ephemeral)
-default_db = "sqlite:///./visaready.db"
-if os.environ.get("VERCEL"):
-    default_db = "sqlite:////tmp/visaready.db"
+# Use relative path for SQLite to ensure it works on Vercel when committed
+# On Vercel, the app root is /var/task
+base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+db_path = os.path.join(base_dir, "visaready.db")
+default_db = f"sqlite:///{db_path}"
 
 class Settings(BaseSettings):
     database_url: str = Field(default=default_db, alias="DATABASE_URL")
