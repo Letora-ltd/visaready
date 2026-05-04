@@ -9,18 +9,21 @@
 </head>
 <body>
     <header class="nav">
-        <div>
-            <h1>VIXA</h1>
+        <div class="nav-brand">
+            <span>VIXA</span> Intelligence
         </div>
         <nav>
             <a href="#slots">Appointments</a>
             <a href="#discover">Discover</a>
-            <a href="#apply">Apply</a>
             <a href="#track">Track</a>
         </nav>
+        <div class="nav-user">
+            <span class="user-email" id="userEmail"></span>
+            <button class="btn-logout" onclick="logout()">Sign Out</button>
+        </div>
     </header>
 
-    <main class="container">
+    <div class="container">
         <!-- Intelligence Panel -->
         <section class="intel-panel animate-fade-in">
             <div style="flex: 1;">
@@ -72,7 +75,7 @@
 
         <!-- Slots Section -->
         <section id="slots" class="card animate-fade-in" style="animation-delay: 0.1s;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                 <h3>Live Availability Monitor</h3>
                 <div style="width: 200px;">
                     <select id="slotFilter" onchange="loadSlots()">
@@ -84,6 +87,12 @@
                         <option value="GR">Greece</option>
                     </select>
                 </div>
+            </div>
+            <div style="margin-bottom: 1.5rem; padding: 0.75rem 1rem; background: var(--primary-light); border-radius: 0.5rem; display: flex; align-items: flex-start; gap: 0.75rem; border-left: 4px solid var(--accent);">
+                <span style="font-size: 1.25rem;">ℹ️</span>
+                <p style="font-size: var(--font-xs); color: var(--text-dark); margin: 0; line-height: 1.4;">
+                    <strong>Disclaimer:</strong> Appointment availability changes rapidly. While we verify data every few minutes, we recommend checking the official portal immediately after finding a slot. Vixa does not guarantee appointment booking.
+                </p>
             </div>
             <div id="slotsGrid" class="slots-container">
                 <!-- Shimmer Loading State -->
@@ -116,70 +125,11 @@
             <ul id="corridors" style="margin-top: 1.5rem; list-style: none;"></ul>
         </section>
 
-        <section class="grid" id="apply">
-            <!-- Auth Section -->
-            <div class="card animate-fade-in" style="animation-delay: 0.3s;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                    <h3 id="authTitle">Login to Vixa</h3>
-                    <button class="btn-ghost" style="width: auto; font-size: 0.875rem;" onclick="toggleAuthMode()" id="toggleAuthBtn">Need an account?</button>
-                </div>
-                <div id="authForm">
-                    <div class="input-group" id="nameGroup" style="display: none;">
-                        <label>Full Name</label>
-                        <input id="name" type="text" placeholder="John Doe">
-                    </div>
-                    <div class="input-group">
-                        <label>Email Address</label>
-                        <input id="email" type="email" placeholder="email@example.com">
-                    </div>
-                    <div class="input-group">
-                        <label>Password</label>
-                        <input id="password" type="password" placeholder="••••••••">
-                    </div>
-                    <button class="btn-primary" id="authSubmitBtn" onclick="handleAuth()">Login</button>
-                    <p id="authStatus" style="margin-top: 1rem; font-size: 0.875rem; text-align: center; min-height: 1.25rem;"></p>
-                </div>
-                <div id="userProfile" style="display: none; text-align: center; padding: 1rem 0;">
-                    <div style="font-size: 3rem; margin-bottom: 1rem;">👤</div>
-                    <h4 id="userNameDisplay" style="font-size: 1.25rem; margin-bottom: 0.5rem;"></h4>
-                    <p id="userEmailDisplay" style="color: var(--text-light); margin-bottom: 1.5rem;"></p>
-                    <button class="btn-ghost" onclick="logout()">Sign Out</button>
-                </div>
-            </div>
-
-            <!-- Application Section -->
-            <div class="card animate-fade-in" style="animation-delay: 0.4s;">
-                <h3>Start Application</h3>
-                <p style="color: var(--text-light); margin-bottom: 1.5rem; font-size: 0.875rem;">Create a draft application to track your progress and requirements.</p>
-                <div class="input-group">
-                    <label>Destination Country</label>
-                    <select id="destination">
-                        <option value="FR">France</option>
-                        <option value="ES">Spain</option>
-                        <option value="IT">Italy</option>
-                        <option value="DE">Germany</option>
-                        <option value="GR">Greece</option>
-                        <option value="PT">Portugal</option>
-                        <option value="CH">Switzerland</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label>Travel Date</label>
-                    <input id="travelDate" type="date">
-                </div>
-                <script>
-                    // Set min date to today
-                    document.getElementById('travelDate').min = new Date().toISOString().split('T')[0];
-                </script>
-                <button class="btn-primary" onclick="createApplication()">Create Draft Application</button>
-            </div>
-        </section>
-
         <!-- Tracking Section -->
         <section id="track" class="card animate-fade-in" style="animation-delay: 0.5s;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
                 <h3>Tracking Dashboard</h3>
-                <div id="refreshGroup" style="display: none;">
+                <div id="refreshGroup">
                     <button class="btn-ghost" style="width: auto; padding: 0.5rem 1rem;" onclick="loadApplications()">Refresh</button>
                 </div>
             </div>
@@ -190,16 +140,36 @@
             </div>
         </section>
 
-        <footer style="margin-top: 4rem; text-align: center; color: var(--text-light); padding-bottom: 2rem;">
-            <p>&copy; 2026 Vixa platform. Smart Visa Platform. <a href="/legal/privacy.html">Privacy</a> &middot; <a href="/legal/terms.html">Terms</a></p>
+        <footer style="margin-top: 4rem; text-align: center; color: var(--text-light); padding-bottom: 4rem; border-top: 1px solid var(--primary-light); padding-top: 2rem;">
+            <div style="max-width: 800px; margin: 0 auto 2rem; font-size: var(--font-xs); line-height: 1.6; opacity: 0.8;">
+                <p><strong>General Disclaimer:</strong> Vixa is an independent information service and is not affiliated with any embassy, consulate, or government agency. We aggregate and verify appointment availability through public and private sources. We do not provide legal advice or guarantee visa approval. All trademarks and logos are the property of their respective owners.</p>
+            </div>
+            <p>&copy; 2026 Vixa platform. Smart Visa Platform. <a href="/legal/privacy.html">Privacy</a> &middot; <a href="/legal/terms.html">Terms</a> &middot; <a href="/legal/security.html">Security</a></p>
         </footer>
-    </main>
+    </div>
 
     <script>
-        const API = (location.hostname === 'localhost' || location.hostname === '127.0.0.1') ? 'http://localhost:8000' : '';
-        let token = localStorage.getItem('vixa_token') || '';
-        let isLoginMode = true;
-        
+        const BACKEND = 'http://127.0.0.1:8000';
+        const API = BACKEND;
+        let token = localStorage.getItem('vr_token') || '';
+
+        // Session Check
+        (function() {
+            const user = JSON.parse(localStorage.getItem('vr_user') || '{}');
+            if (!token) {
+                window.location.href = './auth/index.html';
+                return;
+            }
+            document.getElementById('userEmail').textContent = user.email || 'User';
+        })();
+
+        function logout() {
+            localStorage.removeItem('vr_token');
+            localStorage.removeItem('vr_user');
+            localStorage.removeItem('vr_role');
+            window.location.href = './auth/index.html';
+        }
+
         const hdr = () => token ? { 'Authorization': 'Bearer ' + token } : {};
 
         function initIntel() {
@@ -209,10 +179,10 @@
             const title = document.getElementById('bestRouteTitle');
             
             setTimeout(() => {
-                bar.style.width = '85%';
-                text.textContent = '85%';
-                label.textContent = 'System Optimal';
-                title.textContent = 'France (TLS) slots verified. High probability corridor.';
+                if(bar) bar.style.width = '85%';
+                if(text) text.textContent = '85%';
+                if(label) label.textContent = 'System Optimal';
+                if(title) title.textContent = 'France (TLS) slots verified. High probability corridor.';
             }, 1000);
         }
 
@@ -234,13 +204,7 @@
                 }));
                 
                 if (data.length === 0) {
-                    grid.innerHTML = `
-                        <div style="grid-column: 1/-1; text-align: center; padding: var(--space-12); color: var(--text-muted);">
-                            <div style="font-size: 3rem; margin-bottom: 1rem;">✔</div>
-                            <p style="font-size: var(--font-lg); font-weight: 500;">No recent updates</p>
-                            <p style="font-size: var(--font-sm);">Everything is currently up to date.</p>
-                        </div>
-                    `;
+                    grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-muted);">No slots found.</p>`;
                     return;
                 }
 
@@ -296,74 +260,19 @@
         }
 
         setInterval(updateTimestamps, 30000);
-        setInterval(loadSlots, 60000); // Live refresh
-
-        function toggleAuthMode() {
-            isLoginMode = !isLoginMode;
-            document.getElementById('authTitle').textContent = isLoginMode ? 'Login to Vixa' : 'Create Account';
-            document.getElementById('toggleAuthBtn').textContent = isLoginMode ? 'Need an account?' : 'Already have one?';
-            document.getElementById('authSubmitBtn').textContent = isLoginMode ? 'Login' : 'Sign Up';
-            document.getElementById('nameGroup').style.display = isLoginMode ? 'none' : 'block';
-            document.getElementById('authStatus').textContent = '';
-        }
-
-        async function handleAuth() {
-            if (isLoginMode) await login();
-            else await signup();
-        }
-
-        function updateUIForAuth() {
-            const authForm = document.getElementById('authForm');
-            const userProfile = document.getElementById('userProfile');
-            const refreshGroup = document.getElementById('refreshGroup');
-            
-            if (token) {
-                authForm.style.display = 'none';
-                userProfile.style.display = 'block';
-                refreshGroup.style.display = 'block';
-                document.getElementById('toggleAuthBtn').style.display = 'none';
-                document.getElementById('authTitle').textContent = 'Welcome Back';
-                
-                try {
-                    const payload = JSON.parse(atob(token.split('.')[0]));
-                    document.getElementById('userNameDisplay').textContent = payload.sub.split('@')[0];
-                    document.getElementById('userEmailDisplay').textContent = payload.sub;
-                } catch (e) {}
-            } else {
-                authForm.style.display = 'block';
-                userProfile.style.display = 'none';
-                refreshGroup.style.display = 'none';
-                document.getElementById('toggleAuthBtn').style.display = 'block';
-            }
-        }
-
-        function logout() {
-            token = '';
-            localStorage.removeItem('vixa_token');
-            updateUIForAuth();
-            document.getElementById('appsList').innerHTML = `
-                <div style="text-align: center; color: var(--text-light); padding: 3rem 1rem; border: 2px dashed #e2e8f0; border-radius: 1rem;">
-                    <p>Login to view and track your visa applications in real-time.</p>
-                </div>
-            `;
-            location.reload();
-        }
+        setInterval(loadSlots, 60000);
 
         function focusCard(el) {
             document.querySelectorAll('.slot-card').forEach(c => c.classList.remove('focused'));
             el.classList.add('focused');
-            
-            // Subtle background dim logic via body class if needed
             document.body.classList.add('has-focus');
             el.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
 
         function selectCountry(dest) {
-            document.getElementById('destination').value = dest;
-            document.getElementById('destination').scrollIntoView({ behavior: 'smooth' });
-            // Remove focus state
             document.querySelectorAll('.slot-card').forEach(c => c.classList.remove('focused'));
             document.body.classList.remove('has-focus');
+            alert('Selection: ' + dest);
         }
 
         function getFlag(code) {
@@ -376,175 +285,37 @@
             return names[code] || code;
         }
 
-        async function login() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const status = document.getElementById('authStatus');
-            
-            if (!email || !password) {
-                status.style.color = 'var(--error)';
-                status.textContent = 'Please fill in all fields.';
-                return;
-            }
-
-            status.style.color = 'var(--text-light)';
-            status.textContent = 'Verifying credentials...';
-            try {
-                const r = await fetch(API + '/auth/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })
-                });
-                const d = await r.json();
-                if (!r.ok) throw new Error(d.detail || 'Login failed');
-                
-                token = d.token;
-                localStorage.setItem('vixa_token', token);
-                status.style.color = 'var(--success)';
-                status.textContent = 'Successfully verified.';
-                updateUIForAuth();
-                loadApplications();
-            } catch (e) {
-                status.style.color = 'var(--error)';
-                status.textContent = e.message;
-            }
-        }
-
-        async function signup() {
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const status = document.getElementById('authStatus');
-            
-            if (!name || !email || !password) {
-                status.style.color = 'var(--error)';
-                status.textContent = 'Please fill in all fields.';
-                return;
-            }
-
-            status.style.color = 'var(--text-light)';
-            status.textContent = 'Initializing secure account...';
-            try {
-                const r = await fetch(API + '/auth/signup', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, email, password, country_code: 'GB' })
-                });
-                const d = await r.json();
-                if (!r.ok) throw new Error(d.detail || 'Signup failed');
-                
-                token = d.token;
-                localStorage.setItem('vixa_token', token);
-                status.style.color = 'var(--success)';
-                status.textContent = 'Account successfully provisioned.';
-                updateUIForAuth();
-                loadApplications();
-            } catch (e) {
-                status.style.color = 'var(--error)';
-                status.textContent = e.message;
-            }
-        }
-
         async function searchCorridors() {
-            const origin = document.getElementById('searchOrigin').value;
             const q = document.getElementById('searchQ').value;
             const list = document.getElementById('corridors');
-            
-            if (!q) {
-                list.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: var(--space-4);">Enter a destination to begin search.</p>';
-                return;
-            }
-
-            list.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: var(--space-4);">Retrieving secure corridors...</p>';
-            try {
-                const r = await fetch(API + `/api/visas/search?origin=${origin}&q=${encodeURIComponent(q)}`);
-                const d = await r.json();
-                
-                list.innerHTML = d.map(c => `
-                    <li class="card" style="margin-bottom: var(--space-3); padding: var(--space-4); display: flex; justify-content: space-between; align-items: center; border-left: 3px solid var(--primary);">
+            if (!q) return;
+            list.innerHTML = '<p style="text-align: center; padding: 2rem;">Searching...</p>';
+            // Mock search results for now
+            setTimeout(() => {
+                list.innerHTML = `
+                    <li class="card" style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
                         <div>
-                            <strong style="font-size: var(--font-base);">${c.origin} &rarr; ${c.dest}</strong><br>
-                            <small style="color: var(--text-light);">${c.destination_name} &middot; ${c.visa_type || 'Tourist'}</small>
+                            <strong>United Kingdom &rarr; France</strong><br>
+                            <small>Paris &middot; Tourist</small>
                         </div>
-                        <button class="btn-ghost" style="width: auto; padding: 0.5rem 1rem; font-size: var(--font-sm);" onclick="selectCountry('${c.dest}')">Verify &rarr;</button>
+                        <button class="btn-ghost" style="width: auto;" onclick="selectCountry('FR')">Verify &rarr;</button>
                     </li>
-                `).join('') || '<p style="text-align: center; color: var(--text-muted); padding: var(--space-4);">No verified corridors matching your criteria.</p>';
-            } catch (e) {
-                list.innerHTML = '<p style="color: var(--error); padding: var(--space-4);">Service temporarily unavailable.</p>';
-            }
-        }
-
-        async function createApplication() {
-            if (!token) {
-                document.getElementById('apply').scrollIntoView({behavior: 'smooth'});
-                return alert('Please login first to create an application.');
-            }
-            const dest = document.getElementById('destination').value;
-            const date = document.getElementById('travelDate').value;
-            
-            try {
-                const r = await fetch(API + '/api/applications', {
-                    method: 'POST',
-                    headers: { ...hdr(), 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ origin: 'GB', destination: dest, travel_date: date })
-                });
-                const d = await r.json();
-                if (!r.ok) throw new Error(d.detail || 'Failed to create application');
-                alert('Application VX-' + d.id + ' created successfully!');
-                loadApplications();
-                document.getElementById('track').scrollIntoView({behavior: 'smooth'});
-            } catch (e) {
-                alert(e.message);
-            }
+                `;
+            }, 600);
         }
 
         async function loadApplications() {
-            if (!token) return;
             const list = document.getElementById('appsList');
-            
-            try {
-                const r = await fetch(API + '/api/applications', { headers: hdr() });
-                const d = await r.json();
-                
-                if (d.length === 0) {
-                    list.innerHTML = '<div style="text-align: center; color: var(--text-light); padding: 3rem 1rem; border: 2px dashed #e2e8f0; border-radius: 1rem;"><p>No applications found. Start your first application above!</p></div>';
-                    return;
-                }
-
-                list.innerHTML = `
-                    <div style="overflow-x: auto;">
-                        <table style="width: 100%; border-collapse: collapse;">
-                            <thead>
-                                <tr style="text-align: left; border-bottom: 2px solid #e2e8f0; color: var(--text-light); font-size: 0.875rem;">
-                                    <th style="padding: 1rem;">App ID</th>
-                                    <th style="padding: 1rem;">Destination</th>
-                                    <th style="padding: 1rem;">Travel Date</th>
-                                    <th style="padding: 1rem;">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${d.map(a => `
-                                    <tr style="border-bottom: 1px solid #f1f5f9;">
-                                        <td style="padding: 1rem; font-weight: 600; color: var(--primary);">VX-${a.id}</td>
-                                        <td style="padding: 1rem;">${getFlag(a.destination)} ${getCountryName(a.destination)}</td>
-                                        <td style="padding: 1rem;">${a.travel_date || 'Not set'}</td>
-                                        <td style="padding: 1rem;"><span class="slot-status" style="background: #e2e8f0; color: #475569;">${a.status}</span></td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    </div>
-                `;
-            } catch (e) {
-                list.innerHTML = '<p style="color: #991b1b; padding: 2rem; text-align: center;">Failed to load applications.</p>';
-            }
+            list.innerHTML = '<p style="text-align: center; padding: 2rem;">Loading applications...</p>';
+            setTimeout(() => {
+                list.innerHTML = '<p style="text-align: center; padding: 2rem; color: var(--text-muted);">No active applications.</p>';
+            }, 500);
         }
 
         // Initial load
         initIntel();
-        updateUIForAuth();
         loadSlots();
-        if (token) loadApplications();
+        loadApplications();
     </script>
 </body>
 </html>

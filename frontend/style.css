@@ -91,45 +91,76 @@ a:hover {
     color: var(--primary-dark);
 }
 
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--space-8) var(--space-4);
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 .nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.25rem 2rem;
+    padding: 1rem 2rem;
     background: var(--white);
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.8);
 }
 
-.nav h1 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    letter-spacing: -0.025em;
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 800;
+    font-size: 1.25rem;
+    letter-spacing: -0.05em;
+    color: var(--text);
+}
+
+.nav-brand span {
     background: linear-gradient(90deg, var(--primary), var(--accent));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-.nav nav {
+.nav-user {
     display: flex;
-    gap: 2rem;
+    align-items: center;
+    gap: 1.5rem;
 }
 
-.nav nav a {
-    font-weight: 500;
+.user-email {
+    font-size: 0.875rem;
     color: var(--text-light);
+    font-weight: 500;
 }
 
-.nav nav a:hover {
-    color: var(--primary);
+.btn-logout {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    background: var(--error-bg);
+    color: var(--error);
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+    width: auto;
 }
 
-.container {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: var(--space-8) var(--space-4);
+.btn-logout:hover {
+    background: var(--error);
+    color: var(--white);
 }
 
 .hero {

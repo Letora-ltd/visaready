@@ -136,14 +136,13 @@
 </head>
 <body class="admin-mode">
     <header class="nav">
-        <div>
-            <h1 style="color: var(--accent);">VIXA <span style="font-weight: 300; opacity: 0.6;">ADMIN</span></h1>
+        <div class="nav-brand">
+            <span>VIXA</span> Admin
         </div>
-        <nav>
-            <a href="../index.html">Dashboard</a>
-            <a href="#" class="active">Verification</a>
-            <div id="sessionUser" style="font-size: var(--font-sm); opacity: 0.8;"></div>
-        </nav>
+        <div class="nav-user">
+            <span class="user-email" id="userEmail"></span>
+            <button class="btn-logout" onclick="logout()">Sign Out</button>
+        </div>
     </header>
 
     <main class="container">
@@ -176,7 +175,6 @@
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4);">
                     <h2 style="font-size: var(--font-xl);">Verification Backlog</h2>
                     <div style="display: flex; gap: var(--space-2);">
-                        <input id="adminKey" type="password" placeholder="Admin Key" style="width: 150px; font-size: var(--font-xs); padding: 0.5rem;">
                         <button class="btn-ghost" style="width: auto; padding: 0.5rem 1rem; font-size: var(--font-xs);" onclick="refreshTasks()">Sync Tasks</button>
                     </div>
                 </div>
@@ -201,11 +199,21 @@
 
                     <div id="editorContent" style="display: none;">
                         <div class="input-group">
+                            <label>Verified By (Accountability)</label>
+                            <input id="verifiedBy" type="text" placeholder="Your name or ID">
+                        </div>
+
+                        <div class="input-group">
                             <label>Portal Address</label>
                             <div style="display: flex; gap: var(--space-2);">
                                 <input id="portalUrl" type="text" readonly style="flex: 1; opacity: 0.6;">
                                 <button class="btn-ghost" style="width: auto; padding: 0.5rem;" onclick="openPortal()">↗</button>
                             </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Next Available Date (Required for 'Available')</label>
+                            <input id="nextAvailableDate" type="date">
                         </div>
 
                         <div class="input-group">
@@ -227,6 +235,7 @@
                                 </div>
                                 <div style="font-size: var(--font-xs); opacity: 0.5;" id="lastCheckedBy"></div>
                             </div>
+                            <input type="hidden" id="currentVersion">
                             <button class="btn-primary" id="submitBtn" onclick="submitVerification()">Verify & Proceed →</button>
                         </div>
                     </div>
@@ -251,7 +260,7 @@
         let timerInterval = null;
 
         const getHdr = () => ({
-            'x-admin-key': document.getElementById('adminKey').value,
+            'Authorization': `Bearer ${localStorage.getItem('vr_token')}`,
             'Content-Type': 'application/json'
         });
 
@@ -286,7 +295,7 @@
                         </div>
                         <div style="margin-top: var(--space-4); display: flex; justify-content: space-between; font-size: var(--font-xs); opacity: 0.5;">
                             <div>Provider: ${t.provider || 'VFS'}</div>
-                            <div>Confidence: 98%</div>
+                            <div>Conf: ${t.confidence_score}% &middot; v${t.version || 1}</div>
                         </div>
                     </div>
                 `;
@@ -358,7 +367,21 @@
             document.getElementById('editorEmpty').style.display = 'none';
             document.getElementById('editorContent').style.display = 'block';
             document.getElementById('lastCheckedBy').textContent = task.verified_by ? `Last verified by ${task.verified_by}` : 'Never verified';
+            document.getElementById('currentVersion').value = task.version || 1;
+            document.getElementById('nextAvailableDate').value = task.next_available_date ? task.next_available_date.split('T')[0] : '';
             
+            // Set status highlight
+            selectedStatus = task.availability_status;
+            document.querySelectorAll('.status-btn').forEach(b => {
+                if (b.dataset.v === selectedStatus) {
+                    b.classList.remove('btn-ghost');
+                    b.classList.add('btn-primary');
+                } else {
+                    b.classList.remove('btn-primary');
+                    b.classList.add('btn-ghost');
+                }
+            });
+
             // Fetch portal info
             try {
                 const r = await fetch(`${BACKEND}/admin/portal-link?country=${encodeURIComponent(task.country)}&city=${encodeURIComponent(task.city)}&visa_type=${encodeURIComponent(task.visa_type)}`, { headers: getHdr() });
@@ -393,7 +416,7 @@
             if (!selectedStatus) return showToast('Please select a status', true);
             
             const task = tasks[currentIdx];
-            const verifiedBy = 'admin@vixa'; // Mock user
+            const verifiedBy = document.getElementById('verifiedBy').value.trim() || 'anonymous_admin';
 
             // Optimistic UI
             showToast('Verification submitted...');
@@ -402,7 +425,7 @@
             
             try {
                 // Update availability
-                await fetch(`${BACKEND}/admin/update`, {
+                const res = await fetch(`${BACKEND}/admin/status/manual-update`, {
                     method: 'POST',
                     headers: getHdr(),
                     body: JSON.stringify({ 
@@ -410,16 +433,27 @@
                         city: task.city, 
                         visa_type: task.visa_type, 
                         status: selectedStatus,
-                        provider: task.provider || 'mock'
+                        next_available_date: document.getElementById('nextAvailableDate').value || null,
+                        verified_by: verifiedBy,
+                        notes: document.getElementById('notes').value,
+                        expected_version: parseInt(document.getElementById('currentVersion').value)
                     })
                 });
 
-                // Mark as checked
-                await fetch(`${BACKEND}/admin/status/${task.id}/check?verified_by=${encodeURIComponent(verifiedBy)}`, {
-                    method: 'POST',
-                    headers: getHdr()
-                });
+                if (res.status === 409) {
+                    const conflict = await res.json();
+                    showToast(conflict.detail.message, true);
+                    refreshTasks(); // Refresh to get latest data
+                    return;
+                }
 
+                if (!res.ok) {
+                    const err = await res.json();
+                    throw new Error(err.detail && typeof err.detail === 'string' ? err.detail : (err.detail && err.detail[0] ? err.detail[0].msg : 'Failed to update'));
+                }
+
+                // Mark as checked (Already handled by manual-update now)
+                
                 showToast('Route verified successfully.');
                 
                 // Continuous Flow
@@ -429,7 +463,7 @@
                     refreshTasks();
                 }
             } catch (e) {
-                showToast('Failed to verify route', true);
+                showToast(e.message, true);
                 card.style.opacity = '1';
             }
         }
@@ -447,19 +481,29 @@
             setTimeout(() => t.classList.remove('show'), 3000);
         }
 
-        // Auto-load if key present
-        window.onload = () => {
-            const savedKey = localStorage.getItem('vixa_admin_key');
-            if (savedKey) {
-                document.getElementById('adminKey').value = savedKey;
-                refreshTasks();
+        // Session Check & UI Init
+        (function() {
+            const token = localStorage.getItem('vr_token');
+            const role = localStorage.getItem('vr_role');
+            const user = JSON.parse(localStorage.getItem('vr_user') || '{}');
+            
+            if (!token || role !== 'admin') {
+                window.location.href = '../auth/index.html';
+                return;
             }
-        };
 
-        document.getElementById('adminKey').onchange = (e) => {
-            localStorage.setItem('vixa_admin_key', e.target.value);
+            document.getElementById('userEmail').textContent = user.email || 'Admin';
+            document.getElementById('verifiedBy').value = user.name || user.email || 'admin';
+            
             refreshTasks();
-        };
+        })();
+
+        function logout() {
+            localStorage.removeItem('vr_token');
+            localStorage.removeItem('vr_user');
+            localStorage.removeItem('vr_role');
+            window.location.href = '../auth/index.html';
+        }
     </script>
 </body>
 </html>

@@ -9,7 +9,9 @@ class User(Base):
     password_hash: Mapped[str] = mapped_column(String(255))
     name: Mapped[str | None] = mapped_column(String(255), nullable=True)
     role: Mapped[str] = mapped_column(String(20), default='user')
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True)
     created_at: Mapped[DateTime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    updated_at: Mapped[DateTime] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
 class Application(Base):
     __tablename__ = 'applications'
@@ -21,6 +23,8 @@ class Application(Base):
     travel_date: Mapped[str | None] = mapped_column(String(20), nullable=True)
     status: Mapped[str] = mapped_column(String(20), default='DRAFT')
     created_at: Mapped[DateTime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    updated_at: Mapped[DateTime] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+    updated_by: Mapped[str | None] = mapped_column(String(120), nullable=True)
 
 class VisaRoute(Base):
     __tablename__ = 'visa_routes'
@@ -28,6 +32,9 @@ class VisaRoute(Base):
     country: Mapped[str] = mapped_column(String(2), index=True)
     city: Mapped[str] = mapped_column(String(120), index=True)
     visa_type: Mapped[str] = mapped_column(String(40), index=True)
+    created_at: Mapped[DateTime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    updated_at: Mapped[DateTime] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+    updated_by: Mapped[str | None] = mapped_column(String(120), nullable=True)
 
 class DataSource(Base):
     __tablename__ = 'data_sources'
@@ -36,6 +43,9 @@ class DataSource(Base):
     source_type: Mapped[str] = mapped_column(String(40))
     active: Mapped[bool] = mapped_column(Boolean, default=True)
     terms_url: Mapped[str | None] = mapped_column(String(400), nullable=True)
+    created_at: Mapped[DateTime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    updated_at: Mapped[DateTime] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+    updated_by: Mapped[str | None] = mapped_column(String(120), nullable=True)
 
 class AppointmentStatus(Base):
     __tablename__ = 'appointment_status'
@@ -49,9 +59,25 @@ class AppointmentStatus(Base):
     city_slug: Mapped[str | None] = mapped_column(String(120), index=True, nullable=True)
     source_id: Mapped[int | None] = mapped_column(ForeignKey('data_sources.id'), nullable=True)
     verified_by: Mapped[str | None] = mapped_column(String(120), nullable=True)
+    verification_notes: Mapped[str | None] = mapped_column(Text, nullable=True)
+    confidence_score: Mapped[int] = mapped_column(Integer, default=100)
     last_checked: Mapped[DateTime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     last_updated: Mapped[DateTime] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), index=True)
+    created_at: Mapped[DateTime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    next_available_date: Mapped[DateTime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    version: Mapped[int] = mapped_column(Integer, default=1)
     __table_args__ = (Index('ix_status_lookup', 'country', 'city', 'visa_type'),)
+
+class AppointmentStatusHistory(Base):
+    __tablename__ = 'appointment_status_history'
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    status_id: Mapped[int] = mapped_column(ForeignKey('appointment_status.id'), index=True)
+    old_status: Mapped[str | None] = mapped_column(String(40))
+    new_status: Mapped[str] = mapped_column(String(40))
+    old_next_date: Mapped[DateTime | None] = mapped_column(DateTime(timezone=True))
+    new_next_date: Mapped[DateTime | None] = mapped_column(DateTime(timezone=True))
+    changed_by: Mapped[str | None] = mapped_column(String(120))
+    changed_at: Mapped[DateTime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
 class UpdateLog(Base):
     __tablename__ = 'update_logs'
@@ -59,8 +85,17 @@ class UpdateLog(Base):
     provider: Mapped[str] = mapped_column(String(120), index=True)
     status: Mapped[str] = mapped_column(String(20))
     records_upserted: Mapped[int] = mapped_column(Integer, default=0)
+    route_id: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    source: Mapped[str] = mapped_column(String(40), default='system') # 'admin' or 'system'
     error_summary: Mapped[str | None] = mapped_column(Text, nullable=True)
     created_at: Mapped[DateTime] = mapped_column(DateTime(timezone=True), server_default=func.now(), index=True)
+
+class AdminStats(Base):
+    __tablename__ = 'admin_stats'
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    admin_id: Mapped[str] = mapped_column(String(120), unique=True, index=True)
+    total_updates: Mapped[int] = mapped_column(Integer, default=0)
+    last_active: Mapped[DateTime] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
 
 class PortalMapping(Base):
@@ -76,3 +111,6 @@ class PortalMapping(Base):
     instructions: Mapped[list | None] = mapped_column(JSON, nullable=True)
     portal_status: Mapped[str] = mapped_column(String(20), default='reachable')
     last_health_checked: Mapped[DateTime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    created_at: Mapped[DateTime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    updated_at: Mapped[DateTime] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+    updated_by: Mapped[str | None] = mapped_column(String(120), nullable=True)

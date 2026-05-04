@@ -1,23 +1,21 @@
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from typing import Any
 
 import requests
 from fastapi import APIRouter, Depends, Header, HTTPException, Query
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator, model_validator
 from sqlalchemy import select, or_
 from sqlalchemy.orm import Session
 
 from ..core.config import settings
 from ..database.session import get_db
-from ..models.entities import AppointmentStatus, PortalMapping
+from ..models.entities import AppointmentStatus, PortalMapping, AppointmentStatusHistory, AdminStats, UpdateLog
 from ..workers.ingest import run_ingestion
+from ..core.logic import calculate_confidence
+from ..core.security import RoleChecker
 
 router = APIRouter(prefix='/admin', tags=['admin'])
-
-
-def _require_admin(x_admin_key: str | None):
-    if x_admin_key != settings.admin_api_key:
-        raise HTTPException(status_code=401, detail='unauthorized')
+admin_only = RoleChecker(['admin'])
 
 
 def _norm_country(country: str) -> str:
@@ -51,17 +49,46 @@ class PortalIn(BaseModel):
     provider: str
     portal_url: str
     instructions: list[str] = Field(default_factory=list)
+    updated_by: str | None = None
+
+class StatusUpdateIn(BaseModel):
+    country: str
+    city: str
+    visa_type: str
+    status: str
+    next_available_date: datetime | None = None
+    verified_by: str
+    notes: str | None = None
+    expected_version: int
+
+    @field_validator('status')
+    @classmethod
+    def validate_status(cls, v: str):
+        if v.upper() not in ['AVAILABLE', 'LIMITED', 'NONE']:
+            raise ValueError('Invalid status')
+        return v.upper()
+
+    @model_validator(mode='after')
+    def validate_date(self):
+        status = self.status
+        date = self.next_available_date
+        if status == 'NONE' and date is not None:
+            raise ValueError('Next available date must be NULL if status is NONE')
+        if status == 'AVAILABLE' and date is None:
+            raise ValueError('Next available date must NOT be NULL if status is AVAILABLE')
+        if status == 'LIMITED' and date is not None:
+            if date.replace(tzinfo=None) < datetime.now():
+                raise ValueError('Next available date must be in the future')
+        return self
 
 
 @router.post('/update')
-def admin_update(payload: dict, x_admin_key: str | None = Header(default=None), db: Session = Depends(get_db)):
-    _require_admin(x_admin_key)
+def admin_update(payload: dict, db: Session = Depends(get_db), _ = Depends(admin_only)):
     return run_ingestion(db, payload.get('provider', 'mock'))
 
 
 @router.get('/tasks')
-def admin_tasks(limit: int = Query(default=20, ge=1, le=100), x_admin_key: str | None = Header(default=None), db: Session = Depends(get_db)):
-    _require_admin(x_admin_key)
+def admin_tasks(limit: int = Query(default=20, ge=1, le=100), db: Session = Depends(get_db), _ = Depends(admin_only)):
     rows = db.scalars(select(AppointmentStatus).order_by(AppointmentStatus.last_checked.asc().nullsfirst(), AppointmentStatus.last_updated.asc()).limit(limit)).all()
     data = [
         {
@@ -78,22 +105,144 @@ def admin_tasks(limit: int = Query(default=20, ge=1, le=100), x_admin_key: str |
     return {'success': True, 'data': data}
 
 
+# Removed _calculate_confidence in favor of shared logic
+
+
 @router.post('/status/{status_id}/check')
-def mark_checked(status_id: int, verified_by: str | None = None, x_admin_key: str | None = Header(default=None), db: Session = Depends(get_db)):
-    _require_admin(x_admin_key)
+def mark_checked(
+    status_id: int, 
+    verified_by: str | None = Query(None), 
+    notes: str | None = Query(None), 
+    db: Session = Depends(get_db), 
+    _ = Depends(admin_only)
+):
     row = db.get(AppointmentStatus, status_id)
     if not row:
         raise HTTPException(status_code=404, detail='status_not_found')
-    row.last_checked = datetime.now(timezone.utc)
+    
+    now = datetime.now(timezone.utc)
+    row.last_checked = now
+    
     if verified_by:
         row.verified_by = verified_by
+        # Update Stats
+        stats = db.scalar(select(AdminStats).where(AdminStats.admin_id == verified_by))
+        if not stats:
+            stats = AdminStats(admin_id=verified_by, total_updates=1)
+            db.add(stats)
+        else:
+            stats.total_updates += 1
+            stats.last_active = now
+
+    if notes:
+        row.verification_notes = notes
+    
+    row.confidence_score = calculate_confidence(row.last_updated, 'admin')
     db.commit()
-    return {'success': True, 'data': {'id': row.id, 'last_checked': row.last_checked}}
+    return {'success': True, 'data': {'id': row.id, 'confidence_score': row.confidence_score}}
+
+
+@router.post('/status/manual-update')
+def manual_update(payload: StatusUpdateIn, db: Session = Depends(get_db), _ = Depends(admin_only)):
+    c = _norm_country(payload.country)
+    slug = _norm_city(payload.city)
+    vt = payload.visa_type.strip().upper()
+    
+    row = db.scalar(select(AppointmentStatus).where(
+        AppointmentStatus.country_code == c,
+        AppointmentStatus.city_slug == slug,
+        AppointmentStatus.visa_type == vt
+    ))
+    
+    now = datetime.now(timezone.utc)
+    if not row:
+        row = AppointmentStatus(
+            country=payload.country,
+            city=payload.city,
+            visa_type=vt,
+            country_code=c,
+            city_slug=slug,
+            availability_status=payload.status,
+            freshness_label='human_verified',
+            last_updated=now,
+            last_checked=now,
+            next_available_date=payload.next_available_date,
+            verified_by=payload.verified_by,
+            verification_notes=payload.notes,
+            version=1
+        )
+        db.add(row)
+        db.flush()
+        # Initial history
+        db.add(AppointmentStatusHistory(
+            status_id=row.id,
+            old_status=None,
+            new_status=payload.status,
+            old_next_date=None,
+            new_next_date=payload.next_available_date,
+            changed_by=payload.verified_by
+        ))
+    else:
+        # Conflict control
+        if row.version != payload.expected_version:
+            raise HTTPException(status_code=409, detail={
+                "error": "conflict",
+                "message": "Data has been modified by another user",
+                "latest_data": {
+                    "version": row.version,
+                    "last_updated": row.last_updated,
+                    "status": row.availability_status
+                }
+            })
+            
+        # Capture history
+        history = AppointmentStatusHistory(
+            status_id=row.id,
+            old_status=row.availability_status,
+            new_status=payload.status,
+            old_next_date=row.next_available_date,
+            new_next_date=payload.next_available_date,
+            changed_by=payload.verified_by
+        )
+        db.add(history)
+        
+        # Update row
+        if row.availability_status != payload.status or row.next_available_date != payload.next_available_date:
+            row.last_updated = now
+        
+        row.availability_status = payload.status
+        row.next_available_date = payload.next_available_date
+        row.last_checked = now
+        row.verified_by = payload.verified_by
+        row.verification_notes = payload.notes
+        row.freshness_label = 'human_verified'
+        row.version += 1
+
+    # Update Admin Stats
+    stats = db.scalar(select(AdminStats).where(AdminStats.admin_id == payload.verified_by))
+    if not stats:
+        stats = AdminStats(admin_id=payload.verified_by, total_updates=1)
+        db.add(stats)
+    else:
+        stats.total_updates += 1
+        stats.last_active = now
+
+    # Log the update
+    db.add(UpdateLog(
+        provider='admin',
+        status='success',
+        records_upserted=1,
+        route_id=row.id,
+        source='admin'
+    ))
+
+    row.confidence_score = calculate_confidence(row.last_updated, 'admin')
+    db.commit()
+    return {'success': True, 'data': {'id': row.id, 'confidence_score': row.confidence_score, 'version': row.version}}
 
 
 @router.get('/portal-link')
-def portal_link(country: str, city: str, visa_type: str, x_admin_key: str | None = Header(default=None), db: Session = Depends(get_db)):
-    _require_admin(x_admin_key)
+def portal_link(country: str, city: str, visa_type: str, db: Session = Depends(get_db), _ = Depends(admin_only)):
     c = _norm_country(country)
     slug = _norm_city(city)
     vt = visa_type.strip().upper()
@@ -112,15 +261,13 @@ def portal_link(country: str, city: str, visa_type: str, x_admin_key: str | None
 
 
 @router.get('/portal')
-def list_portal(x_admin_key: str | None = Header(default=None), db: Session = Depends(get_db)):
-    _require_admin(x_admin_key)
+def list_portal(db: Session = Depends(get_db), _ = Depends(admin_only)):
     rows = db.scalars(select(PortalMapping).order_by(PortalMapping.country_code, PortalMapping.city_slug)).all()
     return {'success': True, 'data': [_portal_payload(r) for r in rows]}
 
 
 @router.post('/portal')
-def create_portal(payload: PortalIn, x_admin_key: str | None = Header(default=None), db: Session = Depends(get_db)):
-    _require_admin(x_admin_key)
+def create_portal(payload: PortalIn, db: Session = Depends(get_db), _ = Depends(admin_only)):
     row = PortalMapping(
         country=payload.country,
         city=payload.city,
@@ -130,6 +277,7 @@ def create_portal(payload: PortalIn, x_admin_key: str | None = Header(default=No
         provider=payload.provider,
         portal_url=payload.portal_url,
         instructions=payload.instructions,
+        updated_by=payload.updated_by
     )
     db.add(row)
     db.commit()
@@ -138,8 +286,7 @@ def create_portal(payload: PortalIn, x_admin_key: str | None = Header(default=No
 
 
 @router.put('/portal/{portal_id}')
-def update_portal(portal_id: int, payload: PortalIn, x_admin_key: str | None = Header(default=None), db: Session = Depends(get_db)):
-    _require_admin(x_admin_key)
+def update_portal(portal_id: int, payload: PortalIn, db: Session = Depends(get_db), _ = Depends(admin_only)):
     row = db.get(PortalMapping, portal_id)
     if not row:
         raise HTTPException(status_code=404, detail='portal_not_found')
@@ -151,14 +298,14 @@ def update_portal(portal_id: int, payload: PortalIn, x_admin_key: str | None = H
     row.provider = payload.provider
     row.portal_url = payload.portal_url
     row.instructions = payload.instructions
+    row.updated_by = payload.updated_by
     db.commit()
     db.refresh(row)
     return {'success': True, 'data': _portal_payload(row)}
 
 
 @router.post('/portal/{portal_id}/health')
-def portal_health(portal_id: int, timeout_seconds: float = 3.0, x_admin_key: str | None = Header(default=None), db: Session = Depends(get_db)):
-    _require_admin(x_admin_key)
+def portal_health(portal_id: int, timeout_seconds: float = 3.0, db: Session = Depends(get_db), _ = Depends(admin_only)):
     row = db.get(PortalMapping, portal_id)
     if not row:
         raise HTTPException(status_code=404, detail='portal_not_found')
@@ -174,3 +321,28 @@ def portal_health(portal_id: int, timeout_seconds: float = 3.0, x_admin_key: str
     row.last_health_checked = datetime.now(timezone.utc)
     db.commit()
     return {'success': True, 'data': {'portal_id': portal_id, 'portal_status': status, 'last_health_checked': row.last_health_checked}}
+
+
+@router.get('/stats')
+def get_admin_stats(db: Session = Depends(get_db), _ = Depends(admin_only)):
+    stats = db.scalars(select(AdminStats).order_by(AdminStats.total_updates.desc())).all()
+    return {'success': True, 'data': stats}
+
+
+@router.get('/system-health')
+def get_system_health(db: Session = Depends(get_db), _ = Depends(admin_only)):
+    now = datetime.now(timezone.utc)
+    stale_limit = now - timedelta(days=1)
+    
+    stale_routes = db.scalars(select(AppointmentStatus).where(AppointmentStatus.last_updated < stale_limit)).all()
+    failed_logs = db.scalars(select(UpdateLog).where(UpdateLog.status == 'failed').order_by(UpdateLog.created_at.desc()).limit(50)).all()
+    
+    return {
+        'success': True,
+        'data': {
+            'stale_routes_count': len(stale_routes),
+            'stale_routes': [{'id': r.id, 'country': r.country, 'city': r.city, 'last_updated': r.last_updated} for r in stale_routes[:10]],
+            'recent_failures': failed_logs,
+            'system_status': 'optimal' if len(stale_routes) < 5 else 'degraded'
+        }
+    }

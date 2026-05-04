@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+import os
 from .core.config import settings
 from .api import visa, admin, auth, endpoints
 from .database.init_db import init_db
@@ -18,6 +20,10 @@ app.include_router(visa.router)
 app.include_router(admin.router)
 app.include_router(auth.router)
 app.include_router(endpoints.router)
+
+# Serve Frontend
+frontend_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "frontend")
+app.mount("/", StaticFiles(directory=frontend_path, html=True), name="frontend")
 
 @app.get('/health')
 def health():
