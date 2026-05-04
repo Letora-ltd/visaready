@@ -14,7 +14,7 @@ from .workers.scheduler import start_scheduler
 setup_logging()
 
 app = FastAPI(title="Vixa Visa Intelligence API")
-# app.include_router(debug.router)
+app.include_router(debug.router)
 
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
@@ -63,14 +63,14 @@ app.add_middleware(
 )
 
 # API Routes
-# app.include_router(visa.router)
+app.include_router(visa.router)
 app.include_router(admin.router)
 app.include_router(auth.router)
-# app.include_router(endpoints.router)
+app.include_router(endpoints.router)
 app.include_router(vixaa.router)
-# app.include_router(admin_france.router)
-# app.include_router(payments.router)
-# app.include_router(bot.router)
+app.include_router(admin_france.router)
+app.include_router(payments.router)
+app.include_router(bot.router)
 
 @app.get('/api/health')
 def health():
@@ -81,11 +81,11 @@ async def on_startup():
     try:
         await init_db()
     except Exception as e:
-        print(f"Database initialization failed: {e}")
+        logger.error(f"Database initialization failed: {e}")
     
     # Only start scheduler if not on Vercel
     if not os.environ.get("VERCEL"):
         try:
             await start_scheduler()
         except Exception as e:
-            print(f"Scheduler failed to start: {e}")
+            logger.error(f"Scheduler failed to start: {e}")
