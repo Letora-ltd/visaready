@@ -281,9 +281,16 @@
     </main>
 
     <script>
+        function getAuthHeader() {
+            const token = localStorage.getItem('token');
+            return token ? { 'Authorization': `Bearer ${token}` } : {};
+        }
+
         async function loadDashboard() {
             try {
-                const response = await fetch('/api/dashboard/user');
+                const response = await fetch('/api/dashboard/user', {
+                    headers: getAuthHeader()
+                });
                 if (response.status === 401) {
                     window.location.href = '/login';
                     return;
@@ -373,7 +380,9 @@
         }
 
         async function loadConversion() {
-            const res = await fetch('/api/dashboard/conversion');
+            const res = await fetch('/api/dashboard/conversion', {
+                headers: getAuthHeader()
+            });
             const data = await res.json();
             
             // 1. Comparison Table
@@ -402,7 +411,9 @@
         }
 
         async function loadReferral() {
-            const res = await fetch('/api/dashboard/referral');
+            const res = await fetch('/api/dashboard/referral', {
+                headers: getAuthHeader()
+            });
             const data = await res.json();
             
             document.getElementById('referral-link').value = data.invite_link;
@@ -421,7 +432,9 @@
         }
 
         async function loadIntelligence() {
-            const res = await fetch('/api/dashboard/intelligence');
+            const res = await fetch('/api/dashboard/intelligence', {
+                headers: getAuthHeader()
+            });
             const data = await res.json();
 
             // 1. Heatmap

@@ -252,6 +252,7 @@ class TelegramService:
     def _generate_referral_code(self, length=8):
         chars = string.ascii_uppercase + string.digits
         return ''.join(secrets.choice(chars) for _ in range(length))
+    async def _handle_status(self, chat_id: str, db: AsyncSession):
         """Enhanced /status with stats and peak window (Sprint 4)."""
         result = await db.execute(select(User).where(User.telegram_chat_id == chat_id))
         user = result.scalars().first()

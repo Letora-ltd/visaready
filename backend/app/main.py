@@ -80,6 +80,18 @@ app.include_router(dashboard.router)
 if os.path.exists("static"):
     app.mount("/static", StaticFiles(directory="static"), name="static")
 
+@app.get("/")
+async def get_index():
+    return FileResponse("static/login.html")
+
+@app.get("/login")
+async def get_login():
+    return FileResponse("static/login.html")
+
+@app.get("/signup")
+async def get_signup():
+    return FileResponse("static/signup.html")
+
 @app.get("/dashboard")
 async def get_dashboard():
     return FileResponse("static/dashboard.html")

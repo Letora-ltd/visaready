@@ -138,16 +138,25 @@
     </main>
 
     <script>
+        function getAuthHeader() {
+            const token = localStorage.getItem('token');
+            return token ? { 'Authorization': `Bearer ${token}` } : {};
+        }
+
         async function fetchAdminData() {
             try {
                 // 1. Health
-                const healthRes = await fetch('/api/dashboard/admin/health');
+                const healthRes = await fetch('/api/dashboard/admin/health', {
+                    headers: getAuthHeader()
+                });
                 const health = await healthRes.json();
                 document.getElementById('health-success').innerText = `${health.success_rate}%`;
                 document.getElementById('health-queue').innerText = health.queue_size;
 
                 // 2. Metrics
-                const metricsRes = await fetch('/api/dashboard/admin/metrics');
+                const metricsRes = await fetch('/api/dashboard/admin/metrics', {
+                    headers: getAuthHeader()
+                });
                 const metrics = await metricsRes.json();
                 document.getElementById('metric-total').innerText = metrics.total_users;
                 document.getElementById('metric-premium').innerText = metrics.premium_users;
@@ -169,7 +178,9 @@
         }
 
         async function loadSlots() {
-            const res = await fetch('/api/dashboard/admin/slots');
+            const res = await fetch('/api/dashboard/admin/slots', {
+                headers: getAuthHeader()
+            });
             const slots = await res.json();
             const body = document.getElementById('slot-table-body');
             body.innerHTML = '';
