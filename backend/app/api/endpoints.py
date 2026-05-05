@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, Header, Query
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 from pydantic import BaseModel
 import uuid
 from ..database.session import get_db
@@ -9,7 +9,7 @@ from sqlalchemy import select
 
 router = APIRouter(prefix='/api', tags=['api'])
 
-def get_current_user(authorization: str | None = Header(default=None)):
+def get_current_user_data(authorization: str | None = Header(default=None)):
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Missing token")
     token = authorization.split(" ", 1)[1]
@@ -22,12 +22,12 @@ class ApplicationIn(BaseModel):
     travel_date: str | None = None
 
 @router.get('/applications')
-def list_applications(user: dict = Depends(get_current_user), db: Session = Depends(get_db)):
-    rows = db.scalars(select(Application).where(Application.user_id == user["id"])).all()
+async def list_applications(user: dict = Depends(get_current_user_data), db: AsyncSession = Depends(get_db)):
+    rows = (await db.execute(select(Application).where(Application.user_id == user["id"]))).scalars().all()
     return rows
 
 @router.post('/applications')
-def create_application(payload: ApplicationIn, user: dict = Depends(get_current_user), db: Session = Depends(get_db)):
+async def create_application(payload: ApplicationIn, user: dict = Depends(get_current_user_data), db: AsyncSession = Depends(get_db)):
     app = Application(
         id=str(uuid.uuid4())[:8].upper(),
         user_id=user["id"],
@@ -38,17 +38,15 @@ def create_application(payload: ApplicationIn, user: dict = Depends(get_current_
         status='DRAFT'
     )
     db.add(app)
-    db.commit()
-    db.refresh(app)
+    await db.commit()
+    await db.refresh(app)
     return app
 
 @router.get('/visas/search')
-def search_visas(origin: str, q: str = "", db: Session = Depends(get_db)):
-    # This is a mock search for now, returning matching status entries
+async def search_visas(origin: str, q: str = "", db: AsyncSession = Depends(get_db)):
     query = select(AppointmentStatus).where(AppointmentStatus.country_code == origin.upper())
     if q:
         query = query.where(AppointmentStatus.city.ilike(f"%{q}%"))
     
-    rows = db.scalars(query).all()
-    # Format to match frontend expected corridor structure
+    rows = (await db.execute(query)).scalars().all()
     return [{"origin": origin, "dest": r.country, "destination_name": r.city, "visa_type": r.visa_type} for r in rows]

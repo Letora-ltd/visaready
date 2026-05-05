@@ -1,17 +1,23 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
-from ..models.entities import VisaRoute, AppointmentStatus
+from ..models.entities import SlotEvent
 
-def list_routes(db: Session):
-    rows = db.scalars(select(VisaRoute)).all()
-    return [{"country": r.country, "city": r.city, "visa_type": r.visa_type} for r in rows]
+async def list_routes(db: AsyncSession):
+    rows = (await db.execute(select(SlotEvent))).scalars().all()
+    # Unique routes by country/center
+    routes = {}
+    for r in rows:
+        key = (r.country, r.center)
+        if key not in routes:
+            routes[key] = {"country": r.country, "center": r.center, "visa_type": r.visa_type}
+    return list(routes.values())
 
-def get_status(db: Session, origin: str, destination: str | None):
-    q = select(AppointmentStatus).where(AppointmentStatus.country_code == origin.upper())
+async def get_status(db: AsyncSession, origin: str, destination: str | None):
+    q = select(SlotEvent).where(SlotEvent.country == origin.upper())
     if destination:
-        q = q.where(AppointmentStatus.country == destination.upper())
-    rows = db.scalars(q).all()
+        q = q.where(SlotEvent.center == destination.upper())
+    rows = (await db.execute(q)).scalars().all()
     return rows
 
-def last_updated(db: Session):
-    return db.scalar(select(func.max(AppointmentStatus.last_updated)))
+async def last_updated(db: AsyncSession):
+    return (await db.execute(select(func.max(SlotEvent.last_updated)))).scalar()

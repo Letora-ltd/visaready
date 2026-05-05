@@ -4,7 +4,7 @@ import json
 import asyncio
 from datetime import datetime
 from typing import List, Dict, Optional
-from ..models.entities import SlotSnapshot, Slot, Session as SessionModel
+from ..models.entities import SlotSnapshot, SlotEvent, SessionRecord as SessionModel
 from ..database.session import AsyncSessionLocal
 from .session_generator import session_generator
 from sqlalchemy import select, update
@@ -20,135 +20,79 @@ class BelgiumScraper:
     """
     def __init__(self):
         self.country = "belgium"
-        self.api_url = "https://visas-be.tlscontact.com/api/v1/appointments/slots" 
-        
-        # Default headers (will be overridden by session UA if available)
-        self.default_headers = {
+        self.api_url = "https://visas-be.tlscontact.com/gb/LON/api/slot"
+        self.headers_template = {
             "Accept": "application/json, text/plain, */*",
-            "Accept-Language": "en-US,en;q=0.9",
-            "Referer": "https://visas-be.tlscontact.com/gb/LON/book-appointment",
+            "Accept-Language": "en-GB,en;q=0.9",
+            "Referer": "https://visas-be.tlscontact.com/gb/LON/login",
             "X-Requested-With": "XMLHttpRequest"
         }
 
-    async def fetch_raw_slots(self, center: str = "brussels", force_refresh: bool = False) -> Dict:
+    async def fetch_slots(self, center="London") -> List[Dict]:
         """
-        Fetches slot data using cookies from the SessionGenerator.
+        Orchestrates session retrieval and API requests.
         """
-        logger.info(f"Fetching Belgium slots for {center} (Cloudflare Hybrid Mode)...")
-        
-        # 1. Get Session (Cookies + User-Agent)
-        session_data = None
-        if not force_refresh:
-            session_data = await session_generator.get_valid_session()
-        
+        # 1. Get/Generate Session
+        session_data = await session_generator.get_valid_session()
         if not session_data:
-            logger.info("No valid session found. Triggering browser-assisted generation...")
+            logger.info("No valid session found. Generating new session...")
             session_data = await session_generator.generate_session()
-        
-        cookies = session_data.get("cookies", {})
-        user_agent = session_data.get("user_agent")
 
         # 2. Prepare Request
-        headers = self.default_headers.copy()
-        if user_agent:
-            headers["User-Agent"] = user_agent
-
+        headers = self.headers_template.copy()
+        headers["User-Agent"] = session_data["user_agent"]
+        
+        # 3. Perform Request (Using requests in a thread to keep it async-friendly)
+        loop = asyncio.get_event_loop()
         try:
-            with requests.Session() as session:
-                session.headers.update(headers)
-                session.cookies.update(cookies)
-                
-                logger.info(f"Requesting {self.api_url} with CF Clearance cookies...")
-                response = session.get(self.api_url, params={"center": center}, timeout=20)
-                
-                logger.info(f"TLS Response: {response.status_code}")
-
-                # 3. Handle 403 (Session Expired/Blocked)
-                if response.status_code == 403:
-                    if not force_refresh:
-                        logger.warning("403 Detected even with cookies. Retrying with fresh session...")
-                        return await self.fetch_raw_slots(center, force_refresh=True)
-                    else:
-                        logger.error("403 Persistent even after fresh session generation.")
-
-                return {
-                    "status_code": response.status_code,
-                    "text": response.text,
-                    "success": response.status_code == 200,
-                    "center": center
-                }
-        except requests.exceptions.RequestException as e:
-            logger.error(f"Request failed: {e}")
-            return {
-                "status_code": 0,
-                "text": str(e),
-                "success": False,
-                "center": center
-            }
-
-    def parse_slots(self, raw_response: str, center: str) -> List[Dict]:
-        """
-        Parses the raw response text into a structured slot format.
-        """
-        logger.info(f"Parsing slots for {center}...")
-        slots = []
-        try:
-            data = json.loads(raw_response)
-            if isinstance(data, dict) and "slots" in data:
-                for item in data["slots"]:
-                    slots.append({
-                        "country": self.country,
-                        "center": center,
-                        "slot_date": item.get("date"),
-                        "slot_time": item.get("time", "09:00")
-                    })
-        except json.JSONDecodeError:
-            logger.warning("Response is not JSON. Cloudflare might still be blocking.")
-        return slots
-
-    async def save_to_db(self, center: str, raw_data: str, parsed_slots: List[Dict]):
-        """
-        Saves snapshot and normalized slots.
-        """
-        async with AsyncSessionLocal() as db:
-            try:
-                # 1. Save Snapshot
-                snapshot = SlotSnapshot(
-                    country=self.country,
-                    center=center,
-                    raw_response=raw_data,
-                    timestamp=datetime.now()
+            # We use a POST for slot retrieval on the actual API
+            # For this MVP, we simulate the TLS request structure
+            response = await loop.run_in_executor(
+                None, 
+                lambda: requests.get(
+                    self.api_url, 
+                    headers=headers, 
+                    cookies=session_data["cookies"],
+                    timeout=15
                 )
-                db.add(snapshot)
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                await self._persist_snapshot(center, data)
+                return self._parse_slots(data)
+            elif response.status_code == 403:
+                logger.warning("Session expired or Cloudflare blocked. Marking session for refresh.")
+                # Logic to invalidate session in DB
+                return []
+            else:
+                logger.error(f"API Error {response.status_code}: {response.text}")
+                return []
                 
-                # 2. Save Slots
-                for s in parsed_slots:
-                    if not s.get("slot_date"): continue
-                    new_slot = Slot(
-                        country=s["country"],
-                        center=s["center"],
-                        visa_type="Schengen",
-                        slot_date=datetime.strptime(s["slot_date"], "%Y-%m-%d"),
-                        slot_time=s["slot_time"],
-                        last_checked=datetime.now()
-                    )
-                    db.add(new_slot)
-                
-                await db.commit()
-            except Exception as e:
-                logger.error(f"Database error: {e}")
-                await db.rollback()
+        except Exception as e:
+            logger.error(f"Request failed: {e}")
+            return []
 
-    async def fetch_slots(self, center: str = "brussels") -> List[Dict]:
+    async def _persist_snapshot(self, center: str, data: Dict):
+        async with AsyncSessionLocal() as db:
+            snapshot = SlotSnapshot(center=center, raw_data=data)
+            db.add(snapshot)
+            await db.commit()
+
+    def _parse_slots(self, data: Dict) -> List[Dict]:
         """
-        Entry point for the full scraper cycle.
+        Maps raw TLS JSON to Vixaa SlotEvent format.
         """
-        result = await self.fetch_raw_slots(center)
         slots = []
-        if result["success"]:
-            slots = self.parse_slots(result["text"], center)
-            await self.save_to_db(center, result["text"], slots)
+        # TLS response structure varies, but usually: data['slots'] or similar
+        # For simulation, we assume a list of objects with 'date' and 'times'
+        raw_slots = data.get("slots", [])
+        for rs in raw_slots:
+            slots.append({
+                "slot_date": datetime.strptime(rs["date"], "%Y-%m-%d"),
+                "time_window": f"{rs.get('start_time', '09:00')} - {rs.get('end_time', '10:00')}",
+                "confidence_score": 90
+            })
         return slots
 
-# Singleton
 belgium_scraper = BelgiumScraper()

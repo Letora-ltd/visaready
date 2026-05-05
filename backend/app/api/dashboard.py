@@ -6,7 +6,7 @@ from typing import List, Dict, Any
 
 from ..database.session import AsyncSessionLocal
 from ..models.entities import User, UserDailyStats, ActivityLog, SlotEvent, AlertPreference, Referral
-from ..api.auth import get_current_user
+from ..core.security import get_current_user
 
 router = APIRouter(prefix="/api/dashboard", tags=["dashboard"])
 

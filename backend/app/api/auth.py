@@ -3,13 +3,30 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from pydantic import BaseModel, EmailStr
 from ..database.session import get_db
 from ..models.entities import User
-from ..core.security import create_access_token, get_password_hash, verify_password
+from ..core.security import create_access_token, get_password_hash, verify_password, decode_jwt
 from sqlalchemy import select
+from fastapi.security import OAuth2PasswordBearer
 
 from ..core.logging import logger
 import logging
 
 router = APIRouter(prefix='/api/auth', tags=['auth'])
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
+
+async def get_current_user(token: str = Depends(oauth2_scheme), db: AsyncSession = Depends(get_db)):
+    payload = decode_jwt(token)
+    if not payload:
+        raise HTTPException(status_code=401, detail="Invalid token")
+    
+    email = payload.get("sub")
+    if not email:
+        raise HTTPException(status_code=401, detail="Invalid token payload")
+        
+    result = await db.execute(select(User).where(User.email == email))
+    user = result.scalar_one_or_none()
+    if not user:
+        raise HTTPException(status_code=401, detail="User not found")
+    return user
 
 class SignupIn(BaseModel):
     name: str

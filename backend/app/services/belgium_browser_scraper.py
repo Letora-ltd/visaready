@@ -4,7 +4,7 @@ import json
 from typing import List, Dict, Optional
 from playwright.async_api import async_playwright, Response
 from datetime import datetime
-from ..models.entities import SlotSnapshot, Slot
+from ..models.entities import SlotSnapshot, SlotEvent
 from ..database.session import AsyncSessionLocal
 from .session_generator import session_generator
 from .vow_scraper import vow_scraper

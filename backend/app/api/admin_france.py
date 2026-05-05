@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, desc
 from typing import List
 from ..database.session import get_db
-from ..models.entities import Session, Slot
+from ..models.entities import SessionRecord, SlotEvent
 from ..workers.jobs import check_and_alert_job
 
 router = APIRouter(prefix="/api/admin/france", tags=["admin-france"])

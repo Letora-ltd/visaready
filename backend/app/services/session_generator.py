@@ -3,7 +3,7 @@ import logging
 import time
 from typing import Dict, Optional
 from playwright.async_api import async_playwright
-from ..models.entities import Session as SessionModel
+from ..models.entities import SessionRecord as SessionModel
 from ..database.session import AsyncSessionLocal
 from sqlalchemy import select, delete
 
