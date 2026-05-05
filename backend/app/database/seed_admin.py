@@ -17,7 +17,7 @@ async def seed_admin():
             admin = User(
                 email=admin_email,
                 name="Vixa Admin",
-                password_hash=get_password_hash("vixa_admin_2026"),
+                password_hash=get_password_hash("vixa_online_2026"),
                 role='admin',
                 is_active=True,
                 subscription_type='premium' # Admins get premium
