@@ -6,7 +6,7 @@
       "use": "@vercel/python"
     },
     {
-      "src": "frontend/**",
+      "src": "backend/static/**",
       "use": "@vercel/static"
     }
   ],
@@ -16,8 +16,24 @@
       "destination": "/api/index.py"
     },
     {
+      "source": "/login",
+      "destination": "/backend/static/login.html"
+    },
+    {
+      "source": "/signup",
+      "destination": "/backend/static/signup.html"
+    },
+    {
+      "source": "/dashboard",
+      "destination": "/backend/static/dashboard.html"
+    },
+    {
+      "source": "/admin",
+      "destination": "/backend/static/admin.html"
+    },
+    {
       "source": "/(.*)",
-      "destination": "/frontend/$1"
+      "destination": "/backend/static/$1"
     }
   ],
   "env": {
