@@ -2,13 +2,15 @@ import os
 import logging
 from datetime import datetime, timedelta
 from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from .core.config import settings
 from .core.logging import setup_logging, logger
-from .api import visa, admin, auth, endpoints, vixaa, admin_france, payments, bot, debug
+from .api import visa, admin, auth, endpoints, vixaa, admin_france, payments, bot, debug, internal, dashboard
 from .database.init_db import init_db
 from .workers.scheduler import start_scheduler
+from .workers.summary_worker import summary_scheduler
 
 # Initialize logging
 setup_logging()
@@ -71,6 +73,20 @@ app.include_router(vixaa.router)
 app.include_router(admin_france.router)
 app.include_router(payments.router)
 app.include_router(bot.router)
+app.include_router(internal.router)
+app.include_router(dashboard.router)
+
+# Serve Static Files
+if os.path.exists("static"):
+    app.mount("/static", StaticFiles(directory="static"), name="static")
+
+@app.get("/dashboard")
+async def get_dashboard():
+    return FileResponse("static/dashboard.html")
+
+@app.get("/admin")
+async def get_admin_dashboard():
+    return FileResponse("static/admin.html")
 
 @app.get('/api/health')
 def health():
@@ -87,5 +103,7 @@ async def on_startup():
     if not os.environ.get("VERCEL"):
         try:
             await start_scheduler()
+            import asyncio
+            asyncio.create_task(summary_scheduler())
         except Exception as e:
-            logger.error(f"Scheduler failed to start: {e}")
+            logger.error(f"Workers failed to start: {e}")

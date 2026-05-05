@@ -6,6 +6,7 @@ from sqlalchemy import select, and_, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from ..models.entities import Slot, SlotSnapshot, User, AlertPreference
 from ..services.telegram_service import send_telegram_message
+from ..services.alert_dispatcher import alert_dispatcher
 
 async def process_slots_lifecycle(db: AsyncSession, country: str, center: str, new_slots: list):
     """
@@ -17,7 +18,7 @@ async def process_slots_lifecycle(db: AsyncSession, country: str, center: str, n
     snapshot = SlotSnapshot(
         country=country,
         center=center,
-        raw_data=json.dumps([{**s, "slot_date": s["slot_date"].isoformat()} for s in new_slots])
+        raw_response=json.dumps([{**s, "slot_date": s["slot_date"].isoformat() if hasattr(s["slot_date"], "isoformat") else s["slot_date"]} for s in new_slots])
     )
     db.add(snapshot)
     
@@ -63,50 +64,7 @@ async def process_slots_lifecycle(db: AsyncSession, country: str, center: str, n
         slot.is_active = False
 
     if newly_found:
-        await trigger_lifecycle_alerts(db, country, center, newly_found)
+        await alert_dispatcher.dispatch(db, country, center, newly_found)
 
     await db.commit()
     return len(newly_found)
-
-async def trigger_lifecycle_alerts(db: AsyncSession, country: str, center: str, new_slots: list):
-    """
-    Sends priority-based alerts.
-    """
-    alert_stmt = select(User).join(AlertPreference).where(
-        and_(
-            AlertPreference.country == country,
-            AlertPreference.center == center,
-            User.telegram_chat_id != None
-        )
-    )
-    res = await db.execute(alert_stmt)
-    users = res.scalars().all()
-    
-    for user in users:
-        is_premium = user.subscription_type == 'premium' and (user.subscription_expiry and user.subscription_expiry > datetime.utcnow())
-        
-        if len(new_slots) > 3:
-            message = (
-                f"🚨 <b>MULTIPLE NEW SLOTS FOUND!</b>\n\n"
-                f"📍 <b>Country:</b> {country}\n"
-                f"🏢 <b>Center:</b> {center}\n"
-                f"📅 <b>Count:</b> {len(new_slots)} new slots detected.\n\n"
-            )
-        else:
-            message = "🚨 <b>NEW SLOTS DETECTED!</b>\n\n"
-            for s in new_slots:
-                message += f"📅 {s['slot_date'].strftime('%Y-%m-%d')} at {s['slot_time']}\n"
-            message += f"\n📍 {country} ({center})\n"
-
-        if is_premium:
-            message += "⚡ <b>Priority Alert</b> (Instant)"
-            send_telegram_message(user.telegram_chat_id, message)
-        else:
-            # Delayed alert for free users (FOMO)
-            delay_msg = message + "\n\n⏳ <i>This alert was delayed by 3 minutes. Upgrade to Premium for instant alerts!</i>"
-            # Schedule delayed task
-            asyncio.create_task(delayed_alert(user.telegram_chat_id, delay_msg, delay_seconds=180))
-
-async def delayed_alert(chat_id: str, message: str, delay_seconds: int):
-    await asyncio.sleep(delay_seconds)
-    send_telegram_message(chat_id, message)
