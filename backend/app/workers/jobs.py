@@ -4,7 +4,7 @@ import random
 import time
 from datetime import datetime, timedelta
 from typing import List, Dict
-from ..services.belgium_browser_scraper import belgium_browser_scraper
+
 from ..core.queue import push_to_queue, slot_queue
 from ..services.session_pool import session_pool
 from ..core.metrics import metrics
@@ -12,6 +12,13 @@ from ..core.intelligence import intelligence_engine
 from ..core.health import health_monitor, SystemState
 
 logger = logging.getLogger(__name__)
+
+import os
+IS_VERCEL = os.environ.get("VERCEL") == "1"
+
+def get_scraper():
+    from ..services.belgium_browser_scraper import belgium_browser_scraper
+    return belgium_browser_scraper
 
 # Concurrency Control (Sprint 3)
 MAX_WORKERS = 2
@@ -71,10 +78,15 @@ async def run_scrape_task(center: str):
             # 4. Execute Flow (VOW -> TLS -> Capture)
             # We wrap in a timeout to prevent hanging tasks
             try:
-                new_slots = await asyncio.wait_for(
-                    belgium_browser_scraper.fetch_slots_with_vow(center=center, session_info=session),
-                    timeout=150.0 # Total task timeout
-                )
+                if IS_VERCEL:
+                    logger.warning("Scraping disabled on Vercel. Returning empty.")
+                    new_slots = []
+                else:
+                    scraper = get_scraper()
+                    new_slots = await asyncio.wait_for(
+                        scraper.fetch_slots_with_vow(center=center, session_info=session),
+                        timeout=150.0 # Total task timeout
+                    )
                 
                 # 5. Handle Results
                 if new_slots:

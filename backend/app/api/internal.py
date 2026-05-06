@@ -1,11 +1,20 @@
 from fastapi import APIRouter, Depends, HTTPException
 from ..services.belgium_scraper import belgium_scraper
 from ..services.session_generator import session_generator
-from ..services.belgium_browser_scraper import belgium_browser_scraper
+
 import logging
 
 router = APIRouter(prefix="/internal/belgium", tags=["internal"])
 logger = logging.getLogger(__name__)
+
+import os
+IS_VERCEL = os.environ.get("VERCEL") == "1"
+
+def get_scraper():
+    if IS_VERCEL:
+        raise HTTPException(status_code=501, detail="Scraping disabled in Vercel API environment.")
+    from ..services.belgium_browser_scraper import belgium_browser_scraper
+    return belgium_browser_scraper
 
 @router.get("/check")
 async def trigger_belgium_check(center: str = "brussels"):
@@ -50,7 +59,8 @@ async def trigger_browser_check(center: str = "London"):
     """
     logger.info(f"Manual trigger for browser-native check: center={center}")
     try:
-        slots = await belgium_browser_scraper.fetch_slots(center=center)
+        scraper = get_scraper()
+        slots = await scraper.fetch_slots(center=center)
         return {
             "success": True,
             "center": center,
@@ -70,7 +80,8 @@ async def trigger_vow_integrated_check(center: str = "London", app_ref: str = No
     """
     logger.info(f"Manual trigger for VOW integrated check: center={center}, ref={app_ref}")
     try:
-        slots = await belgium_browser_scraper.fetch_slots_with_vow(app_reference=app_ref, center=center)
+        scraper = get_scraper()
+        slots = await scraper.fetch_slots_with_vow(app_reference=app_ref, center=center)
         return {
             "success": True,
             "center": center,
